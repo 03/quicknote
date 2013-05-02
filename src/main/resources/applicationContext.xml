@@ -18,6 +18,7 @@
   
 	<context:property-placeholder location="classpath:jdbc.properties"/>
 	
+	<!-- 
 	<bean id="dataSource" destroy-method="close"
 		class="org.apache.commons.dbcp.BasicDataSource">
 		<property name="driverClassName"
@@ -25,6 +26,17 @@
 		<property name="url" value="${jdbc.url}" />
 		<property name="username" value="${jdbc.username}" />
 		<property name="password" value="${jdbc.password}" />
+	</bean> 
+	-->
+
+	<bean class="java.net.URI" id="dbUrl">
+		<constructor-arg value="#{systemEnvironment['DATABASE_URL']}" />
+	</bean>
+
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="url" value="#{ 'jdbc:postgresql://' + @dbUrl.getHost() + ':' + @dbUrl.getPort() + @dbUrl.getPath() }" />
+		<property name="username" value="#{ @dbUrl.getUserInfo().split(':')[0] }" />
+		<property name="password" value="#{ @dbUrl.getUserInfo().split(':')[1] }" />
 	</bean>
 	
 	<bean id="sessionFactory"
