@@ -1,0 +1,35 @@
+<zk>
+	<grid width="450px" vflex="true">
+		<rows>
+			<row>
+				<hbox>
+					<hbox>
+						<button id="btnshow" label="Current"
+							tooltip="Show current node" image="/assets/images/m1.gif"
+							hoverImage="/assets/images/m2.gif" width="105px" />
+					</hbox>
+					<hbox>
+						<toolbarbutton id="btninsert"
+							tooltiptext="Insert Item" image="/assets/images/add.jpg" />
+						<toolbarbutton id="btnremove"
+							tooltiptext="Remove Item"
+							image="/assets/images/remove.jpg" />
+						<toolbarbutton id="btnrename"
+							tooltip="MyHelp"
+							image="/assets/images/rename.jpg" style="cursor: help"/>
+					</hbox>
+				</hbox>
+			</row>
+		</rows>
+	</grid>
+	<vlayout id="pLayout">
+		<tree id="topicTree" />
+	</vlayout>
+
+	<popup id="MyHelp" width="300px">
+		<html>SOS!!!</html>
+		<toolbarbutton label="ZK Forum" target="zksandbox"
+			href="http://www.zkoss.org/forum" />
+	</popup>
+
+</zk>

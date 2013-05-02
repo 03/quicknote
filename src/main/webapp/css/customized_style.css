@@ -1,0 +1,7 @@
+
+.ctlBtn { border: 1px outset #20; background:#cfeaf1; margin: 2px;
+margin-right: 5px; padding-left: 2px; padding-right: 2px;
+display: block; width:80px; text-align:center; }
+
+.count { font-weight: bold; font-size: 10px; }
+
