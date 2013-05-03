@@ -14,7 +14,7 @@ public interface NoteNodeDAO {
 
 	void remove(long id);
 	
-	long addChild(long pid, String name, String content, String picUrl);
+	NoteNode addChild(long pid, String name, String content, String picUrl);
 	
 	void updateTopicText(long id, String content);
 	

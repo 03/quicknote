@@ -1,26 +1,24 @@
 package com.wind.quicknote.views.tree;
 
+import com.wind.quicknote.models.NoteNode;
+
 public class TopicItem {
 
 	private long id;
 	private String name;
 	private String content;
-    private String profilepic;
-    private boolean isLeaf = true;
- 
-    public TopicItem(long id, String name, String content, String profilepic) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.content = content;
-		this.profilepic = profilepic;
-	}
+    private String icon;
 
-	public TopicItem(String name, String content, String profilepic) {
+    // convenient model, DTO is a better choice
+    private NoteNode note;
+ 
+    public TopicItem(NoteNode note) {
 		super();
-		this.name = name;
-		this.content = content;
-		this.profilepic = profilepic;
+		this.note = note;
+		this.id = note.getId();
+		this.name = note.getName();
+		this.content = note.getName();
+		this.icon = note.getIcon();
 	}
 
 	public long getId() {
@@ -47,20 +45,17 @@ public class TopicItem {
 		this.content = content;
 	}
 
-	public String getProfilepic() {
-		return profilepic;
+	public String getIcon() {
+		return icon;
 	}
-
-	public void setProfilepic(String profilepic) {
-		this.profilepic = profilepic;
+	
+	public void setIcon(String icon) {
+		this.icon = icon;
 	}
-
+	
 	public boolean isLeaf() {
-		return isLeaf;
+		return !note.hasChildren();
 	}
 
-	public void setLeaf(boolean isLeaf) {
-		this.isLeaf = isLeaf;
-	}
 
 }

@@ -18,7 +18,7 @@ public class TopicTreeModel extends DefaultTreeModel<TopicItem> {
     DefaultTreeNode<TopicItem> _root;
     
     public TopicTreeModel(TopicItemTreeNode treeNode) {
-        super(treeNode);
+        super(treeNode, true);
         _root = treeNode;
     }
  
@@ -99,7 +99,6 @@ public class TopicTreeModel extends DefaultTreeModel<TopicItem> {
  
         for (int i = 0; i < newNodes.length; i++)
             stn.getChildren().add(newNodes[i]);
- 
     }
     
     private DefaultTreeNode<TopicItem> dfSearchParent(DefaultTreeNode<TopicItem> node, DefaultTreeNode<TopicItem> target) {

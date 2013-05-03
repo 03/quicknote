@@ -87,7 +87,7 @@ public class NoteNodeDAOImpl extends CommonDAO implements NoteNodeDAO {
 	}
 
 	@Override
-	public long addChild(long pid, String name, String content, String picUrl) {
+	public NoteNode addChild(long pid, String name, String content, String picUrl) {
 
 		NoteNode parent = (NoteNode) getHibernateTemplate().get(NoteNode.class, pid);
 		NoteNode note = new NoteNode();
@@ -106,7 +106,7 @@ public class NoteNodeDAOImpl extends CommonDAO implements NoteNodeDAO {
 		detail.setNote(note);
 		getHibernateTemplate().save(note);
 		
-		return note.getId();
+		return note;
 	}
 
 	@Override

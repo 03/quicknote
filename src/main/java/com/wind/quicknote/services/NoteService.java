@@ -46,6 +46,7 @@ public class NoteService {
 		this.noteUserDAO = noteUserDAO;
 	}
 
+	@Transactional
 	public List<NoteNode> findAllTopics() {
 		return noteNodeDAO.findAll();
 	}
@@ -74,7 +75,7 @@ public class NoteService {
 		noteNodeDAO.remove(id);
 	}
 	
-	public long addTopic(long pid, String name, String content, String picUrl) {
+	public NoteNode addTopic(long pid, String name, String content, String picUrl) {
 		return noteNodeDAO.addChild(pid, name, content, picUrl);
 	}
 	

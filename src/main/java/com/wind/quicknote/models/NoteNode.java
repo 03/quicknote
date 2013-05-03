@@ -156,7 +156,7 @@ public class NoteNode {
 	
 	public boolean hasChildren() {
 	
-		if(children!=null && children.size() > 0)
+		if (children != null && children.size() > 0)
 			return true;
 		
 		return false;

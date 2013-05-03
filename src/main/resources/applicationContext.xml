@@ -18,16 +18,15 @@
   
 	<context:property-placeholder location="classpath:jdbc.properties"/>
 	
-	<!-- 
-	<bean id="dataSource" destroy-method="close"
+	
+	<!-- <bean id="dataSource" destroy-method="close"
 		class="org.apache.commons.dbcp.BasicDataSource">
 		<property name="driverClassName"
 			value="${jdbc.driverClassName}" />
 		<property name="url" value="${jdbc.url}" />
 		<property name="username" value="${jdbc.username}" />
 		<property name="password" value="${jdbc.password}" />
-	</bean> 
-	-->
+	</bean> -->
 
 	<!-- Heroku settings -->
 	<bean class="java.net.URI" id="dbUrl">
@@ -69,9 +68,12 @@
 		</property>
 	</bean>
 
-	<bean id="txManager"
+	<bean id="transactionManager"
 		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<!-- Tell Spring to activate annotation-driven transactions -->
+	<tx:annotation-driven/>
 
 </beans>
