@@ -162,19 +162,26 @@ public class NoteTreeList extends Div implements IdSpace {
 				
         	} else {
         		
-    			// save to database
-        		NoteNode note = noteService.addTopic(selectedItem.getId(), "[New Item]", "newly added content...", getRandomIconURL());
-    			// change currentItem to the newly added
-    			currentItem = new TopicItem(note);
-        		
 				if (selectedItem.isLeaf()) {
                 	// if current node has no children , append it as the first child
+					
+	    			// save to database
+	        		NoteNode note = noteService.addTopic(selectedItem.getId(), "[New Item]", "newly added content...", getRandomIconURL());
+	        		
+					// change currentItem to the newly added
+	    			currentItem = new TopicItem(note);
                 	
         			// update model
                     topicTreeModel.add(selectedNode, new DefaultTreeNode[] { new TopicItemTreeNode(currentItem, null, true) });
                     
                 } else { 
                 	// if current node has children, add it as the last child
+                	
+        			// save to database
+            		NoteNode note = noteService.addTopic(parentItem.getId(), "[New Item]", "newly added content...", getRandomIconURL());
+            		
+                	// change currentItem to the newly added
+        			currentItem = new TopicItem(note);
                 	
                 	int index = parentTreeItem.getTreechildren().getChildren().indexOf(selectedTreeItem);
 					if (parentTreeItem.getValue() instanceof TopicItemTreeNode) {
@@ -369,24 +376,40 @@ public class NoteTreeList extends Div implements IdSpace {
                     Treeitem draggedItem = (Treeitem) ((DropEvent) event).getDragged().getParent();
                     TopicItemTreeNode draggedValue = (TopicItemTreeNode) draggedItem.getValue();
                     Treeitem parentItem = treeItem.getParentItem();
+                    TopicItemTreeNode currentTreeNode = treeItem.getValue();
                     
                     topicTreeModel.remove(draggedValue);
-                    if (((TopicItem) ((TopicItemTreeNode)treeItem.getValue()).getData()).isLeaf()) { 
+                    
+                    if (((TopicItem) (currentTreeNode).getData()).isLeaf()) { 
                     	// if current node has no children, append it as the first child
-                        topicTreeModel.add((TopicItemTreeNode) treeItem.getValue(),
-                                new DefaultTreeNode[] { draggedValue });
+                        topicTreeModel.add(currentTreeNode, new DefaultTreeNode[] { draggedValue });
                         
-                        parentid = ((TopicItemTreeNode) treeItem.getValue()).getData().getId();
+                        parentid = currentTreeNode.getData().getId();
                         		
-                    } else { 
+                    } else {
+                    	
                     	// if current node has children, add it as the last child 
-                        int index = parentItem.getTreechildren().getChildren().indexOf(treeItem);
-                        if(parentItem.getValue() instanceof TopicItemTreeNode) {
-                            topicTreeModel.insert((TopicItemTreeNode)parentItem.getValue(), index, index,
-                                    new DefaultTreeNode[] { draggedValue });
+                    	if (parentItem == null) {
+                        	// first level node
+                    		int index = currentTreeNode.getChildCount() - 1;
+                    		topicTreeModel.insert(currentTreeNode, index, index, new DefaultTreeNode[] { draggedValue });
+                    		
+                    		parentid = currentTreeNode.getData().getId();
+                        	
+                        } else {
+                        	
+                        	TopicItemTreeNode parentTreeNode = parentItem.getValue();
+                        	
+                        	int index = parentItem.getTreechildren().getChildren().indexOf(treeItem);
+                            if(parentTreeNode instanceof TopicItemTreeNode) {
+                                topicTreeModel.insert(parentTreeNode, index, index,
+                                        new DefaultTreeNode[] { draggedValue });
+                            }
+                            
+                            parentid = parentTreeNode.getData().getId();
+                            
                         }
-                        
-                        parentid = ((TopicItemTreeNode) parentItem.getValue()).getData().getId();
+                    	
                     }
                     
                     // save to database - change parent id of draggedItem
