@@ -7,7 +7,9 @@ import org.springframework.stereotype.Component;
 
 import com.wind.quicknote.models.NoteContents;
 import com.wind.quicknote.models.NoteNode;
+import com.wind.quicknote.models.NoteUser;
 import com.wind.quicknote.services.daos.NoteNodeDAO;
+import com.wind.quicknote.systems.UserCredentialManager;
 
 
 /**
@@ -27,9 +29,12 @@ public class NoteNodeDAOImpl extends CommonDAO implements NoteNodeDAO {
 
 	@SuppressWarnings("unchecked")
 	public List<NoteNode> findAllAvailable() {
+		
+		NoteUser user = UserCredentialManager.getIntance().getUser();
         
         NoteNode example = new NoteNode();
         example.setStatus("a");
+		example.setOwnerId(String.valueOf(user.getId()));
         return getHibernateTemplate().findByExample(example);
 	}
 	
@@ -51,9 +56,32 @@ public class NoteNodeDAOImpl extends CommonDAO implements NoteNodeDAO {
 		getHibernateTemplate().delete(node);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public NoteNode findRootNode() {
-		return (NoteNode) getHibernateTemplate().get(NoteNode.class, Long.parseLong("1"));
+		
+		NoteUser user = UserCredentialManager.getIntance().getUser();
+		long userId = user.getId();
+		
+        List<NoteNode> list =  getHibernateTemplate().find("from NoteNode where name='ROOT' and ownerId=? and parent = null", String.valueOf(user.getId()));
+        
+        if(list.size() == 0) {
+        	// initUserRootNoteNode 
+        	NoteNode rootNode = new NoteNode();
+            rootNode.setContent("ROOT(invisible) of user["+String.valueOf(userId)+"]");
+            rootNode.setName("ROOT");
+    		rootNode.setOwnerId(String.valueOf(user.getId()));
+    		rootNode.setParent(null);
+        	rootNode.setCreated(new Date());
+    		getHibernateTemplate().save(rootNode);
+    		return rootNode;
+    		
+        } else {
+        	
+    		return (NoteNode) list.get(0);
+        }
+		
+		// return (NoteNode) getHibernateTemplate().get(NoteNode.class, Long.parseLong("1"));
 	}
 	
 	@Override
@@ -96,7 +124,9 @@ public class NoteNodeDAOImpl extends CommonDAO implements NoteNodeDAO {
 		note.setContent(content);
 		note.setIcon(picUrl == null? parent.getIcon():picUrl);
 		note.setCreated(new Date());
-		note.setUpdated(new Date());
+		
+		NoteUser user = UserCredentialManager.getIntance().getUser();
+		note.setOwnerId(String.valueOf(user.getId()));
 		
 		NoteContents detail = new NoteContents();
 		detail.setCreated(new Date());

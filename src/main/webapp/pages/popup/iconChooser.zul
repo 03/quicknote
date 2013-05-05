@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zk>
+	<window id="iconchooser" title="Icon Choosing"
+		apply="com.wind.quicknote.controllers.IconChooserCtrl" border="normal" closable="true">
+
+		<vbox width="100%" align="stretch">
+			<groupbox mold="3d" style="padding:5px">
+				<caption label="Please select an icon" />
+				<radiogroup id="svrgroup" />
+				<hbox width="250px" spacing="35px">
+					<radio value="1" radiogroup="svrgroup" checked="true" image="/assets/images/filetypes/ft1.gif"/>
+					<radio value="2" radiogroup="svrgroup" image="/assets/images/filetypes/ft2.gif" />
+					<radio value="3" radiogroup="svrgroup" image="/assets/images/filetypes/ft3.gif" />
+					<radio value="4" radiogroup="svrgroup" image="/assets/images/filetypes/ft4.gif" />
+					<radio value="5" radiogroup="svrgroup" image="/assets/images/filetypes/ft5.gif" />
+					<radio value="6" radiogroup="svrgroup" image="/assets/images/filetypes/ft6.gif" />
+				</hbox>
+				<hbox width="250px" spacing="35px">
+					<radio value="7" radiogroup="svrgroup" image="/assets/images/filetypes/ft7.gif" />
+					<radio value="8" radiogroup="svrgroup" image="/assets/images/filetypes/ft8.gif" />
+					<radio value="9" radiogroup="svrgroup" image="/assets/images/filetypes/ft9.gif" />
+					<radio value="10" radiogroup="svrgroup" image="/assets/images/filetypes/ft10.gif" />
+					<radio value="11" radiogroup="svrgroup" image="/assets/images/filetypes/ft11.gif" />
+					<radio value="12" radiogroup="svrgroup" image="/assets/images/filetypes/ft12.gif" />
+				</hbox>
+
+				<div height="5px" />
+
+				<hbox>
+					<button sclass="ctlBtn" id="confirmBtn"
+						label="OK" image="/assets/images/yesSign.jpg" />
+					<button sclass="ctlBtn" onClick="iconchooser.detach()"
+						label="Cancel" image="/assets/images/noSign.jpg" />
+				</hbox>
+				
+			</groupbox>
+		</vbox>
+
+	</window>
+</zk>

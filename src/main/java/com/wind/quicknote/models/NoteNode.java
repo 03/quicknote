@@ -34,7 +34,7 @@ public class NoteNode {
 	private long id;
 
 	@ManyToOne
-	@JoinColumn(name="parentid")
+	@JoinColumn(name="parentId")
 	private NoteNode parent;
 	
 	@OneToMany(cascade = CascadeType.PERSIST, mappedBy = "parent", fetch = FetchType.EAGER)
@@ -45,8 +45,6 @@ public class NoteNode {
 	
 	@Column(name="ownerId")
 	private String ownerId;
-	@Column(name="ownerName")
-	private String ownerName;
 	@Column(name="content")
 	private String content;
 	@Column(name="iconurl")
@@ -88,14 +86,6 @@ public class NoteNode {
 
 	public void setOwnerId(String ownerId) {
 		this.ownerId = ownerId;
-	}
-
-	public String getOwnerName() {
-		return ownerName;
-	}
-
-	public void setOwnerName(String ownerName) {
-		this.ownerName = ownerName;
 	}
 
 	public String getContent() {

@@ -6,7 +6,11 @@ import com.wind.quicknote.models.NoteUser;
 
 public interface NoteUserDAO {
 
-	public List<NoteUser> findAll();
+	List<NoteUser> findAll();
 	
-	public NoteUser findUserByName(String name);
+	NoteUser findUserByName(String name);
+	
+	NoteUser createNewUser(String userName, String password);
+	
+	void initUserRootNoteNode(long userId);
 }

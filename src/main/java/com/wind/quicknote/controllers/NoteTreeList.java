@@ -1,9 +1,14 @@
 package com.wind.quicknote.controllers;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
+import org.zkoss.bind.annotation.BindingParam;
+import org.zkoss.bind.annotation.GlobalCommand;
+import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.IdSpace;
 import org.zkoss.zk.ui.event.DropEvent;
@@ -20,6 +25,10 @@ import org.zkoss.zul.Div;
 import org.zkoss.zul.Hlayout;
 import org.zkoss.zul.Image;
 import org.zkoss.zul.Label;
+import org.zkoss.zul.Menu;
+import org.zkoss.zul.Menuitem;
+import org.zkoss.zul.Menupopup;
+import org.zkoss.zul.Menuseparator;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Tree;
@@ -28,6 +37,7 @@ import org.zkoss.zul.Treeitem;
 import org.zkoss.zul.TreeitemRenderer;
 import org.zkoss.zul.Treerow;
 import org.zkoss.zul.Vlayout;
+import org.zkoss.zul.Window;
 
 import com.wind.quicknote.models.NoteNode;
 import com.wind.quicknote.services.NoteService;
@@ -204,6 +214,9 @@ public class NoteTreeList extends Div implements IdSpace {
 				currentItem = new TopicItem(note);
 				topicTreeModel.getRoot().add(new TopicItemTreeNode(currentItem, null, true));
 				
+				//change currentNode to null;
+				currentItem = null;
+				
 			} else {
 				
 				Messagebox.show("Please select a node.", "Warning", Messagebox.OK, Messagebox.EXCLAMATION);
@@ -216,7 +229,7 @@ public class NoteTreeList extends Div implements IdSpace {
     
     private String getRandomIconURL() {
 		Random randomGenerator = new Random();
-		int num = 1 + randomGenerator.nextInt(9);
+		int num = 1 + randomGenerator.nextInt(12);
 		return "/assets/images/filetypes/ft" + num + ".gif";
 	}
 
@@ -242,6 +255,7 @@ public class NoteTreeList extends Div implements IdSpace {
 						currentItem = null;
 						
 						return;
+						
 					} else {
 						System.out.println("Messagebox.CANCEL selected!");
 						return;
@@ -301,7 +315,7 @@ public class NoteTreeList extends Div implements IdSpace {
  
             Treecell treeCell = new Treecell();
         	Hlayout hlayout = new Hlayout();
-            Image image = new Image(topicItem.getIcon());
+            final Image image = new Image(topicItem.getIcon());
             image.setWidth("20px");
             image.setHeight("20px");
             hlayout.appendChild(image);
@@ -314,6 +328,10 @@ public class NoteTreeList extends Div implements IdSpace {
             
             hlayout.appendChild(label);
             hlayout.appendChild(tbox);
+            
+            Menupopup popup = createMenuPopup(image, label);
+            label.setContext(popup);
+            hlayout.appendChild(popup);
             
             label.addEventListener(Events.ON_DOUBLE_CLICK, new EventListener<Event>() {
                 @Override
@@ -419,9 +437,178 @@ public class NoteTreeList extends Div implements IdSpace {
             });
  
         }
+
+		/**
+         * Add popup menu
+         * 
+         * Add Item Before
+         * Add Item After
+         * Add Child Item
+         * ---------------
+         * Move Item Up | Down | Left | Right
+         * ---------------
+         * Icons...
+         * ---------------
+         * Properties
+         * 
+         */
+		private Menupopup createMenuPopup(final Image image, final Label label) {
+			
+			Menupopup popup = new Menupopup();
+			
+			/*
+			 * Add Items
+			 */
+            Menuitem itemAddAfter = new Menuitem("Add Item After");
+            itemAddAfter.setImage("/assets/images/add.png");
+            itemAddAfter.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+                @Override
+                public void onEvent(Event event) throws Exception {
+
+                	System.out.println(" ");
+                }
+            });
+            popup.appendChild(itemAddAfter);
+            
+            Menuitem itemAddBef = new Menuitem("Add Item Before");
+            itemAddBef.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+                @Override
+                public void onEvent(Event event) throws Exception {
+
+                	System.out.println(" ");
+                }
+            });
+            popup.appendChild(itemAddBef);
+            
+            Menuitem itemAddChild = new Menuitem("Add Child Item");
+            itemAddChild.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+                @Override
+                public void onEvent(Event event) throws Exception {
+
+                	System.out.println(" ");
+                }
+            });
+            popup.appendChild(itemAddChild);
+            
+            // Menuseparator
+			popup.appendChild(new Menuseparator());
+			
+			/*
+			 * Move Items
+			 */
+            Menu moveMenu = new Menu("Move Item ..");
+            moveMenu.setImage("/assets/images/move.png");
+            Menupopup movePopup = new Menupopup();
+            Menuitem itemMoveUp = new Menuitem("Up");
+            itemMoveUp.setImage("/assets/images/arrowUp.png");
+            itemMoveUp.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+                @Override
+                public void onEvent(Event event) throws Exception {
+
+                	System.out.println(" ");
+                }
+            });
+            movePopup.appendChild(itemMoveUp);
+            
+            Menuitem itemMoveDown = new Menuitem("Down");
+            itemMoveDown.setImage("/assets/images/arrowDown.png");
+            itemMoveDown.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+                @Override
+                public void onEvent(Event event) throws Exception {
+
+                	System.out.println(" ");
+                }
+            });
+            movePopup.appendChild(itemMoveDown);
+            
+            Menuitem itemMoveLeft = new Menuitem("Left");
+            itemMoveLeft.setImage("/assets/images/arrowLeft.png");
+            itemMoveLeft.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+                @Override
+                public void onEvent(Event event) throws Exception {
+
+                	System.out.println(" ");
+                }
+            });
+            movePopup.appendChild(itemMoveLeft);
+            
+            Menuitem itemMoveRight = new Menuitem("Right");
+            itemMoveRight.setImage("/assets/images/arrowRight.png");
+            itemMoveRight.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+                @Override
+                public void onEvent(Event event) throws Exception {
+
+                	System.out.println(" ");
+                }
+            });
+            movePopup.appendChild(itemMoveRight);
+            
+            
+            moveMenu.appendChild(movePopup);
+            popup.appendChild(moveMenu);
+            
+            // Menuseparator
+            popup.appendChild(new Menuseparator());
+            
+            /*
+             * Icons
+             * 
+             * http://emrpms.blogspot.com.au/2012/06/mvvm-modal-windowpass-parameter-and.html
+             * 
+             */
+            Menuitem itemChangeIcon = new Menuitem("Change Icon");
+            itemChangeIcon.setImage("/assets/images/changeIcon.png");
+            itemChangeIcon.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+                @Override
+                public void onEvent(Event event) throws Exception {
+
+                	// open new window to choose icon
+                	
+                	Map<String, String> myMap = new HashMap<String, String>();
+                	myMap.put("currentImageSrc", image.getSrc());
+                		
+                	final Window win = (Window) Executions.createComponents(
+							"/pages/popup/iconChooser.zul", null, myMap);
+					win.setMaximizable(true);
+					win.doModal();
+					
+					// selected value
+					/*String newImageSrc = myMap.get("newImageSrc");
+					System.out.println(" -> " + newImageSrc);
+					image.setSrc(newImageSrc);
+					image.invalidate();*/
+					// update database later on
+					// ...
+                }
+            });
+            popup.appendChild(itemChangeIcon);
+            
+            /*
+             * Properties
+             */
+            Menuitem itemProp = new Menuitem("Properties");
+            itemProp.setImage("/assets/images/prop.png");
+            itemProp.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+                @Override
+                public void onEvent(Event event) throws Exception {
+
+                	System.out.println("Properties");
+                }
+            });
+            popup.appendChild(itemProp);
+            
+			return popup;
+		}
         
     }
     
+    
+    @GlobalCommand
+    @NotifyChange({"value1"})
+    public void refreshvalues (@BindingParam("returnvalue1") String str1)
+    {
+        
+    }
  
     public TopicItem getCurrentNodeSelected() {
 		return currentItem;

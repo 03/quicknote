@@ -28,8 +28,8 @@
                 <column width="100px" />
             </columns>
             <rows>
-                <row>User Name : <textbox id="nameTxb" value="didev" c:onFocus="this.select()" /></row>
-                <row>Password : <textbox id="passwordTxb" type="password" value="didev" c:onFocus="this.select()"/></row>
+                <row>User Name : <textbox id="nameTxb" value="zk" c:onFocus="this.select()" /></row>
+                <row>Password : <textbox id="passwordTxb" type="password" value="zk" c:onFocus="this.select()"/></row>
                 <row><cell sclass="loginCtl" colspan="2"><vlayout>
                     <button id="confirmBtn" label="Login" sclass="ctlBtn" />
                     <label id="mesgLbl" />
