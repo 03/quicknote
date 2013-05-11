@@ -6,9 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import org.zkoss.bind.annotation.BindingParam;
-import org.zkoss.bind.annotation.GlobalCommand;
-import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.IdSpace;
 import org.zkoss.zk.ui.event.DropEvent;
@@ -47,6 +44,9 @@ import com.wind.quicknote.views.tree.TopicTreeModel;
 
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public class NoteTreeList extends Div implements IdSpace {
+
+	public static final String TOPIC_NEW_ITEM = "[New Item]";
+	private static final String TOPIC_NEWLY_ADDED_CONTENT = "newly added content...";
 
 	/**
 	 * 
@@ -99,7 +99,6 @@ public class NoteTreeList extends Div implements IdSpace {
 	
 	private TopicItemTreeNode convertToTopicItemTreeNode(NoteNode node) {
 		
-		//TopicItem rootTopic = new TopicItem(root.getId(), root.getName(), root.getContent(), root.getIcon());
 		TopicItem rootTopic = new TopicItem(node);
 
 		if (node.hasChildren()) {
@@ -165,7 +164,7 @@ public class NoteTreeList extends Div implements IdSpace {
         		// if first level node, add same level node
 				
 				// save to database
-				NoteNode note = noteService.addTopic(parentItem.getId(), "[New Item]", "newly added content...", getRandomIconURL());
+				NoteNode note = noteService.addTopic(parentItem.getId(), TOPIC_NEW_ITEM, TOPIC_NEWLY_ADDED_CONTENT, getRandomIconURL());
 				// change currentItem to the newly added
 				currentItem = new TopicItem(note);
 				topicTreeModel.getRoot().add(new TopicItemTreeNode(currentItem, null, true));
@@ -176,7 +175,7 @@ public class NoteTreeList extends Div implements IdSpace {
                 	// if current node has no children , append it as the first child
 					
 	    			// save to database
-	        		NoteNode note = noteService.addTopic(selectedItem.getId(), "[New Item]", "newly added content...", getRandomIconURL());
+	        		NoteNode note = noteService.addTopic(selectedItem.getId(), TOPIC_NEW_ITEM, TOPIC_NEWLY_ADDED_CONTENT, getRandomIconURL());
 	        		
 					// change currentItem to the newly added
 	    			currentItem = new TopicItem(note);
@@ -188,7 +187,7 @@ public class NoteTreeList extends Div implements IdSpace {
                 	// if current node has children, add it as the last child
                 	
         			// save to database
-            		NoteNode note = noteService.addTopic(parentItem.getId(), "[New Item]", "newly added content...", getRandomIconURL());
+            		NoteNode note = noteService.addTopic(parentItem.getId(), TOPIC_NEW_ITEM, TOPIC_NEWLY_ADDED_CONTENT, getRandomIconURL());
             		
                 	// change currentItem to the newly added
         			currentItem = new TopicItem(note);
@@ -209,7 +208,7 @@ public class NoteTreeList extends Div implements IdSpace {
 				// add new node
 				
 				// save to database
-				NoteNode note = noteService.addTopic(topicTreeModel.getRoot().getData().getId(), "[New Item]", "newly added content :)", getRandomIconURL());
+				NoteNode note = noteService.addTopic(topicTreeModel.getRoot().getData().getId(), TOPIC_NEW_ITEM, TOPIC_NEWLY_ADDED_CONTENT, getRandomIconURL());
 				// change currentItem to the newly added
 				currentItem = new TopicItem(note);
 				topicTreeModel.getRoot().add(new TopicItemTreeNode(currentItem, null, true));
@@ -329,7 +328,7 @@ public class NoteTreeList extends Div implements IdSpace {
             hlayout.appendChild(label);
             hlayout.appendChild(tbox);
             
-            Menupopup popup = createMenuPopup(image, label);
+            Menupopup popup = createMenuPopup(topicItem, image, label);
             label.setContext(popup);
             hlayout.appendChild(popup);
             
@@ -373,8 +372,12 @@ public class NoteTreeList extends Div implements IdSpace {
                 public void onEvent(Event event) throws Exception {
                     TopicItemTreeNode clickedNodeValue = (TopicItemTreeNode) ((Treeitem) event.getTarget().getParent()).getValue();
                     
-                    currentItem = (TopicItem) clickedNodeValue.getData();
-                    Events.postEvent(new TopicSelectEvent());
+                    TopicItem selectedItem = (TopicItem) clickedNodeValue.getData();
+                    if(currentItem != selectedItem) {
+                    	currentItem = selectedItem;
+                        Events.postEvent(new TopicSelectEvent());
+                    }
+                    
                 }
             });
             
@@ -450,9 +453,10 @@ public class NoteTreeList extends Div implements IdSpace {
          * Icons...
          * ---------------
          * Properties
+		 * @param topicItem 
          * 
          */
-		private Menupopup createMenuPopup(final Image image, final Label label) {
+		private Menupopup createMenuPopup(final TopicItem topicItem, final Image image, final Label label) {
 			
 			Menupopup popup = new Menupopup();
 			
@@ -563,22 +567,14 @@ public class NoteTreeList extends Div implements IdSpace {
                 public void onEvent(Event event) throws Exception {
 
                 	// open new window to choose icon
+                	Map<String, Object> myMap = new HashMap<String, Object>();
+                	myMap.put("topicItem", topicItem);
+                	myMap.put("image", image);
                 	
-                	Map<String, String> myMap = new HashMap<String, String>();
-                	myMap.put("currentImageSrc", image.getSrc());
-                		
                 	final Window win = (Window) Executions.createComponents(
 							"/pages/popup/iconChooser.zul", null, myMap);
 					win.setMaximizable(true);
 					win.doModal();
-					
-					// selected value
-					/*String newImageSrc = myMap.get("newImageSrc");
-					System.out.println(" -> " + newImageSrc);
-					image.setSrc(newImageSrc);
-					image.invalidate();*/
-					// update database later on
-					// ...
                 }
             });
             popup.appendChild(itemChangeIcon);
@@ -602,14 +598,6 @@ public class NoteTreeList extends Div implements IdSpace {
         
     }
     
-    
-    @GlobalCommand
-    @NotifyChange({"value1"})
-    public void refreshvalues (@BindingParam("returnvalue1") String str1)
-    {
-        
-    }
- 
     public TopicItem getCurrentNodeSelected() {
 		return currentItem;
 	}

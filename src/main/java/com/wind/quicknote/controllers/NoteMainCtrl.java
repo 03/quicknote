@@ -4,7 +4,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.zkforge.ckez.CKeditor;
-import org.zkoss.bind.annotation.GlobalCommand;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.select.SelectorComposer;
@@ -13,8 +12,11 @@ import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zul.Label;
+import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Window;
 
+import com.wind.quicknote.models.NoteNode;
 import com.wind.quicknote.models.NoteUser;
 import com.wind.quicknote.services.NoteService;
 import com.wind.quicknote.systems.UserCredentialManager;
@@ -89,29 +91,38 @@ public class NoteMainCtrl extends SelectorComposer<Window> {
 		// Events.postEvent(this, new TopicSelectEvent());
 		noteService.updateTopicText(id, text);
 	}
-	
+
+	/**
+	 * show content when select an item in tree
+	 */
 	@Listen("onTopicSelect=#notetreeList")
 	public void showTopicContent(Event fe) {
 
 		if (!(fe.getTarget() instanceof NoteTreeList)) {
 			return;
 		}
-		
+
 		NoteTreeList item = (NoteTreeList) fe.getTarget();
-		
+
 		currentNode = item.getCurrentNodeSelected();
 		String text = noteService.findTopicText(currentNode.getId());
-       	editor.setValue(text);
-       	//editor.setValue(currentNode.getContent());
-		//BindUtils.postGlobalCommand(null, null, "updateEditor", null);
+		editor.setValue(text);
 	}
 	
-	@GlobalCommand
-	//@NotifyChange("topicsTree")
-	public void updateEditor() {
-		//no post processing to be done
+	/**
+	 * show content when select an item in list
+	 */
+	@Listen("onTopicItemSelect=#topicList")
+	public void showTopicItemContent(Event fe) {
+
+		if (!(fe.getTarget() instanceof Listbox)) {
+			return;
+		}
+		
+		Listitem item = ((Listbox) fe.getTarget()).getSelectedItem();
+		String text = noteService.findTopicText(((NoteNode)item.getValue()).getId());
+		editor.setValue(text);
 	}
-	
 	
 }
 

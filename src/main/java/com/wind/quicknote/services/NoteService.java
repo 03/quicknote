@@ -59,8 +59,16 @@ public class NoteService {
 		return noteNodeDAO.findRootNode();
 	}
 	
+	public NoteNode findRootTopicByUser(long userId) {
+		return noteNodeDAO.findRootNodeByUser(userId);
+	}
+	
 	public List<NoteUser> findAllUsers() {
 		return noteUserDAO.findAll();
+	}
+	
+	public void updateTopicIcon(long id, String iconSrc) {
+		noteNodeDAO.updateTopicIcon(id, iconSrc);
 	}
 	
 	public void updateTopicText(long id, String text) {

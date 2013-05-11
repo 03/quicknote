@@ -12,9 +12,13 @@ import com.wind.quicknote.services.NoteService;
 
 public class NoteServiceTest {
 	
+	private static NoteService service = null;
+	
 	@BeforeClass
 	public static void beforeClass() {
 		System.out.println("beforeClass");
+		ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
+		service = (NoteService)ctx.getBean("noteService");
 	}
 	
 	@AfterClass
@@ -25,20 +29,21 @@ public class NoteServiceTest {
 	@Test
 	public void testFindAllTopics() {
 		
-		ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
-		NoteService service = (NoteService)ctx.getBean("noteService");
 		List<NoteNode> items = service.findAllTopics();
 		System.out.println(items.size());
 	}
 	
 	@Test
-	public void testFindRoot() {
+	public void testFindRootByUser() {
 		
-		ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
-		NoteService service = (NoteService)ctx.getBean("noteService");
-		
-		NoteNode root = service.findRootTopic();
+		NoteNode root = service.findRootTopicByUser(1L);
 		System.out.println("root.name---->"+root.getName());
 	}
 
+	@Test
+	public void testUpdateTopicName() {
+		
+		service.updateTopicName(3, "abc");
+	}
+	
 }

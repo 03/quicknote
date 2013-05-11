@@ -20,10 +20,14 @@ public interface NoteNodeDAO {
 	
 	void updateTopicName(long id, String name);
 
+	void updateTopicIcon(long id, String iconSrc);
+	
 	void changeParentId(long id, long pid);
 
 	String findTopicText(long id);
 
 	List<NoteNode> findChildTopics(long id);
+
+	NoteNode findRootNodeByUser(long userId);
 
 }

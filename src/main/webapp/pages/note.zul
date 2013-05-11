@@ -37,8 +37,7 @@
 	                    	<toolbar id="tb" height="18px" align="end"
 	                    		sclass="vista">
 	                    		<label>Welcome</label>
-	                    		<label id="loginUsrName"
-	                    			onClick='alert("time")'>
+	                    		<label id="loginUsrName">
 	                    		</label>
 	                    		<toolbarbutton
 	                    			image="/assets/images/male.png"
@@ -62,7 +61,6 @@
 	    </north>
 	    <center border="none">
 	        <borderlayout>
-	        	<south height="5%"  style="background:#336666"></south>
 	            <west maxsize="300" size="18%" border="0" splittable="true" collapsible="true" margins="0,5,0,0">
 	                <vlayout spacing="1">
 	                    <panel width="100%" border="normal" title="Topics">
@@ -75,28 +73,36 @@
 	            <center border="none" autoscroll="true" vflex="true">
 	            	<div id="TopicsDiv"
 	            		apply="com.wind.quicknote.controllers.NoteViewCtrl">
-	            		<grid id="topicsGrid" height="330px" mold="paging" pageSize="5" vflex="1" pagingPosition="bottom">
+	            		<listbox id="topicList" height="330px" mold="paging" pageSize="5" 
+	            		vflex="true" pagingPosition="bottom">
 	            			<auxhead>
 					            <auxheader colspan="4" label="Children of current node" />
 					        </auxhead>
-	            			<columns sizable="true">
-	            				<column
+	            			<listhead sizable="true">
+	            				<listheader
 	            					image="/assets/images/Bullet.png"
 	            					align="center" width="100px" />
-	            				<column label="Name" width="80px" />
-	            				<column label="Preview" width="110px" />
-	            				<column label="Created Date" width="100px" />
-	            			</columns>
+	            				<listheader label="Name" width="80px" />
+	            				<listheader label="Preview" width="110px" />
+	            				<listheader label="Created Date" width="100px" />
+	            			</listhead>
 	            			<template name="model">
-	            				<row value="${each}">
-	            					<image height="50px" width="50px"
-	            						src="${each.icon}" />
-	            					<label value="${each.name}" />
-	            					<label value="${each.content}" />
-	            					<label value="${each.created}" />
-	            				</row>
+	            				<listitem value="${each}">
+		            				<listcell>
+		            					<image height="50px" width="50px" src="${each.icon}" />
+		            				</listcell>
+		            				<listcell>
+		            					<label value="${each.name}" />
+		            				</listcell>
+		            				<listcell>
+		            					<label value="${each.content}" />
+		            				</listcell>
+		            				<listcell>
+		            					<label value="${each.created}" />
+		            				</listcell>
+	            				</listitem>
 	            			</template>
-	            		</grid>
+	            		</listbox>
 	            	</div>
 	            </center>
 	            <!-- Editor Area -->
@@ -110,6 +116,12 @@
 						</ckeditor>
 					</div>
 	            </east>
+	            <south visible="false">
+	            	<div apply="org.zkoss.bind.BindComposer"
+				        viewModel="@id('e') @init('com.wind.quicknote.controllers.NoteMainVM')">
+				        <button label="Model Window" onClick="@command('showModelWin')" />
+				    </div>
+	            </south>
 	        </borderlayout>
 	    </center>
 	</borderlayout>

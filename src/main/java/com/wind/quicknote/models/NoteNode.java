@@ -20,8 +20,11 @@ import javax.persistence.Table;
 
 /**
  * Id, Name, IconUrl, Status, ParentId, OwnerId, OwnerName, Content, Created, Updated
+ * 
  * http://viralpatel.net/blogs/hibernate-one-to-one-mapping-tutorial-using-annotation/
  * http://javadigest.wordpress.com/2012/01/27/using-the-sequence-generator-in-hibernate/
+ * http://www.mkyong.com/hibernate/hibernate-fetching-strategies-examples/
+ * 
  */
 @Entity
 @Table(name = "notenodes")
@@ -37,7 +40,9 @@ public class NoteNode {
 	@JoinColumn(name="parentId")
 	private NoteNode parent;
 	
-	@OneToMany(cascade = CascadeType.PERSIST, mappedBy = "parent", fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.PERSIST, mappedBy = "parent", fetch = FetchType.LAZY)
+	//@OneToMany(cascade = CascadeType.PERSIST, mappedBy = "parent", fetch = FetchType.EAGER)
+	//@Fetch(FetchMode.JOIN)
 	private List<NoteNode> children = new ArrayList<NoteNode>();
 	
 	@Column(name="name")
@@ -57,7 +62,7 @@ public class NoteNode {
 	@Column(name="updated")
 	private Date updated;
 	
-	@OneToOne(cascade = CascadeType.ALL, mappedBy = "note", fetch = FetchType.LAZY)
+	@OneToOne(cascade = CascadeType.ALL, mappedBy = "note", fetch = FetchType.LAZY, optional = true)
 	private NoteContents details;
 	
 	public NoteNode() {
@@ -145,7 +150,7 @@ public class NoteNode {
 	}
 	
 	public boolean hasChildren() {
-	
+		
 		if (children != null && children.size() > 0)
 			return true;
 		

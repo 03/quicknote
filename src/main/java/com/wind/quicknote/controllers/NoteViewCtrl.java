@@ -3,14 +3,16 @@ package com.wind.quicknote.controllers;
 import java.util.List;
 
 import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zul.Div;
-import org.zkoss.zul.Grid;
 import org.zkoss.zul.ListModelList;
+import org.zkoss.zul.Listbox;
 
 import com.wind.quicknote.models.NoteNode;
 import com.wind.quicknote.services.NoteService;
@@ -35,7 +37,7 @@ public class NoteViewCtrl extends SelectorComposer<Div> {
 	private static final long serialVersionUID = -6048147508374332396L;
 
 	@Wire
-	private Grid topicsGrid;
+	private Listbox topicList;
 	
 	@WireVariable
 	private NoteService noteService;
@@ -46,7 +48,17 @@ public class NoteViewCtrl extends SelectorComposer<Div> {
 
 		List<NoteNode> items = noteService.findAllTopics();
 		ListModelList<NoteNode> prodModel = new ListModelList<NoteNode>(items);
-		topicsGrid.setModel(prodModel);
+		topicList.setModel(prodModel);
+		
+		topicList.addEventListener(Events.ON_SELECT, new EventListener<Event>() {
+            @Override
+            public void onEvent(Event event) throws Exception {
+
+            	// send event to show content in editor
+            	Events.postEvent(new TopicItemSelectEvent());
+            }
+        });
+		
 	}
 	
 	@Listen("onTopicSelect=#notetreeList")
@@ -61,10 +73,19 @@ public class NoteViewCtrl extends SelectorComposer<Div> {
 		TopicItem currentNode = item.getCurrentNodeSelected();
 		List<NoteNode> items = noteService.findChildTopics(currentNode.getId());
 		ListModelList<NoteNode> prodModel = new ListModelList<NoteNode>(items);
-		topicsGrid.setModel(prodModel);
-		
+		topicList.setModel(prodModel);
 		
        	//editor.setValue(currentNode.getContent());
-		//BindUtils.postGlobalCommand(null, null, "updateEditor", null);
 	}
+	
+	// Customise Event
+	public class TopicItemSelectEvent extends Event {
+
+		private static final long serialVersionUID = 7547668136120826171L;
+
+		public TopicItemSelectEvent() {
+			super("onTopicItemSelect", topicList);
+		}
+	}
+	 	
 }

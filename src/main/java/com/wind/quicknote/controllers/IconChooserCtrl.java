@@ -3,6 +3,7 @@ package com.wind.quicknote.controllers;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.zkoss.bind.BindUtils;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -30,7 +31,6 @@ public class IconChooserCtrl extends GenericForwardComposer<Window> {
 	@Wire
 	private Button confirmBtn;
 	
-	Map<String, String> myParams = new HashMap<String, String>();
 	Window window;
 	
 	@SuppressWarnings("unchecked")
@@ -39,6 +39,7 @@ public class IconChooserCtrl extends GenericForwardComposer<Window> {
 		super.doAfterCompose(win);
 		
 		window = win;
+		Map<String, String> myParams = new HashMap<String, String>();
 		myParams = (Map<String, String>) Executions.getCurrent().getArg();
 		String currentImageSrc = myParams.get("currentImageSrc");
 		String numStr = currentImageSrc.replace("/assets/images/filetypes/ft", "").replace(".gif", "");
@@ -50,7 +51,10 @@ public class IconChooserCtrl extends GenericForwardComposer<Window> {
             public void onEvent(Event event) throws Exception {
 
             	String value = svrgroup.getSelectedItem().getValue();
-        		myParams.put("newImageSrc", "/assets/images/filetypes/ft" + value + ".gif");
+            	Map<String, Object> outParams = new HashMap<String, Object>();
+            	outParams.put("newImageSrc", "/assets/images/filetypes/ft" + value + ".gif");
+        		
+        		BindUtils.postGlobalCommand(null, null, "changeTopicIconCommand", outParams);
         		
         		window.detach();
             }

@@ -1,5 +1,6 @@
 package com.wind.quicknote.services.daos.impls;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -42,11 +43,18 @@ public class NoteNodeDAOImpl extends CommonDAO implements NoteNodeDAO {
 	public List<NoteNode> findChildTopics(long id) {
 		
 		NoteNode entity = (NoteNode) getHibernateTemplate().get(NoteNode.class, id);
-        return entity.getChildren();
+		if(entity.hasChildren()) {
+			List<NoteNode> list = entity.getChildren();
+	        return list;
+		}
+		
+		return new ArrayList<NoteNode>();
+		
 	}
 
 
 	public void remove(long id) {
+		
 		NoteNode node = getHibernateTemplate().get(NoteNode.class, id);
 		if (node.hasChildren()) {
 			for (NoteNode child : node.getChildren()) {
@@ -63,14 +71,14 @@ public class NoteNodeDAOImpl extends CommonDAO implements NoteNodeDAO {
 		NoteUser user = UserCredentialManager.getIntance().getUser();
 		long userId = user.getId();
 		
-        List<NoteNode> list =  getHibernateTemplate().find("from NoteNode where name='ROOT' and ownerId=? and parent = null", String.valueOf(user.getId()));
+        List<NoteNode> list =  getHibernateTemplate().find("from NoteNode where name='ROOT' and ownerId=? and parent = null", String.valueOf(userId));
         
         if(list.size() == 0) {
         	// initUserRootNoteNode 
         	NoteNode rootNode = new NoteNode();
             rootNode.setContent("ROOT(invisible) of user["+String.valueOf(userId)+"]");
             rootNode.setName("ROOT");
-    		rootNode.setOwnerId(String.valueOf(user.getId()));
+    		rootNode.setOwnerId(String.valueOf(userId));
     		rootNode.setParent(null);
         	rootNode.setCreated(new Date());
     		getHibernateTemplate().save(rootNode);
@@ -78,20 +86,76 @@ public class NoteNodeDAOImpl extends CommonDAO implements NoteNodeDAO {
     		
         } else {
         	
-    		return (NoteNode) list.get(0);
+        	NoteNode root = (NoteNode) list.get(0);
+        	
+        	// set children manually
+        	findChildNodes(root);
+    		return root;
         }
 		
-		// return (NoteNode) getHibernateTemplate().get(NoteNode.class, Long.parseLong("1"));
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public NoteNode findRootNodeByUser(long userId) {
+		
+        List<NoteNode> list =  getHibernateTemplate().find("from NoteNode where name='ROOT' and ownerId=? and parent = null", String.valueOf(userId));
+        //List<NoteNode> list =  getHibernateTemplate().find("select n from NoteNode n left outer join fetch n.parent p where n.name='ROOT' and n.ownerId=? and n.parent = null", String.valueOf(userId));
+        
+        if(list.size() == 0) {
+        	// initUserRootNoteNode 
+        	NoteNode rootNode = new NoteNode();
+            rootNode.setContent("ROOT(invisible) of user["+String.valueOf(userId)+"]");
+            rootNode.setName("ROOT");
+    		rootNode.setOwnerId(String.valueOf(userId));
+    		rootNode.setParent(null);
+        	rootNode.setCreated(new Date());
+    		getHibernateTemplate().save(rootNode);
+    		return rootNode;
+    		
+        } else {
+        	
+        	NoteNode root = (NoteNode) list.get(0);
+        	
+        	// set children manually
+        	findChildNodes(root);
+    		return root;
+        }
+		
+	}
+	
+	/*
+	 * get root node, get root's all cascaded children
+	 */
+	public void findChildNodes(NoteNode parent) {
+		
+		/*Session session = getHibernateTemplate().getSessionFactory().getCurrentSession();
+		Criteria crit = session.createCriteria(NoteNode.class);
+		crit.setFetchMode("children", FetchMode.JOIN);
+		crit.add(Restrictions.eq("id", 1L));
+		NoteNode myobj = (NoteNode) crit.uniqueResult();*/
+		
+		/*
+		 * Set as lazy load, fetch all cascaded children manually
+		 */
+		if (parent.hasChildren()) {
+			for (NoteNode child : parent.getChildren()) {
+				findChildNodes(child);
+			}
+		}
+		
 	}
 	
 	@Override
 	public String findTopicText(long id) {
 
-		NoteNode entity = (NoteNode) getHibernateTemplate().get(NoteNode.class, id);
-		NoteContents details = entity.getDetails();
-		if(details != null) {
-			return details.getText();
+		@SuppressWarnings("unchecked")
+		List<NoteContents> list =  getHibernateTemplate().find("from NoteContents node where noteId=?", id);
+        
+		if(list.size() > 0) {
+			return list.get(0).getText();
 		}
+
 		return "";
 	}
 
@@ -112,6 +176,15 @@ public class NoteNodeDAOImpl extends CommonDAO implements NoteNodeDAO {
 		entity.setName(name);
 		entity.setUpdated(new Date());
 		getHibernateTemplate().merge(entity);
+	}
+
+	@Override
+	public void updateTopicIcon(long id, String iconSrc) {
+		NoteNode entity = (NoteNode) getHibernateTemplate().get(NoteNode.class, id);
+		entity.setIcon(iconSrc);
+		entity.setUpdated(new Date());
+		getHibernateTemplate().merge(entity);
+		
 	}
 
 	@Override
