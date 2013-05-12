@@ -605,7 +605,7 @@ public class NoteTreeList extends Div implements IdSpace {
 	public void setCurrentNodeSelected(TopicItem currentNodeSelected) {
 		this.currentItem = currentNodeSelected;
 	}
-
+	
 	// Customise Event
  	public static final String ON_TOPIC_SELECT = "onTopicSelect";
 

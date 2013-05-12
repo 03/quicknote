@@ -20,7 +20,6 @@ import com.wind.quicknote.models.NoteNode;
 import com.wind.quicknote.models.NoteUser;
 import com.wind.quicknote.services.NoteService;
 import com.wind.quicknote.systems.UserCredentialManager;
-import com.wind.quicknote.views.tree.TopicItem;
 
 
 /**
@@ -32,7 +31,7 @@ public class NoteMainCtrl extends SelectorComposer<Window> {
 
 	private static final long serialVersionUID = 5730426085235946339L;
 	
-	private TopicItem currentNode = null;
+	private long currentNodeId = 0;
 	
 	@WireVariable
 	private NoteService noteService;
@@ -85,11 +84,8 @@ public class NoteMainCtrl extends SelectorComposer<Window> {
 	
 	@Listen("onClick=#btnsave")
 	public void updateContent() {
-		long id = currentNode.getId();
 		String text = editor.getValue();
-		
-		// Events.postEvent(this, new TopicSelectEvent());
-		noteService.updateTopicText(id, text);
+		noteService.updateTopicText(currentNodeId, text);
 	}
 
 	/**
@@ -103,9 +99,8 @@ public class NoteMainCtrl extends SelectorComposer<Window> {
 		}
 
 		NoteTreeList item = (NoteTreeList) fe.getTarget();
-
-		currentNode = item.getCurrentNodeSelected();
-		String text = noteService.findTopicText(currentNode.getId());
+		currentNodeId = item.getCurrentNodeSelected().getId();
+		String text = noteService.findTopicText(currentNodeId);
 		editor.setValue(text);
 	}
 	
@@ -120,7 +115,8 @@ public class NoteMainCtrl extends SelectorComposer<Window> {
 		}
 		
 		Listitem item = ((Listbox) fe.getTarget()).getSelectedItem();
-		String text = noteService.findTopicText(((NoteNode)item.getValue()).getId());
+		currentNodeId = ((NoteNode)item.getValue()).getId();
+		String text = noteService.findTopicText(currentNodeId);
 		editor.setValue(text);
 	}
 	
