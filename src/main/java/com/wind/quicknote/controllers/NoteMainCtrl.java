@@ -100,8 +100,7 @@ public class NoteMainCtrl extends SelectorComposer<Window> {
 
 		NoteTreeList item = (NoteTreeList) fe.getTarget();
 		currentNodeId = item.getCurrentNodeSelected().getId();
-		String text = noteService.findTopicText(currentNodeId);
-		editor.setValue(text);
+		editor.setValue(item.getCurrentNodeSelected().getText());
 	}
 	
 	/**
@@ -115,9 +114,10 @@ public class NoteMainCtrl extends SelectorComposer<Window> {
 		}
 		
 		Listitem item = ((Listbox) fe.getTarget()).getSelectedItem();
-		currentNodeId = ((NoteNode)item.getValue()).getId();
-		String text = noteService.findTopicText(currentNodeId);
-		editor.setValue(text);
+		
+		NoteNode selectedNode = (NoteNode) item.getValue();
+		currentNodeId = selectedNode.getId();
+		editor.setValue(selectedNode.getText());
 	}
 	
 }

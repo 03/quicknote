@@ -2,97 +2,41 @@ package com.wind.quicknote.services;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
+import com.wind.quicknote.daos.NoteNodeDAO;
+import com.wind.quicknote.daos.NoteUserDAO;
 import com.wind.quicknote.models.NoteNode;
 import com.wind.quicknote.models.NoteUser;
-import com.wind.quicknote.services.daos.NoteNodeDAO;
-import com.wind.quicknote.services.daos.NoteUserDAO;
 
-@Component("noteService")
-@Transactional(propagation=Propagation.REQUIRED)
-public class NoteService {
+public interface NoteService {
 	
-	private NoteNodeDAO noteNodeDAO;
-	private NoteUserDAO noteUserDAO;
+	public void init();
 	
-	public void init() {
-		System.out.println("init");
-	}
+	public void destroy();
 	
-	public void destroy() {
-		System.out.println("destroy");
-	}
-	
-	public NoteNodeDAO getNoteNodeDAO() {
-		return noteNodeDAO;
-	}
+	public NoteNodeDAO getNoteNodeDAO();
 
-	@Resource(name="noteNode")
-	public void setNoteNodeDAO(NoteNodeDAO noteNodeDAO) {
-		this.noteNodeDAO = noteNodeDAO;
-	}
+	public NoteUserDAO getNoteUserDAO();
 
-	public NoteUserDAO getNoteUserDAO() {
-		return noteUserDAO;
-	}
-
-	@Resource(name="noteUser")
-	public void setNoteUserDAO(NoteUserDAO noteUserDAO) {
-		this.noteUserDAO = noteUserDAO;
-	}
-
-	@Transactional
-	public List<NoteNode> findAllTopics() {
-		return noteNodeDAO.findAll();
-	}
+	public List<NoteNode> findAllTopics();
 	
-	public List<NoteNode> findChildTopics(long id) {
-		return noteNodeDAO.findChildTopics(id);
-	}
+	public List<NoteNode> findChildTopics(long id);
 	
-	public NoteNode findRootTopic() {
-		return noteNodeDAO.findRootNode();
-	}
+	public NoteNode findRootTopic();
 	
-	public NoteNode findRootTopicByUser(long userId) {
-		return noteNodeDAO.findRootNodeByUser(userId);
-	}
+	public NoteNode findRootTopicByUser(long userId);
 	
-	public List<NoteUser> findAllUsers() {
-		return noteUserDAO.findAll();
-	}
+	public List<NoteUser> findAllUsers();
 	
-	public void updateTopicIcon(long id, String iconSrc) {
-		noteNodeDAO.updateTopicIcon(id, iconSrc);
-	}
+	public void updateTopicIcon(long id, String iconSrc);
 	
-	public void updateTopicText(long id, String text) {
-		noteNodeDAO.updateTopicText(id, text);
-	}
+	public void updateTopicText(long id, String text);
 	
-	public void updateTopicName(long id, String name) {
-		noteNodeDAO.updateTopicName(id, name);
-	}
+	public void updateTopicName(long id, String name);
 	
-	public void removeTopic(long id) {
-		noteNodeDAO.remove(id);
-	}
+	public void removeTopic(long id);
 	
-	public NoteNode addTopic(long pid, String name, String content, String picUrl) {
-		return noteNodeDAO.addChild(pid, name, content, picUrl);
-	}
+	public NoteNode addTopic(long pid, String name, String content, String picUrl);
 	
-	public void changeParentId(long id, long pid) {
-		noteNodeDAO.changeParentId(id, pid);
-	}
-	
-	public String findTopicText(long id) {
-		return noteNodeDAO.findTopicText(id);
-	}
+	public void changeParentId(long id, long pid);
 	
 }

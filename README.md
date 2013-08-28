@@ -10,3 +10,7 @@ v0.3, 11/05/2013
 Fixed database query to fetch topic tree
 Changed a few icons
 Added icon chooser for topic to context menu
+
+v0.4, 28/08/2013
+Remove NoteContent to simplify data model
+Added unit-test

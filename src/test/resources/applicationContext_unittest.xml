@@ -28,30 +28,9 @@
 		<property name="password" value="${jdbc.password}" />
 	</bean>
 	
-
-	<!-- Heroku settings -->
-	<!-- <bean class="java.net.URI" id="dbUrl">
-		<constructor-arg value="#{systemEnvironment['DATABASE_URL']}" />
-	</bean>
-
-	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
-		<property name="url" value="#{ 'jdbc:postgresql://' + @dbUrl.getHost() + ':' + @dbUrl.getPort() + @dbUrl.getPath() }" />
-		<property name="username" value="#{ @dbUrl.getUserInfo().split(':')[0] }" />
-		<property name="password" value="#{ @dbUrl.getUserInfo().split(':')[1] }" />
-	</bean> -->
-	<!-- Heroku settings end -->
-	
 	<bean id="sessionFactory"
 		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
-		<!-- 
-		<property name="annotatedClasses">
-			<list>
-				<value>com.wind.quicknote.models.NoteNode</value>
-				<value>com.wind.quicknote.models.NoteUser</value>
-			</list>
-		</property>
-		 -->
 		 <property name="packagesToScan">
 			<list>
 				<value>com.wind.quicknote.models</value>
@@ -65,6 +44,8 @@
                 <prop key="format_sql">${hibernate.format_sql}</prop>
                 <prop key="hibernate.connection.autocommint">${hibernate.connection.autocommint}</prop>
                 <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
+                <!-- default is import.sql -->
+                <prop key="hibernate.hbm2ddl.import_files">import_unittest.sql</prop>
 			</props>
 		</property>
 	</bean>

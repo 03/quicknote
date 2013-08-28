@@ -381,6 +381,26 @@ public class NoteTreeList extends Div implements IdSpace {
                 }
             });
             
+            dataRow.addEventListener(Events.ON_OPEN, new EventListener<Event>() {
+                @Override
+                public void onEvent(Event event) throws Exception {
+                    TopicItemTreeNode clickedNodeValue = (TopicItemTreeNode) ((Treeitem) event.getTarget().getParent()).getValue();
+                    
+                    TopicItem selectedItem = (TopicItem) clickedNodeValue.getData();
+                    System.out.println("OPEN: "+selectedItem.getName());
+                }
+            });
+            
+            dataRow.addEventListener(Events.ON_CLOSE, new EventListener<Event>() {
+                @Override
+                public void onEvent(Event event) throws Exception {
+                    TopicItemTreeNode clickedNodeValue = (TopicItemTreeNode) ((Treeitem) event.getTarget().getParent()).getValue();
+                    
+                    TopicItem selectedItem = (TopicItem) clickedNodeValue.getData();
+                    System.out.println("CLOSE: "+selectedItem.getName());
+                }
+            });
+            
             // Both category row and contact row can be item dropped
             dataRow.setDroppable("true");
             dataRow.addEventListener(Events.ON_DROP, new EventListener<Event>() {

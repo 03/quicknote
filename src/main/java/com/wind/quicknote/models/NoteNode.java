@@ -14,9 +14,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
 
 /**
  * Id, Name, IconUrl, Status, ParentId, OwnerId, OwnerName, Content, Created, Updated
@@ -26,6 +28,16 @@ import javax.persistence.Table;
  * http://www.mkyong.com/hibernate/hibernate-fetching-strategies-examples/
  * 
  */
+
+@NamedQueries
+({
+	
+		@NamedQuery(name = "findSimpleNodeById", query = "from NoteNode where id = :Id"),
+
+		@NamedQuery(name = "findSimpleNodeById2", query = "from NoteNode where id = :Id") 
+
+})
+
 @Entity
 @Table(name = "notenodes")
 public class NoteNode {
@@ -50,8 +62,12 @@ public class NoteNode {
 	
 	@Column(name="ownerId")
 	private String ownerId;
-	@Column(name="content")
-	private String content;
+	@Column(name="tag")
+	private String tag;
+	@Column(name="text", length=4000)
+	private String text;
+	@Column(name="attachment")
+	private byte[] attachment;
 	@Column(name="iconurl")
 	private String icon;
 	@Column(name="status")
@@ -61,9 +77,6 @@ public class NoteNode {
 	private Date created;
 	@Column(name="updated")
 	private Date updated;
-	
-	@OneToOne(cascade = CascadeType.ALL, mappedBy = "note", fetch = FetchType.LAZY, optional = true)
-	private NoteContents details;
 	
 	public NoteNode() {
 		super();
@@ -91,14 +104,6 @@ public class NoteNode {
 
 	public void setOwnerId(String ownerId) {
 		this.ownerId = ownerId;
-	}
-
-	public String getContent() {
-		return content;
-	}
-
-	public void setContent(String content) {
-		this.content = content;
 	}
 
 	public String getIcon() {
@@ -157,14 +162,29 @@ public class NoteNode {
 		return false;
 	}
 
-	public NoteContents getDetails() {
-		return details;
+	public byte[] getAttachment() {
+		return attachment;
 	}
 
-	public void setDetails(NoteContents details) {
-		this.details = details;
+	public void setAttachment(byte[] attachment) {
+		this.attachment = attachment;
 	}
-	
+
+	public String getText() {
+		return text;
+	}
+
+	public void setText(String text) {
+		this.text = text;
+	}
+
+	public String getTag() {
+		return tag;
+	}
+
+	public void setTag(String tag) {
+		this.tag = tag;
+	}
 	
 	
 }

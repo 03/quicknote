@@ -34,7 +34,7 @@ public class UserCredentialManager {
 	}
 
 	public synchronized void login(String name, String password) {
-		NoteUser tempUser = noteService.getNoteUserDAO().findUserByName(name);
+		NoteUser tempUser = noteService.getNoteUserDAO().findByName(name);
 		if (tempUser != null && tempUser.getPassword().equals(password)) {
 			user = tempUser;
 		} else {
