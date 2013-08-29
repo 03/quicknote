@@ -95,7 +95,7 @@
 		            					<label value="${each.name}" />
 		            				</listcell>
 		            				<listcell>
-		            					<label value="${each.content}" />
+		            					<label value="${each.tag}" />
 		            				</listcell>
 		            				<listcell>
 		            					<label value="${each.created}" />

@@ -2,11 +2,14 @@ package com.wind.quicknote.models;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -38,20 +41,15 @@ public class NoteUser {
 	@Column(name="status")
 	private String status;
 	
+	@JoinColumn(name="rootid")
+	@OneToOne(cascade = CascadeType.ALL, optional = true)
+	private NoteNode rootnote;
+	
 	@Column(name="created")
 	private Date created;
 	@Column(name="updated")
 	private Date updated;
-	
 
-	public NoteUser(long id, String name, String password, String role) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.password = password;
-		this.role = role;
-	}
-	
 	public NoteUser() {
 		
 	}
@@ -136,4 +134,13 @@ public class NoteUser {
 		this.updated = updated;
 	}
 
+	public NoteNode getRootnote() {
+		return rootnote;
+	}
+
+	public void setRootnote(NoteNode rootnote) {
+		this.rootnote = rootnote;
+	}
+
+	
 }

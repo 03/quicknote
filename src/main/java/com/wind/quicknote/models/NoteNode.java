@@ -21,7 +21,7 @@ import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 
 /**
- * Id, Name, IconUrl, Status, ParentId, OwnerId, OwnerName, Content, Created, Updated
+ * Id, Name, IconUrl, Status, ParentId, Text, Attachment, Created, Updated
  * 
  * http://viralpatel.net/blogs/hibernate-one-to-one-mapping-tutorial-using-annotation/
  * http://javadigest.wordpress.com/2012/01/27/using-the-sequence-generator-in-hibernate/
@@ -34,7 +34,7 @@ import org.hibernate.annotations.NamedQuery;
 	
 		@NamedQuery(name = "findSimpleNodeById", query = "from NoteNode where id = :Id"),
 
-		@NamedQuery(name = "findSimpleNodeById2", query = "from NoteNode where id = :Id") 
+		@NamedQuery(name = "findRootNoteByUser", query = "select user.rootnote from NoteUser user where user.id = :userId") 
 
 })
 
@@ -60,8 +60,6 @@ public class NoteNode {
 	@Column(name="name")
 	private String name;
 	
-	@Column(name="ownerId")
-	private String ownerId;
 	@Column(name="tag")
 	private String tag;
 	@Column(name="text", length=4000)
@@ -96,14 +94,6 @@ public class NoteNode {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public String getOwnerId() {
-		return ownerId;
-	}
-
-	public void setOwnerId(String ownerId) {
-		this.ownerId = ownerId;
 	}
 
 	public String getIcon() {

@@ -40,22 +40,25 @@ public class NoteUserDAOImpl extends CommonDAO implements NoteUserDAO {
 	}
 
 	@Override
-	public NoteUser createUser(String userName, String password) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void initUserRoot(long userId) {
-
+	public NoteUser createUser(String username, String email, String password) {
+		
+		// Create root note
 		NoteNode node = new NoteNode();
-		node.setText("Root(invisible) of user["+String.valueOf(userId)+"]");
+		node.setText("Root(invisible) of user["+username+"]");
 		node.setName("Root");
-		node.setOwnerId(String.valueOf(userId));
 		node.setCreated(new Date());
 		node.setParent(null);
 		
-		getHibernateTemplate().save(node);
+		// Create user
+		NoteUser user = new NoteUser();
+		user.setName(username);
+		user.setEmail(email);
+		user.setPassword(password);
+		user.setCreated(new Date());
+		user.setRootnote(node);
 		
+		getHibernateTemplate().save(user);
+		return user;
 	}
+
 }

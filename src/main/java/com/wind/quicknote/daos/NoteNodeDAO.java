@@ -8,9 +8,11 @@ public interface NoteNodeDAO {
 
 	List<NoteNode> findAll();
 	
-	NoteNode findRoot();
+	NoteNode findRootByUser(long userId);
 
-	List<NoteNode> findAllAvailable();
+	List<NoteNode> findAllAvailableByUser(long userId);
+	
+	NoteNode findById(long id);
 
 	void remove(long id);
 	
@@ -25,7 +27,5 @@ public interface NoteNodeDAO {
 	void changeParent(long id, long pid);
 
 	List<NoteNode> findChildren(long id);
-
-	NoteNode findRootByUser(long userId);
 
 }

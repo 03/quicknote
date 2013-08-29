@@ -21,8 +21,6 @@ public interface NoteService {
 	
 	public List<NoteNode> findChildTopics(long id);
 	
-	public NoteNode findRootTopic();
-	
 	public NoteNode findRootTopicByUser(long userId);
 	
 	public List<NoteUser> findAllUsers();
@@ -35,8 +33,12 @@ public interface NoteService {
 	
 	public void removeTopic(long id);
 	
+	public NoteNode getTopic(long id);
+	
 	public NoteNode addTopic(long pid, String name, String content, String picUrl);
 	
 	public void changeParentId(long id, long pid);
+	
+	public NoteUser addUser(String name, String email, String password);
 	
 }

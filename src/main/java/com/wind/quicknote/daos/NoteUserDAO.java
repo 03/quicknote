@@ -10,7 +10,6 @@ public interface NoteUserDAO {
 	
 	NoteUser findByName(String name);
 	
-	NoteUser createUser(String userName, String password);
+	NoteUser createUser(String username, String email, String password);
 	
-	void initUserRoot(long userId);
 }

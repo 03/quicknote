@@ -37,7 +37,9 @@ import org.zkoss.zul.Vlayout;
 import org.zkoss.zul.Window;
 
 import com.wind.quicknote.models.NoteNode;
+import com.wind.quicknote.models.NoteUser;
 import com.wind.quicknote.services.NoteService;
+import com.wind.quicknote.systems.UserCredentialManager;
 import com.wind.quicknote.views.tree.TopicItem;
 import com.wind.quicknote.views.tree.TopicItemTreeNode;
 import com.wind.quicknote.views.tree.TopicTreeModel;
@@ -87,7 +89,10 @@ public class NoteTreeList extends Div implements IdSpace {
 	 * @param id setFocus
 	 */
 	public void refreshTopicTree() {
-		NoteNode root = noteService.findRootTopic();
+		
+		NoteUser user = UserCredentialManager.getIntance().getUser();
+		
+		NoteNode root = noteService.findRootTopicByUser(user.getId());
 		topicTree.setItemRenderer(new TopicTreeRenderer());
 		topicTreeModel = new TopicTreeModel(convertToTopicItemTreeNode(root));
 		topicTree.setModel(topicTreeModel);

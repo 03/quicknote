@@ -55,10 +55,6 @@ public class NoteServiceImpl implements NoteService {
 		return noteNodeDAO.findChildren(id);
 	}
 	
-	public NoteNode findRootTopic() {
-		return noteNodeDAO.findRoot();
-	}
-	
 	public NoteNode findRootTopicByUser(long userId) {
 		return noteNodeDAO.findRootByUser(userId);
 	}
@@ -89,6 +85,16 @@ public class NoteServiceImpl implements NoteService {
 	
 	public void changeParentId(long id, long pid) {
 		noteNodeDAO.changeParent(id, pid);
+	}
+
+	@Override
+	public NoteUser addUser(String name, String email, String password) {
+		return noteUserDAO.createUser(name, email, password);
+	}
+
+	@Override
+	public NoteNode getTopic(long id) {
+		return noteNodeDAO.findById(id);
 	}
 	
 }
