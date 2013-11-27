@@ -2,8 +2,6 @@ package com.wind.quicknote.services;
 
 import java.util.List;
 
-import com.wind.quicknote.daos.NoteNodeDAO;
-import com.wind.quicknote.daos.NoteUserDAO;
 import com.wind.quicknote.models.NoteNode;
 import com.wind.quicknote.models.NoteUser;
 
@@ -13,10 +11,6 @@ public interface NoteService {
 	
 	public void destroy();
 	
-	public NoteNodeDAO getNoteNodeDAO();
-
-	public NoteUserDAO getNoteUserDAO();
-
 	public List<NoteNode> findAllTopics();
 	
 	public List<NoteNode> findChildTopics(long id);
@@ -40,5 +34,7 @@ public interface NoteService {
 	public void changeParentId(long id, long pid);
 	
 	public NoteUser addUser(String name, String email, String password);
+
+	public NoteUser findUserByName(String name);
 	
 }

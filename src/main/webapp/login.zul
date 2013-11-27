@@ -1,5 +1,6 @@
+<?link rel="shortcut icon" href="http://www.google.com.au/favicon.ico" ?>
 <vlayout xmlns:c="client">
-    <window id="loginWin" title="User Login" width="300px" minimizable="true" 
+    <window id="loginWin" title="Welcome!! ^_^" width="300px" minimizable="true" 
     	border='normal' apply="com.wind.quicknote.controllers.LoginViewCtrl">
         <style>
         div.minimize {
@@ -28,10 +29,10 @@
                 <column width="100px" />
             </columns>
             <rows>
-                <row>User Name : <textbox id="nameTxb" value="zk" c:onFocus="this.select()" /></row>
+                <row>Username : <textbox id="nameTxb" value="zk" c:onFocus="this.select()" /></row>
                 <row>Password : <textbox id="passwordTxb" type="password" value="zk" c:onFocus="this.select()"/></row>
                 <row><cell sclass="loginCtl" colspan="2"><vlayout>
-                    <button id="confirmBtn" label="Login" sclass="ctlBtn" />
+                    <button id="confirmBtn" label="Sign In" sclass="ctlBtn" />
                     <label id="mesgLbl" />
                 </vlayout></cell></row>
             </rows>

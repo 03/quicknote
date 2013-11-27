@@ -9,35 +9,35 @@ import java.util.List;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.wind.quicknote.models.NoteNode;
 import com.wind.quicknote.models.NoteUser;
 
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = { "/applicationContext.xml", 
+								  "/dataAccessContext.xml"})
 public class NoteServiceTest {
 	
-	private static NoteService service = null;
+	
+	@Autowired
+	@Qualifier("noteService")
+	private NoteService service;
 	
 	@BeforeClass
 	public static void beforeClass() {
-		System.out.println("beforeClass starts.");
-		ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext_unittest.xml");
-		service = (NoteService)ctx.getBean("noteService");
+		/*ClassPathXmlApplicationContext ctx = newClassPathXmlApplicationContext("applicationContext_test.xml" );
+        service = (NoteService)ctx.getBean("noteService" );*/
 	}
 	
 	@AfterClass
 	public static void afterClass() {
 		System.out.println("afterClass ends.");
-	}
-
-	@Test
-	public void testGetNoteNodeDAO() {
-		assertNotNull(service.getNoteNodeDAO());
-	}
-
-	@Test
-	public void testGetNoteUserDAO() {
-		assertNotNull(service.getNoteUserDAO());
 	}
 
 	@Test

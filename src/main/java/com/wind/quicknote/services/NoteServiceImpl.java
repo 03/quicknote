@@ -2,22 +2,24 @@ package com.wind.quicknote.services;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Propagation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.wind.quicknote.daos.NoteNodeDAO;
-import com.wind.quicknote.daos.NoteUserDAO;
+import com.wind.quicknote.dao.NoteNodeDAO;
+import com.wind.quicknote.dao.NoteUserDAO;
 import com.wind.quicknote.models.NoteNode;
 import com.wind.quicknote.models.NoteUser;
 
-@Component("noteService")
-@Transactional(propagation=Propagation.REQUIRED)
+@Transactional
+@Service("noteService")
 public class NoteServiceImpl implements NoteService {
 	
+	
+	@Autowired
 	private NoteNodeDAO noteNodeDAO;
+	
+	@Autowired
 	private NoteUserDAO noteUserDAO;
 	
 	public void init() {
@@ -28,25 +30,6 @@ public class NoteServiceImpl implements NoteService {
 		System.out.println("destroy");
 	}
 	
-	public NoteNodeDAO getNoteNodeDAO() {
-		return noteNodeDAO;
-	}
-
-	@Resource(name="noteNode")
-	public void setNoteNodeDAO(NoteNodeDAO noteNodeDAO) {
-		this.noteNodeDAO = noteNodeDAO;
-	}
-
-	public NoteUserDAO getNoteUserDAO() {
-		return noteUserDAO;
-	}
-
-	@Resource(name="noteUser")
-	public void setNoteUserDAO(NoteUserDAO noteUserDAO) {
-		this.noteUserDAO = noteUserDAO;
-	}
-
-	//@Transactional
 	public List<NoteNode> findAllTopics() {
 		return noteNodeDAO.findAll();
 	}
@@ -95,6 +78,11 @@ public class NoteServiceImpl implements NoteService {
 	@Override
 	public NoteNode getTopic(long id) {
 		return noteNodeDAO.findById(id);
+	}
+
+	@Override
+	public NoteUser findUserByName(String name) {
+		return noteUserDAO.findByName(name);
 	}
 	
 }
