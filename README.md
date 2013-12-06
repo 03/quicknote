@@ -20,3 +20,8 @@ Remove ownerId from Note to simplify data model
 Add rootId to User as it's more relevant
 One user can have only one root note (set as 1-to-1 one way relationship)
 
+v0.42, 29/11/2013
+upgrade to Spring 2.3 and HB 4.2.6
+
+v0.43, 06/12/2013
+new Layout, added adding child item

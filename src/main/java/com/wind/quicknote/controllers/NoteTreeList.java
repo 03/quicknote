@@ -1,11 +1,13 @@
 package com.wind.quicknote.controllers;
 
+import static com.wind.quicknote.helpers.QUtils.DIALOG_WARNING;
+
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.IdSpace;
 import org.zkoss.zk.ui.event.DropEvent;
@@ -36,10 +38,7 @@ import org.zkoss.zul.Treerow;
 import org.zkoss.zul.Vlayout;
 import org.zkoss.zul.Window;
 
-import com.wind.quicknote.models.NoteNode;
-import com.wind.quicknote.models.NoteUser;
 import com.wind.quicknote.services.NoteService;
-import com.wind.quicknote.systems.UserCredentialManager;
 import com.wind.quicknote.views.tree.TopicItem;
 import com.wind.quicknote.views.tree.TopicItemTreeNode;
 import com.wind.quicknote.views.tree.TopicTreeModel;
@@ -47,8 +46,7 @@ import com.wind.quicknote.views.tree.TopicTreeModel;
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public class NoteTreeList extends Div implements IdSpace {
 
-	public static final String TOPIC_NEW_ITEM = "[New Item]";
-	private static final String TOPIC_NEWLY_ADDED_CONTENT = "newly added content...";
+	private static Logger log = LoggerFactory.getLogger(NoteTreeList.class);
 
 	/**
 	 * 
@@ -66,11 +64,6 @@ public class NoteTreeList extends Div implements IdSpace {
 	
 	private TopicTreeModel topicTreeModel;
 	
-	/**
-	 * Current Node of Topic
-	 */
-	private TopicItem currentItem = null;
-	
 	public NoteTreeList() {
 		// 1. Render the template
 		Executions.createComponents("/pages/noteTreeList.zul", this, null);
@@ -83,6 +76,14 @@ public class NoteTreeList extends Div implements IdSpace {
 		
 		refreshTopicTree();
 	}
+	
+	// Model
+	public TopicItem getCurrentItem() {
+		Treeitem selectedItem = topicTree.getSelectedItem();
+		if (selectedItem == null || selectedItem.getValue() == null)
+			return null;
+		return ((TopicItemTreeNode) selectedItem.getValue()).getData();
+	}
 
 	/**
 	 * Refresh Tree
@@ -90,41 +91,13 @@ public class NoteTreeList extends Div implements IdSpace {
 	 */
 	public void refreshTopicTree() {
 		
-		NoteUser user = UserCredentialManager.getIntance().getUser();
-		
-		NoteNode root = noteService.findRootTopicByUser(user.getId());
-		topicTree.setItemRenderer(new TopicTreeRenderer());
-		topicTreeModel = new TopicTreeModel(convertToTopicItemTreeNode(root));
-		topicTree.setModel(topicTreeModel);
-		currentItem = null;
-		
 		topicTree.setSizedByContent(true);
+		topicTree.setItemRenderer(new TopicTreeRenderer());
+		topicTreeModel = TopicTreeModel.getInstance();
+		topicTree.setModel(topicTreeModel);
 		// topicTree.invalidate();
 	}
 	
-	private TopicItemTreeNode convertToTopicItemTreeNode(NoteNode node) {
-		
-		TopicItem rootTopic = new TopicItem(node);
-
-		if (node.hasChildren()) {
-			
-			List<NoteNode> notes = node.getChildren();
-			int size = notes.size();
-
-			TopicItemTreeNode[] array = new TopicItemTreeNode[size];
-			for (int i = 0; i < size; i++) {
-				NoteNode child = notes.get(i);
-				array[i] = convertToTopicItemTreeNode(child);
-			}
-
-			return new TopicItemTreeNode(rootTopic, array);
-			
-		} else {
-
-			return new TopicItemTreeNode(rootTopic, null, true);
-		}
-
-	}
 	
 	/**
      * 
@@ -144,16 +117,78 @@ public class NoteTreeList extends Div implements IdSpace {
     	}
     	
     	return null;
-    	
     }
+    
+    private void showWarningDialog() {
+		Messagebox.show("Please select a node.", DIALOG_WARNING, Messagebox.OK, Messagebox.EXCLAMATION);
+	}
 	
-    /**
-     * insertChildItem
-     */
-    @SuppressWarnings("unchecked")
-	@Listen("onClick=#btninsert")
+	@Listen("onClick=#btnInsert")
    	public void insertItem() {
+		
+		log.debug("#insertItem");
+    	TopicItem currentItem = getCurrentItem();
+		if (currentItem != null) {
+
+			// current item
+			Treeitem selectedTreeItem = topicTree.getSelectedItem();
+			TopicItemTreeNode selectedNode = (TopicItemTreeNode) selectedTreeItem.getValue();
+			TopicItemTreeNode parentNode = (TopicItemTreeNode) selectedNode.getParent();
+			
+			Treeitem parentTreeItem = selectedTreeItem.getParentItem();
+			if (parentTreeItem == null) {
+				topicTreeModel.addToRoot();
+        	} else {
+        		topicTreeModel.insertAtLastToNode(parentNode);
+        	}
+            
+		} else {
+
+			if (topicTreeModel.getRoot().getChildCount() == 0) {
+				// add new node
+				topicTreeModel.addToRoot();
+				
+			} else {
+				showWarningDialog();
+			}
+			
+		}
+       	
+   	}
+	
+	@Listen("onClick=#btnInsertChild")
+   	public void insertChildItem() {
+		
+		log.debug("#insertChildItem");
+    	TopicItem currentItem = getCurrentItem();
+		if (currentItem != null) {
+
+			// current item
+			Treeitem selectedTreeItem = topicTree.getSelectedItem();
+			TopicItemTreeNode selectedNode = (TopicItemTreeNode) selectedTreeItem.getValue();
+			topicTreeModel.addToNode(selectedNode);
+            
+		} else {
+
+			if (topicTreeModel.getRoot().getChildCount() == 0) {
+				// add new node
+				topicTreeModel.addToRoot();
+				
+			} else {
+				showWarningDialog();
+			}
+			
+		}
+       	
+   	}
+	
+	/**
+     * smart insert
+     */
+	@Listen("onClick=#btnSmartInsert")
+   	public void smartInsertItem() {
     	
+    	TopicItem currentItem = getCurrentItem();
 		if (currentItem != null) {
 
 			// current item
@@ -162,46 +197,22 @@ public class NoteTreeList extends Div implements IdSpace {
 			TopicItemTreeNode selectedNode = (TopicItemTreeNode) selectedTreeItem.getValue();
 			TopicItem selectedItem = selectedNode.getData();
 			TopicItemTreeNode parentNode = (TopicItemTreeNode) selectedNode.getParent();
-			TopicItem parentItem = parentNode.getData();
 			
 			Treeitem parentTreeItem = selectedTreeItem.getParentItem();
 			if (parentTreeItem == null) {
-        		// if first level node, add same level node
-				
-				// save to database
-				NoteNode note = noteService.addTopic(parentItem.getId(), TOPIC_NEW_ITEM, TOPIC_NEWLY_ADDED_CONTENT, getRandomIconURL());
-				// change currentItem to the newly added
-				currentItem = new TopicItem(note);
-				topicTreeModel.getRoot().add(new TopicItemTreeNode(currentItem, null, true));
+        		// if on top level, add node on same level
+				topicTreeModel.addToRoot();
 				
         	} else {
         		
 				if (selectedItem.isLeaf()) {
                 	// if current node has no children , append it as the first child
-					
-	    			// save to database
-	        		NoteNode note = noteService.addTopic(selectedItem.getId(), TOPIC_NEW_ITEM, TOPIC_NEWLY_ADDED_CONTENT, getRandomIconURL());
-	        		
-					// change currentItem to the newly added
-	    			currentItem = new TopicItem(note);
-                	
-        			// update model
-                    topicTreeModel.add(selectedNode, new DefaultTreeNode[] { new TopicItemTreeNode(currentItem, null, true) });
+                    topicTreeModel.addToNode(selectedNode);
                     
                 } else { 
                 	// if current node has children, add it as the last child
+                	topicTreeModel.insertAtLastToNode(parentNode);
                 	
-        			// save to database
-            		NoteNode note = noteService.addTopic(parentItem.getId(), TOPIC_NEW_ITEM, TOPIC_NEWLY_ADDED_CONTENT, getRandomIconURL());
-            		
-                	// change currentItem to the newly added
-        			currentItem = new TopicItem(note);
-                	
-                	int index = parentTreeItem.getTreechildren().getChildren().indexOf(selectedTreeItem);
-					if (parentTreeItem.getValue() instanceof TopicItemTreeNode) {
-                        topicTreeModel.insert((TopicItemTreeNode)parentTreeItem.getValue(), index, index,
-                                new DefaultTreeNode[] { new TopicItemTreeNode(currentItem, null, true) });
-                	}
                 }
         		
         	}
@@ -211,19 +222,10 @@ public class NoteTreeList extends Div implements IdSpace {
 			int countOfChildren = topicTreeModel.getRoot().getChildCount();
 			if (countOfChildren == 0) {
 				// add new node
-				
-				// save to database
-				NoteNode note = noteService.addTopic(topicTreeModel.getRoot().getData().getId(), TOPIC_NEW_ITEM, TOPIC_NEWLY_ADDED_CONTENT, getRandomIconURL());
-				// change currentItem to the newly added
-				currentItem = new TopicItem(note);
-				topicTreeModel.getRoot().add(new TopicItemTreeNode(currentItem, null, true));
-				
-				//change currentNode to null;
-				currentItem = null;
+				topicTreeModel.addToRoot();
 				
 			} else {
-				
-				Messagebox.show("Please select a node.", "Warning", Messagebox.OK, Messagebox.EXCLAMATION);
+				showWarningDialog();
 			}
 			
 		}
@@ -231,12 +233,6 @@ public class NoteTreeList extends Div implements IdSpace {
    	}
     
     
-    private String getRandomIconURL() {
-		Random randomGenerator = new Random();
-		int num = 1 + randomGenerator.nextInt(12);
-		return "/assets/images/filetypes/ft" + num + ".gif";
-	}
-
 	/**
      * removeItem
      */
@@ -244,24 +240,20 @@ public class NoteTreeList extends Div implements IdSpace {
 	@Listen("onClick=#btnremove")
 	public void removeItem() {
     	
+    	TopicItem currentItem = getCurrentItem();
+    	
 		if (currentItem != null) {
 			
-			Messagebox.show("Are you sure to delete?", "Confirm Deletion", Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION, new EventListener() {
+			Messagebox.show("Delete it?", "Confirm", Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION, new EventListener() {
 
 				public void onEvent(Event event) throws Exception {
 					if (((Integer) event.getData()).intValue() == Messagebox.OK) {
 						DefaultTreeNode<TopicItem> node = (TopicItemTreeNode)topicTree.getSelectedItem().getValue();
 						topicTreeModel.remove(node);
-				        // remove data from database
-						noteService.removeTopic(node.getData().getId());
-						
-						//change currentNode to null;
-						currentItem = null;
-						
 						return;
 						
 					} else {
-						System.out.println("Messagebox.CANCEL selected!");
+						log.debug("Messagebox.CANCEL selected!");
 						return;
 					}	
 				}
@@ -269,7 +261,7 @@ public class NoteTreeList extends Div implements IdSpace {
 			});
 			
 		} else {
-			Messagebox.show("Please select a node.", "Warning", Messagebox.OK, Messagebox.EXCLAMATION);
+			Messagebox.show("No node to delete, try create a new one.", DIALOG_WARNING, Messagebox.OK, Messagebox.EXCLAMATION);
 		}
 	}
     
@@ -279,13 +271,15 @@ public class NoteTreeList extends Div implements IdSpace {
 	@Listen("onClick=#btnname")
 	public void renameItem() {
     	
+		TopicItem currentItem = getCurrentItem();
+		
 		if (currentItem != null) {
 			
 			//Treeitem selectedTreeItem = topicTree.getSelectedItem();
 			//...
 			
 		} else {
-			Messagebox.show("Please select a node.", "Warning", Messagebox.OK, Messagebox.EXCLAMATION);
+			showWarningDialog();
 		}
 	}
     
@@ -295,11 +289,14 @@ public class NoteTreeList extends Div implements IdSpace {
     @Listen("onClick=#btnshow")
 	public void currentItem() {
     	
+    	TopicItem currentItem = getCurrentItem();
+    	
     	if(currentItem != null) {
     		long id = currentItem.getId();
         	Messagebox.show("current topic id["+id+"] name:"+currentItem.getName(), "Information", Messagebox.OK, Messagebox.INFORMATION);
     	} else {
-    		Messagebox.show("Please select a node.", "Warning", Messagebox.OK, Messagebox.EXCLAMATION);
+    		//topicTree.getTreechildren().getFirstChild();
+    		showWarningDialog();
     	}
     	
 	}
@@ -308,7 +305,7 @@ public class NoteTreeList extends Div implements IdSpace {
      * The structure of tree
      */
     private final class TopicTreeRenderer implements TreeitemRenderer<TopicItemTreeNode> {
-        //@Override
+    	
         public void render(final Treeitem treeItem, TopicItemTreeNode treeNode, int index) throws Exception {
         	TopicItemTreeNode ctn = treeNode;
         	TopicItem topicItem = (TopicItem) ctn.getData();
@@ -357,7 +354,7 @@ public class NoteTreeList extends Div implements IdSpace {
                 	String currentValue = tbox.getValue();
                 	if(!previousValue.equals(currentValue)) {
                 		label.setValue(currentValue);
-                		noteService.updateTopicName(currentItem.getId(), tbox.getValue());
+                		noteService.updateTopicName( getCurrentItem().getId(), tbox.getValue());
                 	}
                 	
                 	tbox.setVisible(false);
@@ -375,13 +372,7 @@ public class NoteTreeList extends Div implements IdSpace {
             dataRow.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
                 @Override
                 public void onEvent(Event event) throws Exception {
-                    TopicItemTreeNode clickedNodeValue = (TopicItemTreeNode) ((Treeitem) event.getTarget().getParent()).getValue();
-                    
-                    TopicItem selectedItem = (TopicItem) clickedNodeValue.getData();
-                    if(currentItem != selectedItem) {
-                    	currentItem = selectedItem;
-                        Events.postEvent(new TopicSelectEvent());
-                    }
+                	Events.postEvent(new TopicSelectEvent());
                     
                 }
             });
@@ -392,7 +383,7 @@ public class NoteTreeList extends Div implements IdSpace {
                     TopicItemTreeNode clickedNodeValue = (TopicItemTreeNode) ((Treeitem) event.getTarget().getParent()).getValue();
                     
                     TopicItem selectedItem = (TopicItem) clickedNodeValue.getData();
-                    System.out.println("OPEN: "+selectedItem.getName());
+                    log.debug("OPEN: "+selectedItem.getName());
                 }
             });
             
@@ -402,7 +393,7 @@ public class NoteTreeList extends Div implements IdSpace {
                     TopicItemTreeNode clickedNodeValue = (TopicItemTreeNode) ((Treeitem) event.getTarget().getParent()).getValue();
                     
                     TopicItem selectedItem = (TopicItem) clickedNodeValue.getData();
-                    System.out.println("CLOSE: "+selectedItem.getName());
+                    log.debug("CLOSE: "+selectedItem.getName());
                 }
             });
             
@@ -424,7 +415,7 @@ public class NoteTreeList extends Div implements IdSpace {
                     Treeitem parentItem = treeItem.getParentItem();
                     TopicItemTreeNode currentTreeNode = treeItem.getValue();
                     
-                    topicTreeModel.remove(draggedValue);
+                    //topicTreeModel.remove(draggedValue);
                     
                     if (((TopicItem) (currentTreeNode).getData()).isLeaf()) { 
                     	// if current node has no children, append it as the first child
@@ -489,12 +480,12 @@ public class NoteTreeList extends Div implements IdSpace {
 			 * Add Items
 			 */
             Menuitem itemAddAfter = new Menuitem("Add Item After");
-            itemAddAfter.setImage("/assets/images/add.png");
+            itemAddAfter.setImage("/assets/images/add.jpg");
             itemAddAfter.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
                 @Override
                 public void onEvent(Event event) throws Exception {
 
-                	System.out.println(" ");
+                	log.debug(" ");
                 }
             });
             popup.appendChild(itemAddAfter);
@@ -504,7 +495,7 @@ public class NoteTreeList extends Div implements IdSpace {
                 @Override
                 public void onEvent(Event event) throws Exception {
 
-                	System.out.println(" ");
+                	log.debug(" ");
                 }
             });
             popup.appendChild(itemAddBef);
@@ -514,7 +505,7 @@ public class NoteTreeList extends Div implements IdSpace {
                 @Override
                 public void onEvent(Event event) throws Exception {
 
-                	System.out.println(" ");
+                	log.debug(" ");
                 }
             });
             popup.appendChild(itemAddChild);
@@ -534,7 +525,7 @@ public class NoteTreeList extends Div implements IdSpace {
                 @Override
                 public void onEvent(Event event) throws Exception {
 
-                	System.out.println(" ");
+                	log.debug(" ");
                 }
             });
             movePopup.appendChild(itemMoveUp);
@@ -545,7 +536,7 @@ public class NoteTreeList extends Div implements IdSpace {
                 @Override
                 public void onEvent(Event event) throws Exception {
 
-                	System.out.println(" ");
+                	log.debug(" ");
                 }
             });
             movePopup.appendChild(itemMoveDown);
@@ -556,7 +547,7 @@ public class NoteTreeList extends Div implements IdSpace {
                 @Override
                 public void onEvent(Event event) throws Exception {
 
-                	System.out.println(" ");
+                	log.debug(" ");
                 }
             });
             movePopup.appendChild(itemMoveLeft);
@@ -567,7 +558,7 @@ public class NoteTreeList extends Div implements IdSpace {
                 @Override
                 public void onEvent(Event event) throws Exception {
 
-                	System.out.println(" ");
+                	log.debug(" ");
                 }
             });
             movePopup.appendChild(itemMoveRight);
@@ -613,7 +604,7 @@ public class NoteTreeList extends Div implements IdSpace {
                 @Override
                 public void onEvent(Event event) throws Exception {
 
-                	System.out.println("Properties");
+                	log.debug("Properties");
                 }
             });
             popup.appendChild(itemProp);
@@ -623,14 +614,6 @@ public class NoteTreeList extends Div implements IdSpace {
         
     }
     
-    public TopicItem getCurrentNodeSelected() {
-		return currentItem;
-	}
-
-	public void setCurrentNodeSelected(TopicItem currentNodeSelected) {
-		this.currentItem = currentNodeSelected;
-	}
-	
 	// Customise Event
  	public static final String ON_TOPIC_SELECT = "onTopicSelect";
 

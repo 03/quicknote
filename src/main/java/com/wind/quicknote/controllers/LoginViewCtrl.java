@@ -20,6 +20,8 @@ import com.wind.quicknote.systems.UserCredentialManager;
  */
 public class LoginViewCtrl extends SelectorComposer<Window> {
 
+	public static final String URL_HOME_PAGE = "/pages/note.zul";
+
 	private static final long serialVersionUID = 5730426085235946339L;
 	
 	@Wire
@@ -36,7 +38,7 @@ public class LoginViewCtrl extends SelectorComposer<Window> {
 		super.doAfterCompose(comp);
 		loginWin.doHighlighted();
 		if (UserCredentialManager.getIntance().isAuthenticated()) {
-			Executions.getCurrent().sendRedirect("/pages/note.zul");
+			Executions.getCurrent().sendRedirect(URL_HOME_PAGE);
 		}
 		nameTxb.setFocus(true);
 
@@ -61,7 +63,8 @@ public class LoginViewCtrl extends SelectorComposer<Window> {
 			String userName = mgmt.getUser().getName();
 			hSess.setAttribute("user", userName);
 			
-			Executions.getCurrent().sendRedirect("/pages/note.zul");
+			Executions.getCurrent().sendRedirect(URL_HOME_PAGE);
+			//Executions.getCurrent().sendRedirect("/pages/noteWithList.zul");
 			/*if("didev".equals(userName)) {
 				Executions.getCurrent().sendRedirect("/pages/note.zul");
 			}*/

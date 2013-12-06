@@ -99,8 +99,8 @@ public class NoteMainCtrl extends SelectorComposer<Window> {
 		}
 
 		NoteTreeList item = (NoteTreeList) fe.getTarget();
-		currentNodeId = item.getCurrentNodeSelected().getId();
-		editor.setValue(item.getCurrentNodeSelected().getText());
+		currentNodeId = item.getCurrentItem().getId();
+		editor.setValue(item.getCurrentItem().getText());
 	}
 	
 	/**

@@ -70,7 +70,7 @@ public class NoteViewCtrl extends SelectorComposer<Div> {
 		
 		NoteTreeList item = (NoteTreeList) fe.getTarget();
 		
-		TopicItem currentNode = item.getCurrentNodeSelected();
+		TopicItem currentNode = item.getCurrentItem();
 		List<NoteNode> items = noteService.findChildTopics(currentNode.getId());
 		ListModelList<NoteNode> prodModel = new ListModelList<NoteNode>(items);
 		topicList.setModel(prodModel);

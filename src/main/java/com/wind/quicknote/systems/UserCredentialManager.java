@@ -23,8 +23,7 @@ public class UserCredentialManager {
 	public static UserCredentialManager getIntance() {
 		Session session = Executions.getCurrent().getSession();
 		synchronized (session) {
-			UserCredentialManager userModel = (UserCredentialManager) session
-					.getAttribute(KEY_USER_MODEL);
+			UserCredentialManager userModel = (UserCredentialManager) session.getAttribute(KEY_USER_MODEL);
 			if (userModel == null) {
 				session.setAttribute(KEY_USER_MODEL,
 						userModel = new UserCredentialManager());

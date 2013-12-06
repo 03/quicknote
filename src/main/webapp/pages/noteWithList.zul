@@ -1,6 +1,6 @@
 <zk>
 
-<?page title="QuickNote v0.43"?>
+<?page title="QuickNote v0.3"?>
 <?link rel="shortcut icon" href="http://www.google.com.au/favicon.ico" ?>
 <?component name="NoteTreeList" class="com.wind.quicknote.controllers.NoteTreeList" ?>
 
@@ -62,19 +62,67 @@
 	    </north>
 	    <center border="none">
 	        <borderlayout>
-	            <west maxsize="450" size="20%" border="none" splittable="true" collapsible="true" margins="0,5,0,0">
+	            <west maxsize="450" size="20%" border="0" splittable="true" collapsible="true" margins="0,5,0,0">
 	                <vlayout spacing="1">
-	                    <NoteTreeList id="notetreeList" ></NoteTreeList>
+	                    <panel width="100%" border="none" title="Topics">
+	                        <panelchildren>
+	                        	<NoteTreeList id="notetreeList" ></NoteTreeList>
+	                        </panelchildren>
+	                    </panel>
 	                </vlayout>
 	            </west>
-	            <center border="none" autoscroll="true" vflex="true" >
-	            	<div>
+	            <center border="none" autoscroll="true" vflex="true">
+	            	<div id="TopicsDiv"
+	            		apply="com.wind.quicknote.controllers.NoteViewCtrl">
+	            		<listbox id="topicList" height="330px" mold="paging" pageSize="5" 
+	            		vflex="true" pagingPosition="bottom">
+	            			<auxhead>
+					            <auxheader colspan="4" label="Children of current node" />
+					        </auxhead>
+	            			<listhead sizable="true">
+	            				<listheader
+	            					image="/assets/images/Bullet.png"
+	            					align="center" width="100px" />
+	            				<listheader label="Name" width="80px" />
+	            				<listheader label="Preview" width="110px" />
+	            				<listheader label="Created Date" width="100px" />
+	            			</listhead>
+	            			<template name="model">
+	            				<listitem value="${each}">
+		            				<listcell>
+		            					<image height="50px" width="50px" src="${each.icon}" />
+		            				</listcell>
+		            				<listcell>
+		            					<label value="${each.name}" />
+		            				</listcell>
+		            				<listcell>
+		            					<label value="${each.tag}" />
+		            				</listcell>
+		            				<listcell>
+		            					<label value="${each.created}" />
+		            				</listcell>
+	            				</listitem>
+	            			</template>
+	            		</listbox>
+	            	</div>
+	            </center>
+	            <!-- Editor Area -->
+	            <east hflex="true" autoscroll="true" size="50%">
+		            <div>
 		            	<button id="btnsave" label="Done"
 		            		image="/assets/images/save.png" width="75px" />
-		            	<ckeditor id="editor">
+		            	<ckeditor id="editor" onChange="ta.value = self.value">
+							<attribute name="value">
+							</attribute>
 						</ckeditor>
 					</div>
-	            </center>
+	            </east>
+	            <south visible="false">
+	            	<div apply="org.zkoss.bind.BindComposer"
+				        viewModel="@id('e') @init('com.wind.quicknote.controllers.NoteMainVM')">
+				        <button label="Model Window" onClick="@command('showModelWin')" />
+				    </div>
+	            </south>
 	        </borderlayout>
 	    </center>
 	</borderlayout>
