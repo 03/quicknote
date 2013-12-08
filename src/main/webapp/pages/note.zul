@@ -23,7 +23,7 @@
 <window id="noteWindow" border="normal" 
 	apply="com.wind.quicknote.controllers.NoteMainCtrl" >
 	
-	<borderlayout height="650px" visible="true">
+	<borderlayout height="600px" visible="true">
 	    <north maxsize="430" size="17%" height="120px" splittable="true" collapsible="true" style="padding:5px;">
 	        <borderlayout>
 	            <west border="normal" size="210" style="border:1px solid white">

@@ -3,6 +3,8 @@ package com.wind.quicknote.controllers;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.zkforge.ckez.CKeditor;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
@@ -30,6 +32,7 @@ import com.wind.quicknote.systems.UserCredentialManager;
 public class NoteMainCtrl extends SelectorComposer<Window> {
 
 	private static final long serialVersionUID = 5730426085235946339L;
+	private static Logger log = LoggerFactory.getLogger(NoteMainCtrl.class);
 	
 	private long currentNodeId = 0;
 	
@@ -101,6 +104,13 @@ public class NoteMainCtrl extends SelectorComposer<Window> {
 		NoteTreeList item = (NoteTreeList) fe.getTarget();
 		currentNodeId = item.getCurrentItem().getId();
 		editor.setValue(item.getCurrentItem().getText());
+	}
+	
+	@Listen("onTopicInit=#notetreeList")
+	public void showInitTopicContent(Event fe) {
+		log.debug("showInitTopicContent! " + fe);
+		currentNodeId = 3;
+		editor.setValue("@@@@@@@@@@@@@@@@@@@@@@");
 	}
 	
 	/**

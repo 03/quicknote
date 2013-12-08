@@ -46,12 +46,11 @@ import com.wind.quicknote.views.tree.TopicTreeModel;
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public class NoteTreeList extends Div implements IdSpace {
 
-	private static Logger log = LoggerFactory.getLogger(NoteTreeList.class);
-
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -4656138582305427445L;
+	private static Logger log = LoggerFactory.getLogger(NoteTreeList.class);
 	
 	@Wire
 	private Vlayout pLayout;
@@ -95,7 +94,10 @@ public class NoteTreeList extends Div implements IdSpace {
 		topicTree.setItemRenderer(new TopicTreeRenderer());
 		topicTreeModel = TopicTreeModel.getInstance();
 		topicTree.setModel(topicTreeModel);
+		
+		//Events.postEvent(new TopicInitEvent());
 		// topicTree.invalidate();
+		
 	}
 	
 	
@@ -294,11 +296,12 @@ public class NoteTreeList extends Div implements IdSpace {
     	if(currentItem != null) {
     		long id = currentItem.getId();
         	Messagebox.show("current topic id["+id+"] name:"+currentItem.getName(), "Information", Messagebox.OK, Messagebox.INFORMATION);
+        	
+        	Events.postEvent(new TopicInitEvent());
     	} else {
     		//topicTree.getTreechildren().getFirstChild();
     		showWarningDialog();
     	}
-    	
 	}
     
 	/**
@@ -373,7 +376,6 @@ public class NoteTreeList extends Div implements IdSpace {
                 @Override
                 public void onEvent(Event event) throws Exception {
                 	Events.postEvent(new TopicSelectEvent());
-                    
                 }
             });
             
@@ -414,8 +416,6 @@ public class NoteTreeList extends Div implements IdSpace {
                     TopicItemTreeNode draggedValue = (TopicItemTreeNode) draggedItem.getValue();
                     Treeitem parentItem = treeItem.getParentItem();
                     TopicItemTreeNode currentTreeNode = treeItem.getValue();
-                    
-                    //topicTreeModel.remove(draggedValue);
                     
                     if (((TopicItem) (currentTreeNode).getData()).isLeaf()) { 
                     	// if current node has no children, append it as the first child
@@ -625,5 +625,15 @@ public class NoteTreeList extends Div implements IdSpace {
  			super(ON_TOPIC_SELECT, NoteTreeList.this);
  		}
  	}
+ 	
+ 	// Customise Event
+  	public class TopicInitEvent extends Event {
+
+  		private static final long serialVersionUID = 7547668136120826171L;
+
+  		public TopicInitEvent() {
+  			super("onTopicInit", NoteTreeList.this);
+  		}
+  	}
     
 }
