@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.zkforge.ckez.CKeditor;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zk.ui.event.EventQueues;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
@@ -22,6 +24,7 @@ import com.wind.quicknote.models.NoteNode;
 import com.wind.quicknote.models.NoteUser;
 import com.wind.quicknote.services.NoteService;
 import com.wind.quicknote.systems.UserCredentialManager;
+import com.wind.quicknote.views.tree.TopicItem;
 
 
 /**
@@ -45,6 +48,7 @@ public class NoteMainCtrl extends SelectorComposer<Window> {
 	@Wire
 	private CKeditor editor;
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void doAfterCompose(Window comp) throws Exception {
 		super.doAfterCompose(comp);
@@ -60,9 +64,21 @@ public class NoteMainCtrl extends SelectorComposer<Window> {
 		
 		/*
 		 * http://www.zkoss.org/zkdemo/input/wysiwyg_editor
+		 * http://books.zkoss.org/wiki/ZK_Developer's_Reference/Event_Handling/Event_Queues
 		 */
 		editor.setCustomConfigurationsPath("/js/ckeditorcfg.js");
 		//editor.setToolbar("MyToolbar");
+		
+		EventQueues.lookup("myqueue1", EventQueues.APPLICATION, true)
+				.subscribe(new EventListener() {
+					public void onEvent(Event evt) {
+						TopicItem item = (TopicItem) evt.getData();
+						log.debug("I got this!! " + item.getId());
+						
+						currentNodeId = item.getId();
+						editor.setValue(item.getText());
+					}
+				});
 		
 	}
 	
@@ -106,12 +122,6 @@ public class NoteMainCtrl extends SelectorComposer<Window> {
 		editor.setValue(item.getCurrentItem().getText());
 	}
 	
-	@Listen("onTopicInit=#notetreeList")
-	public void showInitTopicContent(Event fe) {
-		log.debug("showInitTopicContent! " + fe);
-		currentNodeId = 3;
-		editor.setValue("@@@@@@@@@@@@@@@@@@@@@@");
-	}
 	
 	/**
 	 * show content when select an item in list

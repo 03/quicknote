@@ -95,7 +95,6 @@ public class NoteTreeList extends Div implements IdSpace {
 		topicTreeModel = TopicTreeModel.getInstance();
 		topicTree.setModel(topicTreeModel);
 		
-		//Events.postEvent(new TopicInitEvent());
 		// topicTree.invalidate();
 		
 	}
@@ -297,9 +296,7 @@ public class NoteTreeList extends Div implements IdSpace {
     		long id = currentItem.getId();
         	Messagebox.show("current topic id["+id+"] name:"+currentItem.getName(), "Information", Messagebox.OK, Messagebox.INFORMATION);
         	
-        	Events.postEvent(new TopicInitEvent());
     	} else {
-    		//topicTree.getTreechildren().getFirstChild();
     		showWarningDialog();
     	}
 	}
@@ -375,9 +372,10 @@ public class NoteTreeList extends Div implements IdSpace {
             dataRow.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
                 @Override
                 public void onEvent(Event event) throws Exception {
-                	Events.postEvent(new TopicSelectEvent());
+                	Events.postEvent(new Event("onTopicSelect", NoteTreeList.this));
                 }
             });
+            
             
             dataRow.addEventListener(Events.ON_OPEN, new EventListener<Event>() {
                 @Override
@@ -615,25 +613,13 @@ public class NoteTreeList extends Div implements IdSpace {
     }
     
 	// Customise Event
- 	public static final String ON_TOPIC_SELECT = "onTopicSelect";
-
  	public class TopicSelectEvent extends Event {
 
  		private static final long serialVersionUID = 7547668136120826171L;
 
  		public TopicSelectEvent() {
- 			super(ON_TOPIC_SELECT, NoteTreeList.this);
+ 			super("onTopicSelect", NoteTreeList.this);
  		}
  	}
  	
- 	// Customise Event
-  	public class TopicInitEvent extends Event {
-
-  		private static final long serialVersionUID = 7547668136120826171L;
-
-  		public TopicInitEvent() {
-  			super("onTopicInit", NoteTreeList.this);
-  		}
-  	}
-    
 }

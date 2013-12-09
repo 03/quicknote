@@ -29,8 +29,7 @@
 		<center border="none" autoscroll="true">
 			<div>
 				<vlayout id="pLayout">
-					<tree id="topicTree"
-						onAfterRender="self.setSelectedItem(self.getTreechildren().getFirstChild())" />
+					<tree id="topicTree" apply="com.wind.quicknote.controllers.NoteTreeComposer"/>
 				</vlayout>
 			</div>
 		</center>
