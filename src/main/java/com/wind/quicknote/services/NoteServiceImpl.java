@@ -2,7 +2,10 @@ package com.wind.quicknote.services;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +18,10 @@ import com.wind.quicknote.models.NoteUser;
 @Service("noteService")
 public class NoteServiceImpl implements NoteService {
 	
+	private static Logger log = LoggerFactory.getLogger(NoteServiceImpl.class);
+	
+	@Value("${constants.testText}")
+	private String passcode;
 	
 	@Autowired
 	private NoteNodeDAO noteNodeDAO;
@@ -23,11 +30,11 @@ public class NoteServiceImpl implements NoteService {
 	private NoteUserDAO noteUserDAO;
 	
 	public void init() {
-		System.out.println("init");
+		log.debug("init");
 	}
 	
 	public void destroy() {
-		System.out.println("destroy");
+		log.debug("destroy");
 	}
 	
 	public List<NoteNode> findAllTopics() {
@@ -39,6 +46,7 @@ public class NoteServiceImpl implements NoteService {
 	}
 	
 	public NoteNode findRootTopicByUser(long userId) {
+		log.debug("findRootTopicByUser -----> " + passcode);
 		return noteNodeDAO.findRootByUser(userId);
 	}
 	

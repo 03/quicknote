@@ -144,7 +144,7 @@ public class TopicTreeModel extends DefaultTreeModel<TopicItem> {
     }
     
     @SuppressWarnings("unchecked")
-	public void insertAtLastToNode(DefaultTreeNode<TopicItem> parent) throws IndexOutOfBoundsException {
+	public void insertAtLast(DefaultTreeNode<TopicItem> parent) throws IndexOutOfBoundsException {
     	
     	long pid = parent.getData().getId();
     	
@@ -154,6 +154,21 @@ public class TopicTreeModel extends DefaultTreeModel<TopicItem> {
     	int index = parent.getChildCount() - 1;
 		if (parent instanceof TopicItemTreeNode) {
             insert((TopicItemTreeNode)parent, index, index,
+                    new DefaultTreeNode[] { new TopicItemTreeNode(new TopicItem(note), null, true) });
+    	}
+        
+    }
+    
+    @SuppressWarnings("unchecked")
+	public void insertAt(DefaultTreeNode<TopicItem> parent, int position) throws IndexOutOfBoundsException {
+    	
+    	long pid = parent.getData().getId();
+    	
+    	// save to database
+		NoteNode note = noteService.addTopic(pid, TOPIC_NEW_ITEM, TOPIC_NEWLY_ADDED_CONTENT, QUtils.getRandomIconURL());
+		
+		if (parent instanceof TopicItemTreeNode) {
+            insert((TopicItemTreeNode)parent, position, position,
                     new DefaultTreeNode[] { new TopicItemTreeNode(new TopicItem(note), null, true) });
     	}
         

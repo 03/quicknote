@@ -14,6 +14,7 @@ import org.zkoss.zk.ui.event.DropEvent;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zk.ui.event.KeyEvent;
 import org.zkoss.zk.ui.select.Selectors;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
@@ -96,7 +97,6 @@ public class NoteTreeList extends Div implements IdSpace {
 		topicTree.setModel(topicTreeModel);
 		
 		// topicTree.invalidate();
-		
 	}
 	
 	
@@ -140,7 +140,7 @@ public class NoteTreeList extends Div implements IdSpace {
 			if (parentTreeItem == null) {
 				topicTreeModel.addToRoot();
         	} else {
-        		topicTreeModel.insertAtLastToNode(parentNode);
+        		topicTreeModel.insertAtLast(parentNode);
         	}
             
 		} else {
@@ -155,6 +155,24 @@ public class NoteTreeList extends Div implements IdSpace {
 			
 		}
        	
+   	}
+	
+	public void insertItemBefore() {
+		
+		Treeitem selectedTreeItem = topicTree.getSelectedItem();
+		TopicItemTreeNode selectedNode = (TopicItemTreeNode) selectedTreeItem.getValue();
+		TopicItemTreeNode parentNode = (TopicItemTreeNode) selectedNode.getParent();
+
+		topicTreeModel.insertAt(parentNode, parentNode.getIndex(selectedNode));
+   	}
+	
+	public void insertItemAfter() {
+		
+		Treeitem selectedTreeItem = topicTree.getSelectedItem();
+		TopicItemTreeNode selectedNode = (TopicItemTreeNode) selectedTreeItem.getValue();
+		TopicItemTreeNode parentNode = (TopicItemTreeNode) selectedNode.getParent();
+		
+		topicTreeModel.insertAt(parentNode, parentNode.getIndex(selectedNode) + 1);
    	}
 	
 	@Listen("onClick=#btnInsertChild")
@@ -212,7 +230,7 @@ public class NoteTreeList extends Div implements IdSpace {
                     
                 } else { 
                 	// if current node has children, add it as the last child
-                	topicTreeModel.insertAtLastToNode(parentNode);
+                	topicTreeModel.insertAtLast(parentNode);
                 	
                 }
         		
@@ -323,6 +341,7 @@ public class NoteTreeList extends Div implements IdSpace {
             
             final Label label = new Label(topicItem.getName());
             label.setVisible(true);
+            label.setCtrlKeys("#f2");
             
             final Textbox tbox = new Textbox(topicItem.getName());
             tbox.setVisible(false);
@@ -330,18 +349,26 @@ public class NoteTreeList extends Div implements IdSpace {
             hlayout.appendChild(label);
             hlayout.appendChild(tbox);
             
-            Menupopup popup = createMenuPopup(topicItem, image, label);
+            Menupopup popup = createMenuPopup(topicItem, image, label, tbox);
             label.setContext(popup);
             hlayout.appendChild(popup);
             
             label.addEventListener(Events.ON_DOUBLE_CLICK, new EventListener<Event>() {
                 @Override
                 public void onEvent(Event event) throws Exception {
-
-                	tbox.setValue(label.getValue());
-                	label.setVisible(false);
-                	tbox.setVisible(true);
-                	tbox.setFocus(true);
+                	startRename(label, tbox);
+                }
+            });
+            
+            label.addEventListener(Events.ON_CTRL_KEY, new EventListener<Event>() {
+                @Override
+                public void onEvent(Event event) throws Exception {
+                	
+                	int keyCode = ((KeyEvent) event).getKeyCode();
+                	log.debug("keycode -> "+keyCode);
+                	if(keyCode == 113) {
+                		startRename(label, tbox);
+                	}
                 }
             });
             
@@ -349,24 +376,21 @@ public class NoteTreeList extends Div implements IdSpace {
             tbox.addEventListener(Events.ON_BLUR, new EventListener<Event>() {
                 @Override
                 public void onEvent(Event event) throws Exception {
-
-                	String previousValue = label.getValue();
-                	String currentValue = tbox.getValue();
-                	if(!previousValue.equals(currentValue)) {
-                		label.setValue(currentValue);
-                		noteService.updateTopicName( getCurrentItem().getId(), tbox.getValue());
-                	}
-                	
-                	tbox.setVisible(false);
-                	label.setVisible(true);
-                	
+                	endRename(label, tbox);
                 }
             });
             
+            tbox.addEventListener(Events.ON_OK, new EventListener<Event>() {
+                @Override
+                public void onEvent(Event event) throws Exception {
+                	endRename(label, tbox);
+                }
+            });
+            
+            
+            
             hlayout.setSclass("h-inline-block");
         	treeCell.appendChild(hlayout);
-            dataRow.appendChild(treeCell);
-            
             dataRow.setDraggable("true");
             dataRow.appendChild(treeCell);
             dataRow.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
@@ -397,7 +421,7 @@ public class NoteTreeList extends Div implements IdSpace {
                 }
             });
             
-            // Both category row and contact row can be item dropped
+            // items can be dropped
             dataRow.setDroppable("true");
             dataRow.addEventListener(Events.ON_DROP, new EventListener<Event>() {
                 @SuppressWarnings("unchecked")
@@ -462,15 +486,16 @@ public class NoteTreeList extends Div implements IdSpace {
          * Add Item After
          * Add Child Item
          * ---------------
-         * Move Item Up | Down | Left | Right
+         * Move Item Up | Down
          * ---------------
          * Icons...
          * ---------------
+         * Rename
          * Properties
 		 * @param topicItem 
          * 
          */
-		private Menupopup createMenuPopup(final TopicItem topicItem, final Image image, final Label label) {
+		private Menupopup createMenuPopup(final TopicItem topicItem, final Image image, final Label label, final Textbox tbox) {
 			
 			Menupopup popup = new Menupopup();
 			
@@ -483,7 +508,8 @@ public class NoteTreeList extends Div implements IdSpace {
                 @Override
                 public void onEvent(Event event) throws Exception {
 
-                	log.debug(" ");
+                	log.debug("Add Item After");
+                	insertItemAfter();
                 }
             });
             popup.appendChild(itemAddAfter);
@@ -493,7 +519,8 @@ public class NoteTreeList extends Div implements IdSpace {
                 @Override
                 public void onEvent(Event event) throws Exception {
 
-                	log.debug(" ");
+                	log.debug("Add Item Before");
+                	insertItemBefore();
                 }
             });
             popup.appendChild(itemAddBef);
@@ -503,7 +530,8 @@ public class NoteTreeList extends Div implements IdSpace {
                 @Override
                 public void onEvent(Event event) throws Exception {
 
-                	log.debug(" ");
+                	log.debug("Add Child Item");
+                	insertChildItem();
                 }
             });
             popup.appendChild(itemAddChild);
@@ -539,29 +567,6 @@ public class NoteTreeList extends Div implements IdSpace {
             });
             movePopup.appendChild(itemMoveDown);
             
-            Menuitem itemMoveLeft = new Menuitem("Left");
-            itemMoveLeft.setImage("/assets/images/arrowLeft.png");
-            itemMoveLeft.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
-                @Override
-                public void onEvent(Event event) throws Exception {
-
-                	log.debug(" ");
-                }
-            });
-            movePopup.appendChild(itemMoveLeft);
-            
-            Menuitem itemMoveRight = new Menuitem("Right");
-            itemMoveRight.setImage("/assets/images/arrowRight.png");
-            itemMoveRight.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
-                @Override
-                public void onEvent(Event event) throws Exception {
-
-                	log.debug(" ");
-                }
-            });
-            movePopup.appendChild(itemMoveRight);
-            
-            
             moveMenu.appendChild(movePopup);
             popup.appendChild(moveMenu);
             
@@ -570,9 +575,7 @@ public class NoteTreeList extends Div implements IdSpace {
             
             /*
              * Icons
-             * 
              * http://emrpms.blogspot.com.au/2012/06/mvvm-modal-windowpass-parameter-and.html
-             * 
              */
             Menuitem itemChangeIcon = new Menuitem("Change Icon");
             itemChangeIcon.setImage("/assets/images/changeIcon.png");
@@ -593,6 +596,16 @@ public class NoteTreeList extends Div implements IdSpace {
             });
             popup.appendChild(itemChangeIcon);
             
+            Menuitem itemRenameIcon = new Menuitem("Rename\t[F2]");
+            itemRenameIcon.setImage("/assets/images/rename.jpg");
+            itemRenameIcon.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+                @Override
+                public void onEvent(Event event) throws Exception {
+                	startRename(label, tbox);
+                }
+            });
+            popup.appendChild(itemRenameIcon);
+            
             /*
              * Properties
              */
@@ -608,6 +621,25 @@ public class NoteTreeList extends Div implements IdSpace {
             popup.appendChild(itemProp);
             
 			return popup;
+		}
+
+		private void endRename(final Label label, final Textbox tbox) {
+			String previousValue = label.getValue();
+			String currentValue = tbox.getValue();
+			if(!previousValue.equals(currentValue)) {
+				label.setValue(currentValue);
+				noteService.updateTopicName( getCurrentItem().getId(), tbox.getValue());
+			}
+			
+			tbox.setVisible(false);
+			label.setVisible(true);
+		}
+
+		private void startRename(final Label label, final Textbox tbox) {
+			tbox.setValue(label.getValue());
+			label.setVisible(false);
+			tbox.setVisible(true);
+			tbox.setFocus(true);
 		}
         
     }
