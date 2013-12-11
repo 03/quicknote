@@ -14,12 +14,10 @@ import org.zkoss.zk.ui.event.DropEvent;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zk.ui.event.KeyEvent;
 import org.zkoss.zk.ui.select.Selectors;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
-import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zul.DefaultTreeNode;
 import org.zkoss.zul.Div;
 import org.zkoss.zul.Hlayout;
@@ -39,7 +37,6 @@ import org.zkoss.zul.Treerow;
 import org.zkoss.zul.Vlayout;
 import org.zkoss.zul.Window;
 
-import com.wind.quicknote.services.NoteService;
 import com.wind.quicknote.views.tree.TopicItem;
 import com.wind.quicknote.views.tree.TopicItemTreeNode;
 import com.wind.quicknote.views.tree.TopicTreeModel;
@@ -47,9 +44,6 @@ import com.wind.quicknote.views.tree.TopicTreeModel;
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public class NoteTreeList extends Div implements IdSpace {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -4656138582305427445L;
 	private static Logger log = LoggerFactory.getLogger(NoteTreeList.class);
 	
@@ -59,9 +53,6 @@ public class NoteTreeList extends Div implements IdSpace {
 	@Wire
 	private Tree topicTree;
 	
-	@WireVariable
-	private NoteService noteService;
-	
 	private TopicTreeModel topicTreeModel;
 	
 	public NoteTreeList() {
@@ -69,7 +60,6 @@ public class NoteTreeList extends Div implements IdSpace {
 		Executions.createComponents("/pages/noteTreeList.zul", this, null);
 		
 		// 2. Wire variables, components and event listeners (optional)
-		//wire service manually by calling Selectors API
         Selectors.wireVariables(this, this, Selectors.newVariableResolvers(getClass(), null));
 		Selectors.wireComponents(this, this, false);
 		Selectors.wireEventListeners(this, this);
@@ -79,10 +69,19 @@ public class NoteTreeList extends Div implements IdSpace {
 	
 	// Model
 	public TopicItem getCurrentItem() {
-		Treeitem selectedItem = topicTree.getSelectedItem();
-		if (selectedItem == null || selectedItem.getValue() == null)
+		TopicItemTreeNode node = getCurrentNode();
+		if (node == null)
 			return null;
-		return ((TopicItemTreeNode) selectedItem.getValue()).getData();
+		
+		return node.getData();
+	}
+	
+	public TopicItemTreeNode getCurrentNode() {
+		Treeitem selectedItem = topicTree.getSelectedItem();
+		if (selectedItem == null)
+			return null;
+		
+		return (TopicItemTreeNode) selectedItem.getValue();
 	}
 
 	/**
@@ -96,7 +95,7 @@ public class NoteTreeList extends Div implements IdSpace {
 		topicTreeModel = TopicTreeModel.getInstance();
 		topicTree.setModel(topicTreeModel);
 		
-		// topicTree.invalidate();
+		topicTree.invalidate();
 	}
 	
 	
@@ -157,22 +156,38 @@ public class NoteTreeList extends Div implements IdSpace {
        	
    	}
 	
-	public void insertItemBefore() {
+	public void insertBefore() {
 		
-		Treeitem selectedTreeItem = topicTree.getSelectedItem();
-		TopicItemTreeNode selectedNode = (TopicItemTreeNode) selectedTreeItem.getValue();
+		TopicItemTreeNode selectedNode = getCurrentNode();
 		TopicItemTreeNode parentNode = (TopicItemTreeNode) selectedNode.getParent();
 
 		topicTreeModel.insertAt(parentNode, parentNode.getIndex(selectedNode));
    	}
 	
-	public void insertItemAfter() {
+	public void insertAfter() {
 		
-		Treeitem selectedTreeItem = topicTree.getSelectedItem();
-		TopicItemTreeNode selectedNode = (TopicItemTreeNode) selectedTreeItem.getValue();
+		TopicItemTreeNode selectedNode = getCurrentNode();
 		TopicItemTreeNode parentNode = (TopicItemTreeNode) selectedNode.getParent();
 		
 		topicTreeModel.insertAt(parentNode, parentNode.getIndex(selectedNode) + 1);
+   	}
+	
+	public void moveUp() {
+		
+		TopicItemTreeNode selectedNode = getCurrentNode();
+		TopicItemTreeNode parentNode = (TopicItemTreeNode) selectedNode.getParent();
+
+		int idx = parentNode.getIndex(selectedNode);
+		topicTreeModel.swapPos(parentNode, idx, idx-1);
+   	}
+	
+	public void moveDown() {
+		
+		TopicItemTreeNode selectedNode = getCurrentNode();
+		TopicItemTreeNode parentNode = (TopicItemTreeNode) selectedNode.getParent();
+
+		int idx = parentNode.getIndex(selectedNode);
+		topicTreeModel.swapPos(parentNode, idx, idx+1);
    	}
 	
 	@Listen("onClick=#btnInsertChild")
@@ -280,25 +295,7 @@ public class NoteTreeList extends Div implements IdSpace {
 			});
 			
 		} else {
-			Messagebox.show("No node to delete, try create a new one.", DIALOG_WARNING, Messagebox.OK, Messagebox.EXCLAMATION);
-		}
-	}
-    
-    /**
-     * renameItem
-     */
-	@Listen("onClick=#btnname")
-	public void renameItem() {
-    	
-		TopicItem currentItem = getCurrentItem();
-		
-		if (currentItem != null) {
-			
-			//Treeitem selectedTreeItem = topicTree.getSelectedItem();
-			//...
-			
-		} else {
-			showWarningDialog();
+			Messagebox.show("No node to delete, please create a new one.", DIALOG_WARNING, Messagebox.OK, Messagebox.EXCLAMATION);
 		}
 	}
     
@@ -325,15 +322,18 @@ public class NoteTreeList extends Div implements IdSpace {
     private final class TopicTreeRenderer implements TreeitemRenderer<TopicItemTreeNode> {
     	
         public void render(final Treeitem treeItem, TopicItemTreeNode treeNode, int index) throws Exception {
+        	
         	TopicItemTreeNode ctn = treeNode;
         	TopicItem topicItem = (TopicItem) ctn.getData();
-            Treerow dataRow = new Treerow();
+            final Treerow dataRow = new Treerow();
             dataRow.setParent(treeItem);
             treeItem.setValue(ctn);
             treeItem.setOpen(ctn.isOpen());
  
             Treecell treeCell = new Treecell();
         	Hlayout hlayout = new Hlayout();
+        	hlayout.setSclass("h-inline-block");
+        	
             final Image image = new Image(topicItem.getIcon());
             image.setWidth("20px");
             image.setHeight("20px");
@@ -341,7 +341,6 @@ public class NoteTreeList extends Div implements IdSpace {
             
             final Label label = new Label(topicItem.getName());
             label.setVisible(true);
-            label.setCtrlKeys("#f2");
             
             final Textbox tbox = new Textbox(topicItem.getName());
             tbox.setVisible(false);
@@ -349,29 +348,22 @@ public class NoteTreeList extends Div implements IdSpace {
             hlayout.appendChild(label);
             hlayout.appendChild(tbox);
             
+            // Popup Context Menu
             Menupopup popup = createMenuPopup(topicItem, image, label, tbox);
-            label.setContext(popup);
             hlayout.appendChild(popup);
             
-            label.addEventListener(Events.ON_DOUBLE_CLICK, new EventListener<Event>() {
-                @Override
-                public void onEvent(Event event) throws Exception {
-                	startRename(label, tbox);
-                }
-            });
-            
+            // CtrlKeys doesn't work for non-input gadgets
+            /*label.setCtrlKeys("#f2");
             label.addEventListener(Events.ON_CTRL_KEY, new EventListener<Event>() {
                 @Override
                 public void onEvent(Event event) throws Exception {
                 	
                 	int keyCode = ((KeyEvent) event).getKeyCode();
-                	log.debug("keycode -> "+keyCode);
                 	if(keyCode == 113) {
                 		startRename(label, tbox);
                 	}
                 }
-            });
-            
+            });*/
             
             tbox.addEventListener(Events.ON_BLUR, new EventListener<Event>() {
                 @Override
@@ -387,12 +379,9 @@ public class NoteTreeList extends Div implements IdSpace {
                 }
             });
             
-            
-            
-            hlayout.setSclass("h-inline-block");
         	treeCell.appendChild(hlayout);
-            dataRow.setDraggable("true");
             dataRow.appendChild(treeCell);
+            dataRow.setContext(popup);
             dataRow.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
                 @Override
                 public void onEvent(Event event) throws Exception {
@@ -400,80 +389,27 @@ public class NoteTreeList extends Div implements IdSpace {
                 }
             });
             
-            
-            dataRow.addEventListener(Events.ON_OPEN, new EventListener<Event>() {
+            dataRow.addEventListener(Events.ON_DOUBLE_CLICK, new EventListener<Event>() {
                 @Override
                 public void onEvent(Event event) throws Exception {
-                    TopicItemTreeNode clickedNodeValue = (TopicItemTreeNode) ((Treeitem) event.getTarget().getParent()).getValue();
-                    
-                    TopicItem selectedItem = (TopicItem) clickedNodeValue.getData();
-                    log.debug("OPEN: "+selectedItem.getName());
+                	startRename(label, tbox);
                 }
             });
             
-            dataRow.addEventListener(Events.ON_CLOSE, new EventListener<Event>() {
-                @Override
-                public void onEvent(Event event) throws Exception {
-                    TopicItemTreeNode clickedNodeValue = (TopicItemTreeNode) ((Treeitem) event.getTarget().getParent()).getValue();
-                    
-                    TopicItem selectedItem = (TopicItem) clickedNodeValue.getData();
-                    log.debug("CLOSE: "+selectedItem.getName());
-                }
-            });
-            
-            // items can be dropped
+            // items can be dragged and dropped
+            dataRow.setDraggable("true");
             dataRow.setDroppable("true");
             dataRow.addEventListener(Events.ON_DROP, new EventListener<Event>() {
-                @SuppressWarnings("unchecked")
-                @Override
+
+            	@Override
                 public void onEvent(Event event) throws Exception {
-                    // The dragged target is a TreeRow
                 	/*
                 	 * treeItem is the current node
                 	 * parentItem is current node's parent
-                	 * draggedItem is the node to be add as either child or sibling node
+                	 * draggedItem is the node to be added (dragged target is a TreeRow)
                 	 */
-                	long parentid = 0;
                     Treeitem draggedItem = (Treeitem) ((DropEvent) event).getDragged().getParent();
-                    TopicItemTreeNode draggedValue = (TopicItemTreeNode) draggedItem.getValue();
-                    Treeitem parentItem = treeItem.getParentItem();
-                    TopicItemTreeNode currentTreeNode = treeItem.getValue();
-                    
-                    if (((TopicItem) (currentTreeNode).getData()).isLeaf()) { 
-                    	// if current node has no children, append it as the first child
-                        topicTreeModel.add(currentTreeNode, new DefaultTreeNode[] { draggedValue });
-                        
-                        parentid = currentTreeNode.getData().getId();
-                        		
-                    } else {
-                    	
-                    	// if current node has children, add it as the last child 
-                    	if (parentItem == null) {
-                        	// first level node
-                    		int index = currentTreeNode.getChildCount() - 1;
-                    		topicTreeModel.insert(currentTreeNode, index, index, new DefaultTreeNode[] { draggedValue });
-                    		
-                    		parentid = currentTreeNode.getData().getId();
-                        	
-                        } else {
-                        	
-                        	TopicItemTreeNode parentTreeNode = parentItem.getValue();
-                        	
-                        	int index = parentItem.getTreechildren().getChildren().indexOf(treeItem);
-                            if(parentTreeNode instanceof TopicItemTreeNode) {
-                                topicTreeModel.insert(parentTreeNode, index, index,
-                                        new DefaultTreeNode[] { draggedValue });
-                            }
-                            
-                            parentid = parentTreeNode.getData().getId();
-                            
-                        }
-                    	
-                    }
-                    
-                    // save to database - change parent id of draggedItem
-                    noteService.changeParentId(draggedValue.getData().getId(), parentid);
-                    
+                    topicTreeModel.moveToNode( (TopicItemTreeNode) treeItem.getValue(), (TopicItemTreeNode) draggedItem.getValue());
                 }
             });
  
@@ -488,8 +424,7 @@ public class NoteTreeList extends Div implements IdSpace {
          * ---------------
          * Move Item Up | Down
          * ---------------
-         * Icons...
-         * ---------------
+         * Icon
          * Rename
          * Properties
 		 * @param topicItem 
@@ -500,16 +435,14 @@ public class NoteTreeList extends Div implements IdSpace {
 			Menupopup popup = new Menupopup();
 			
 			/*
-			 * Add Items
+			 * Add Item
 			 */
             Menuitem itemAddAfter = new Menuitem("Add Item After");
             itemAddAfter.setImage("/assets/images/add.jpg");
             itemAddAfter.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
                 @Override
                 public void onEvent(Event event) throws Exception {
-
-                	log.debug("Add Item After");
-                	insertItemAfter();
+                	insertAfter();
                 }
             });
             popup.appendChild(itemAddAfter);
@@ -518,9 +451,7 @@ public class NoteTreeList extends Div implements IdSpace {
             itemAddBef.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
                 @Override
                 public void onEvent(Event event) throws Exception {
-
-                	log.debug("Add Item Before");
-                	insertItemBefore();
+                	insertBefore();
                 }
             });
             popup.appendChild(itemAddBef);
@@ -529,18 +460,16 @@ public class NoteTreeList extends Div implements IdSpace {
             itemAddChild.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
                 @Override
                 public void onEvent(Event event) throws Exception {
-
-                	log.debug("Add Child Item");
                 	insertChildItem();
                 }
             });
             popup.appendChild(itemAddChild);
             
-            // Menuseparator
+            // Menu separator
 			popup.appendChild(new Menuseparator());
 			
 			/*
-			 * Move Items
+			 * Move Item
 			 */
             Menu moveMenu = new Menu("Move Item ..");
             moveMenu.setImage("/assets/images/move.png");
@@ -550,8 +479,7 @@ public class NoteTreeList extends Div implements IdSpace {
             itemMoveUp.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
                 @Override
                 public void onEvent(Event event) throws Exception {
-
-                	log.debug(" ");
+                	moveUp();
                 }
             });
             movePopup.appendChild(itemMoveUp);
@@ -561,8 +489,7 @@ public class NoteTreeList extends Div implements IdSpace {
             itemMoveDown.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
                 @Override
                 public void onEvent(Event event) throws Exception {
-
-                	log.debug(" ");
+                	moveDown();
                 }
             });
             movePopup.appendChild(itemMoveDown);
@@ -570,14 +497,14 @@ public class NoteTreeList extends Div implements IdSpace {
             moveMenu.appendChild(movePopup);
             popup.appendChild(moveMenu);
             
-            // Menuseparator
+            // Menu separator
             popup.appendChild(new Menuseparator());
             
             /*
              * Icons
              * http://emrpms.blogspot.com.au/2012/06/mvvm-modal-windowpass-parameter-and.html
              */
-            Menuitem itemChangeIcon = new Menuitem("Change Icon");
+            Menuitem itemChangeIcon = new Menuitem("Icon");
             itemChangeIcon.setImage("/assets/images/changeIcon.png");
             itemChangeIcon.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
                 @Override
@@ -596,7 +523,7 @@ public class NoteTreeList extends Div implements IdSpace {
             });
             popup.appendChild(itemChangeIcon);
             
-            Menuitem itemRenameIcon = new Menuitem("Rename\t[F2]");
+            Menuitem itemRenameIcon = new Menuitem("Rename");
             itemRenameIcon.setImage("/assets/images/rename.jpg");
             itemRenameIcon.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
                 @Override
@@ -623,18 +550,10 @@ public class NoteTreeList extends Div implements IdSpace {
 			return popup;
 		}
 
-		private void endRename(final Label label, final Textbox tbox) {
-			String previousValue = label.getValue();
-			String currentValue = tbox.getValue();
-			if(!previousValue.equals(currentValue)) {
-				label.setValue(currentValue);
-				noteService.updateTopicName( getCurrentItem().getId(), tbox.getValue());
-			}
-			
-			tbox.setVisible(false);
-			label.setVisible(true);
-		}
 
+		/*
+		 * Rename methods
+		 */
 		private void startRename(final Label label, final Textbox tbox) {
 			tbox.setValue(label.getValue());
 			label.setVisible(false);
@@ -642,16 +561,21 @@ public class NoteTreeList extends Div implements IdSpace {
 			tbox.setFocus(true);
 		}
         
+		private void endRename(final Label label, final Textbox tbox) {
+			String previousValue = label.getValue();
+			String currentValue = tbox.getValue();
+			if(!previousValue.equals(currentValue)) {
+				label.setValue(currentValue);
+				
+				topicTreeModel.updateTopicName(getCurrentItem(), currentValue);
+			}
+			
+			tbox.setVisible(false);
+			label.setVisible(true);
+			
+			// refresh
+			topicTree.invalidate();
+		}
     }
-    
-	// Customise Event
- 	public class TopicSelectEvent extends Event {
-
- 		private static final long serialVersionUID = 7547668136120826171L;
-
- 		public TopicSelectEvent() {
- 			super("onTopicSelect", NoteTreeList.this);
- 		}
- 	}
  	
 }

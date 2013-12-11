@@ -269,14 +269,14 @@
 				<artifactId>jetty-maven-plugin</artifactId>
 				<version>8.1.10.v20130312</version>
 				<configuration>
-					<scanIntervalSeconds>60</scanIntervalSeconds>
+					<scanIntervalSeconds>90</scanIntervalSeconds>
 					<webApp>
 						<contextPath>/qnote</contextPath>
 					</webApp>
 					<connectors>
 						<connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
 							<port>8000</port>
-							<maxIdleTime>60000</maxIdleTime>
+							<maxIdleTime>30000</maxIdleTime>
 						</connector>
 						<!-- <connector implementation="org.eclipse.jetty.server.ssl.SslSelectChannelConnector">
 							<port>9090</port>

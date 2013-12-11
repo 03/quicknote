@@ -147,7 +147,6 @@ public class TopicTreeModel extends DefaultTreeModel<TopicItem> {
 	public void insertAtLast(DefaultTreeNode<TopicItem> parent) throws IndexOutOfBoundsException {
     	
     	long pid = parent.getData().getId();
-    	
     	// save to database
 		NoteNode note = noteService.addTopic(pid, TOPIC_NEW_ITEM, TOPIC_NEWLY_ADDED_CONTENT, QUtils.getRandomIconURL());
 		
@@ -163,7 +162,6 @@ public class TopicTreeModel extends DefaultTreeModel<TopicItem> {
 	public void insertAt(DefaultTreeNode<TopicItem> parent, int position) throws IndexOutOfBoundsException {
     	
     	long pid = parent.getData().getId();
-    	
     	// save to database
 		NoteNode note = noteService.addTopic(pid, TOPIC_NEW_ITEM, TOPIC_NEWLY_ADDED_CONTENT, QUtils.getRandomIconURL());
 		
@@ -172,6 +170,59 @@ public class TopicTreeModel extends DefaultTreeModel<TopicItem> {
                     new DefaultTreeNode[] { new TopicItemTreeNode(new TopicItem(note), null, true) });
     	}
         
+    }
+    
+	public void swap(DefaultTreeNode<TopicItem> parent, int position, int newPosition)
+            throws IndexOutOfBoundsException {
+        DefaultTreeNode<TopicItem> stn = parent;
+        
+        int count = stn.getChildCount();
+		if (newPosition < 0 || newPosition >= count)
+			return;
+        
+		TreeNode<TopicItem> elem = stn.getChildAt(position);
+		TreeNode<TopicItem> newElem = stn.getChildAt(newPosition);
+		
+		if (position > newPosition) {
+			// move up
+			stn.remove(position);
+			stn.getChildren().add(newPosition, elem);
+			
+		} else {
+			// move down
+			stn.remove(newPosition);
+			stn.getChildren().add(position, newElem);
+		}
+		
+		/*stn.getChildren().set(newPosition, (TreeNode<TopicItem>) elem.clone());
+		stn.getChildren().set(position, (TreeNode<TopicItem>) newElem.clone());*/
+    }
+    
+	/**
+	 * Swap positions on parent
+	 * 
+	 * @param parent
+	 * @param pos
+	 * @param newPos
+	 * @throws IndexOutOfBoundsException
+	 */
+	public void swapPos(DefaultTreeNode<TopicItem> parent, int pos, int newPos) {
+    	
+    	// save to database
+    	// long pid = parent.getData().getId();
+		// NoteNode note = noteService.updateTopicPos(pid, TOPIC_NEW_ITEM, TOPIC_NEWLY_ADDED_CONTENT, QUtils.getRandomIconURL());
+		
+		if (parent instanceof TopicItemTreeNode) {
+            swap((TopicItemTreeNode)parent, pos, newPos);
+    	}
+        
+    }
+	
+	
+	public void updateTopicName(TopicItem topicItem, String value) {
+		
+		noteService.updateTopicName( topicItem.getId(), value);
+		topicItem.setName(value);
     }
     
     public void add(TreeNode<TopicItem> child) {
@@ -194,19 +245,48 @@ public class TopicTreeModel extends DefaultTreeModel<TopicItem> {
             stn.getChildren().add(newNodes[i]);
     }
     
-    @SuppressWarnings("unchecked")
+    /**
+     * append new node to parent
+     * 
+     * @param parent
+     *            The parent of nodes are appended
+     * @param newNode
+     *            New node which are appended
+     */
+    public void add(DefaultTreeNode<TopicItem> parent, DefaultTreeNode<TopicItem> newNode) {
+        DefaultTreeNode<TopicItem> stn = (DefaultTreeNode<TopicItem>) parent;
+        stn.getChildren().add(newNode);
+    }
+    
 	public void addToNode(TopicItemTreeNode node) {
     	// save to database
-    	NoteNode note = noteService.addTopic(node.getData().getId(), TOPIC_NEW_ITEM, TOPIC_NEWLY_ADDED_CONTENT, QUtils.getRandomIconURL());
+    	NoteNode note_added = noteService.addTopic(node.getData().getId(), TOPIC_NEW_ITEM, TOPIC_NEWLY_ADDED_CONTENT, QUtils.getRandomIconURL());
+        add(node, new TopicItemTreeNode(new TopicItem(note_added), null, true));
+    }
+    
+    /**
+     * move node to new parent
+     * 
+     * @param parent
+     * @param node
+     */
+	public void moveToNode(TopicItemTreeNode parent, TopicItemTreeNode node) {
 		
-        add(node, new DefaultTreeNode[] { new TopicItemTreeNode(new TopicItem(note), null, true) });
+		// cancel if on current parent
+		if(node.getParent().getData().getId() == parent.getData().getId()) {
+			return;
+		}
+		
+    	// change parent
+    	noteService.changeParentId(node.getData().getId(), parent.getData().getId());
+        add(parent, node);
     }
     
     public void addToRoot() {
     	// save to database
-    	NoteNode note = noteService.addTopic(getRoot().getData().getId(), TOPIC_NEW_ITEM, TOPIC_NEWLY_ADDED_CONTENT, QUtils.getRandomIconURL());
+    	NoteNode note_added = noteService.addTopic(getRoot().getData().getId(), TOPIC_NEW_ITEM, TOPIC_NEWLY_ADDED_CONTENT, QUtils.getRandomIconURL());
     	
-    	getRoot().add(new TopicItemTreeNode(new TopicItem(note), null, true));
+    	getRoot().add(new TopicItemTreeNode(new TopicItem(note_added), null, true));
     }
     
     private DefaultTreeNode<TopicItem> dfSearchParent(DefaultTreeNode<TopicItem> node, DefaultTreeNode<TopicItem> target) {

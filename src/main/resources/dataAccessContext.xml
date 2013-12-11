@@ -12,21 +12,21 @@
             http://www.springframework.org/schema/jee 
             http://www.springframework.org/schema/jee/spring-jee-3.2.xsd">
             
-    <bean id="dataSource" destroy-method="close"
+    <!-- <bean id="dataSource" destroy-method="close"
 		class="org.apache.commons.dbcp.BasicDataSource">
 		<property name="driverClassName"
 			value="${db.driverClassName}" />
 		<property name="url" value="${db.url}" />
 		<property name="username" value="${db.username}" />
 		<property name="password" value="${db.password}" />
-	</bean> 
+	</bean> -->
 	
 	<!-- JBoss -->
     <!-- <jee:jndi-lookup id="dataSource" jndi-name="java:/MyDataSource"/> -->
     <!-- Tomcat -->
     <!-- <jee:jndi-lookup id="dataSource" jndi-name="java:comp/env/jdbc/MyDataSource"/> -->
     
-	<!-- 
+	
 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
 		destroy-method="close">
 		<property name="driverClass" value="${db.driverClassName}" />
@@ -41,8 +41,7 @@
 		<property name="idleConnectionTestPeriod" value="${db.idleConnectionTestPeriod}" />
 		<property name="maxIdleTimeExcessConnections" value="${db.maxIdleTimeExcessConnections}" />	
 	</bean>
-	 -->
-
+	
 	<!-- Heroku settings -->
 	<!-- <bean class="java.net.URI" id="dbUrl">
 		<constructor-arg value="#{systemEnvironment['DATABASE_URL']}" />

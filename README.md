@@ -25,3 +25,6 @@ upgrade to Spring 2.3 and HB 4.2.6
 
 v0.43, 06/12/2013
 new Layout, added adding child item
+
+v0.44, 11/12/2013
+implement item moving, refactoring

@@ -31,15 +31,14 @@ public class NoteTreeComposer extends GenericForwardComposer<Tree> {
 			@Override
 			public void onEvent(Event event) throws Exception {
 				Tree tree = (Tree) event.getTarget();
-				log.debug("doAfterCompose tree.getTreechildren().getFirstChild(): "+ tree.getTreechildren().getFirstChild());
 				
 				Treeitem item = (Treeitem) tree.getTreechildren().getFirstChild();
 				tree.setSelectedItem(item);
 				
-				TopicItem currentNodeItem = ((TopicItemTreeNode) item.getValue()).getData();
-				log.debug("doAfterCompose currentNodeItem.getId(): "+ currentNodeItem.getId());
+				TopicItem currentNode = ((TopicItemTreeNode) item.getValue()).getData();
+				log.debug("doAfterCompose currentNodeId: "+ currentNode.getId());
 				
-				EventQueues.lookup("myqueue1", EventQueues.APPLICATION, true).publish(new Event("onTopicInit", null, currentNodeItem));
+				EventQueues.lookup("myqueue1", EventQueues.APPLICATION, true).publish(new Event("onTopicInit", null, currentNode));
 			}
 		});
 		
