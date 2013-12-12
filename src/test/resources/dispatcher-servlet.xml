@@ -8,7 +8,7 @@
 		http://www.springframework.org/schema/context
 		http://www.springframework.org/schema/context/spring-context-3.2.xsd">
 		
-	<context:component-scan base-package="com.wind.quicknote.helpers" />
+	<context:component-scan base-package="com.wind.quicknote.helper" />
  
 	<bean
 		class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
@@ -33,7 +33,7 @@
 			<list>
 				<bean
 					class="org.springframework.web.servlet.view.json.MappingJacksonJsonView" />
-					<bean class="com.wind.quicknote.helpers.MappingJacksonJsonpView"/>
+					<bean class="com.wind.quicknote.helper.MappingJacksonJsonpView"/>
 			</list>
 		</property>
 	</bean>

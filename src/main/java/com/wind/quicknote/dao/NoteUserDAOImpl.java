@@ -8,8 +8,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.wind.quicknote.models.NoteNode;
-import com.wind.quicknote.models.NoteUser;
+import com.wind.quicknote.model.NoteNode;
+import com.wind.quicknote.model.NoteUser;
 
 
 /**

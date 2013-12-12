@@ -29,7 +29,7 @@
 		<center border="none" autoscroll="true">
 			<div>
 				<vlayout id="pLayout">
-					<tree id="topicTree" apply="com.wind.quicknote.controllers.NoteTreeComposer"/>
+					<tree id="topicTree" apply="com.wind.quicknote.controller.NoteTreeComposer"/>
 				</vlayout>
 			</div>
 		</center>

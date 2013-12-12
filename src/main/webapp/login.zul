@@ -1,7 +1,7 @@
 <?link rel="shortcut icon" href="http://www.google.com.au/favicon.ico" ?>
 <vlayout xmlns:c="client">
     <window id="loginWin" title="Welcome!! ^_^" width="300px" minimizable="true" 
-    	border='normal' apply="com.wind.quicknote.controllers.LoginViewCtrl">
+    	border='normal' apply="com.wind.quicknote.controller.LoginViewCtrl">
         <style>
         div.minimize {
             border: 1px solid #79858E;

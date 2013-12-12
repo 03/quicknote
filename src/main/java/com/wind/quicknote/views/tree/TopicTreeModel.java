@@ -8,12 +8,12 @@ import org.zkoss.zul.DefaultTreeModel;
 import org.zkoss.zul.DefaultTreeNode;
 import org.zkoss.zul.TreeNode;
 
-import com.wind.quicknote.helpers.QUtils;
-import com.wind.quicknote.helpers.SpringBeanUtil;
-import com.wind.quicknote.models.NoteNode;
-import com.wind.quicknote.models.NoteUser;
-import com.wind.quicknote.services.NoteService;
-import com.wind.quicknote.systems.UserCredentialManager;
+import com.wind.quicknote.helper.QUtils;
+import com.wind.quicknote.helper.SpringBeanUtil;
+import com.wind.quicknote.model.NoteNode;
+import com.wind.quicknote.model.NoteUser;
+import com.wind.quicknote.service.NoteService;
+import com.wind.quicknote.system.UserCredentialManager;
  
 /*
  * http://forum.zkoss.org/question/81157/add-mvvm-model-to-spring-for-adding-transactional-annotation/

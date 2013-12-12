@@ -59,7 +59,7 @@
 		<property name="dataSource" ref="dataSource" />
 		<property name="packagesToScan">
 			<list>
-				<value>com.wind.quicknote.models</value>
+				<value>com.wind.quicknote.model</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
@@ -90,7 +90,7 @@
  
 	<aop:config>
 		<aop:pointcut id="srvOperations"
-			expression="execution( * com.wind.quicknote.models.*.*(..))" />
+			expression="execution( * com.wind.quicknote.model.*.*(..))" />
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="srvOperations" />
 	</aop:config>
 	

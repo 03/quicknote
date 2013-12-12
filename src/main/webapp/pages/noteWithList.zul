@@ -2,7 +2,7 @@
 
 <?page title="QuickNote v0.3"?>
 <?link rel="shortcut icon" href="http://www.google.com.au/favicon.ico" ?>
-<?component name="NoteTreeList" class="com.wind.quicknote.controllers.NoteTreeList" ?>
+<?component name="NoteTreeList" class="com.wind.quicknote.controller.NoteTreeList" ?>
 
 <style dynamic="true">
 	.h-inline-block {
@@ -21,7 +21,7 @@
 </style>
 
 <window id="noteWindow" border="normal" 
-	apply="com.wind.quicknote.controllers.NoteMainCtrl" >
+	apply="com.wind.quicknote.controller.NoteMainCtrl" >
 	
 	<borderlayout height="650px" visible="true">
 	    <north maxsize="430" size="17%" height="120px" splittable="true" collapsible="true" style="padding:5px;">
@@ -73,7 +73,7 @@
 	            </west>
 	            <center border="none" autoscroll="true" vflex="true">
 	            	<div id="TopicsDiv"
-	            		apply="com.wind.quicknote.controllers.NoteViewCtrl">
+	            		apply="com.wind.quicknote.controller.NoteViewCtrl">
 	            		<listbox id="topicList" height="330px" mold="paging" pageSize="5" 
 	            		vflex="true" pagingPosition="bottom">
 	            			<auxhead>
@@ -119,7 +119,7 @@
 	            </east>
 	            <south visible="false">
 	            	<div apply="org.zkoss.bind.BindComposer"
-				        viewModel="@id('e') @init('com.wind.quicknote.controllers.NoteMainVM')">
+				        viewModel="@id('e') @init('com.wind.quicknote.controller.NoteMainVM')">
 				        <button label="Model Window" onClick="@command('showModelWin')" />
 				    </div>
 	            </south>

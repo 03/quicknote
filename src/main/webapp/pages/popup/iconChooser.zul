@@ -1,7 +1,7 @@
 <zk>
 <window id="iconChooserWin" title="Icon Choosing"
 	apply="org.zkoss.bind.BindComposer"
-	viewModel="@id('vm') @init('com.wind.quicknote.controllers.IconChooserVM')"
+	viewModel="@id('vm') @init('com.wind.quicknote.controller.IconChooserVM')"
 	border="normal" closable="true">
 
 	<groupbox mold="3d" style="padding:5px">

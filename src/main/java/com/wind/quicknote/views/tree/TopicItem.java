@@ -1,6 +1,6 @@
 package com.wind.quicknote.views.tree;
 
-import com.wind.quicknote.models.NoteNode;
+import com.wind.quicknote.model.NoteNode;
 
 public class TopicItem {
 

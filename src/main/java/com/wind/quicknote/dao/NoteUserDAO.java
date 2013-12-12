@@ -2,7 +2,7 @@ package com.wind.quicknote.dao;
 
 import java.util.List;
 
-import com.wind.quicknote.models.NoteUser;
+import com.wind.quicknote.model.NoteUser;
 
 public interface NoteUserDAO {
 
