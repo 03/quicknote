@@ -12,7 +12,7 @@ import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zul.Window;
 
 import com.wind.quicknote.service.NoteService;
-import com.wind.quicknote.views.tree.TopicItem;
+import com.wind.quicknote.view.tree.TopicItem;
 
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public class NoteMainVM {

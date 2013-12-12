@@ -37,9 +37,9 @@ import org.zkoss.zul.Treerow;
 import org.zkoss.zul.Vlayout;
 import org.zkoss.zul.Window;
 
-import com.wind.quicknote.views.tree.TopicItem;
-import com.wind.quicknote.views.tree.TopicItemTreeNode;
-import com.wind.quicknote.views.tree.TopicTreeModel;
+import com.wind.quicknote.view.tree.TopicItem;
+import com.wind.quicknote.view.tree.TopicItemTreeNode;
+import com.wind.quicknote.view.tree.TopicTreeModel;
 
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
 public class NoteTreeList extends Div implements IdSpace {

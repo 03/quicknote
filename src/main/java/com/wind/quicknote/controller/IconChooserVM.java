@@ -11,7 +11,7 @@ import org.zkoss.bind.annotation.ExecutionArgParam;
 import org.zkoss.zul.Image;
 import org.zkoss.zul.Window;
 
-import com.wind.quicknote.views.tree.TopicItem;
+import com.wind.quicknote.view.tree.TopicItem;
 
 /**
  * @author Luke

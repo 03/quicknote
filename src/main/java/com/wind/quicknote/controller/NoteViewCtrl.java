@@ -16,7 +16,7 @@ import org.zkoss.zul.Listbox;
 
 import com.wind.quicknote.model.NoteNode;
 import com.wind.quicknote.service.NoteService;
-import com.wind.quicknote.views.tree.TopicItem;
+import com.wind.quicknote.view.tree.TopicItem;
 
 /**
  * 

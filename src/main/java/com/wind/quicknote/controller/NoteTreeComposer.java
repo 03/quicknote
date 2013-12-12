@@ -9,8 +9,8 @@ import org.zkoss.zk.ui.util.GenericForwardComposer;
 import org.zkoss.zul.Tree;
 import org.zkoss.zul.Treeitem;
 
-import com.wind.quicknote.views.tree.TopicItem;
-import com.wind.quicknote.views.tree.TopicItemTreeNode;
+import com.wind.quicknote.view.tree.TopicItem;
+import com.wind.quicknote.view.tree.TopicItemTreeNode;
 
 public class NoteTreeComposer extends GenericForwardComposer<Tree> {
 	
