@@ -28,3 +28,10 @@ new Layout, added adding child item
 
 v0.44, 11/12/2013
 implement item moving, refactoring
+
+v0.45, 16/12/2013
+upgrade to HB 4.2.8
+implement genericDao to simplify db oper
+apply p6spy to display real sql stmt on testing
+use hibernate envers for record versioning
+

@@ -5,6 +5,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,10 +25,12 @@ public class NoteServiceImpl implements NoteService {
 	private String passcode;
 	
 	@Autowired
-	private NoteNodeDAO noteNodeDAO;
+	@Qualifier("noteNodeDAO")
+	private NoteNodeDAO nodeDAO;
 	
 	@Autowired
-	private NoteUserDAO noteUserDAO;
+	@Qualifier("noteUserDAO")
+	private NoteUserDAO userDAO;
 	
 	public void init() {
 		log.debug("init");
@@ -37,60 +40,72 @@ public class NoteServiceImpl implements NoteService {
 		log.debug("destroy");
 	}
 	
+	/*
+	 * node DAO
+	 */
 	public List<NoteNode> findAllTopics() {
-		return noteNodeDAO.findAll();
+		return nodeDAO.findAll();
 	}
 	
 	public List<NoteNode> findChildTopics(long id) {
-		return noteNodeDAO.findChildren(id);
+		return nodeDAO.findChildren(id);
 	}
 	
 	public NoteNode findRootTopicByUser(long userId) {
-		log.debug("findRootTopicByUser -----> " + passcode);
-		return noteNodeDAO.findRootByUser(userId);
-	}
-	
-	public List<NoteUser> findAllUsers() {
-		return noteUserDAO.findAll();
+		log.debug("Passcode: " + passcode);
+		return nodeDAO.findRootByUser(userId);
 	}
 	
 	public void updateTopicIcon(long id, String iconSrc) {
-		noteNodeDAO.updateIcon(id, iconSrc);
+		nodeDAO.updateIcon(id, iconSrc);
 	}
 	
 	public void updateTopicText(long id, String text) {
-		noteNodeDAO.updateText(id, text);
+		nodeDAO.updateText(id, text);
 	}
 	
 	public void updateTopicName(long id, String name) {
-		noteNodeDAO.updateName(id, name);
+		nodeDAO.updateName(id, name);
 	}
 	
 	public void removeTopic(long id) {
-		noteNodeDAO.remove(id);
+		nodeDAO.remove(id);
 	}
 	
 	public NoteNode addTopic(long pid, String name, String content, String picUrl) {
-		return noteNodeDAO.addChild(pid, name, content, picUrl);
+		return nodeDAO.addChild(pid, name, content, picUrl);
 	}
 	
 	public void changeParentId(long id, long pid) {
-		noteNodeDAO.changeParent(id, pid);
+		nodeDAO.changeParent(id, pid);
 	}
+	
 
+	/*
+	 * user DAO
+	 */
+	public List<NoteUser> findAllUsers() {
+		return userDAO.findAll();
+	}
+	
 	@Override
 	public NoteUser addUser(String name, String email, String password) {
-		return noteUserDAO.createUser(name, email, password);
+		return userDAO.createUser(name, email, password);
 	}
 
 	@Override
 	public NoteNode getTopic(long id) {
-		return noteNodeDAO.findById(id);
+		return nodeDAO.findById(NoteNode.class, id);
 	}
 
 	@Override
 	public NoteUser findUserByName(String name) {
-		return noteUserDAO.findByName(name);
+		return userDAO.findByName(name);
+	}
+
+	@Override
+	public void updateUserDesc(long userId, String desc) {
+		userDAO.updateDesc(userId, desc);
 	}
 	
 }

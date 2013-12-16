@@ -68,12 +68,21 @@ public class NoteServiceTest {
 	/*@Test
 	public void testUpdateTopicIcon() {
 		fail("Not yet implemented");
-	}
+	}*/
 
 	@Test
 	public void testUpdateTopicText() {
-		fail("Not yet implemented");
-	}*/
+		long id = 3L;
+		String oldValue = "hi there 3";
+		String newValue = "hi there 3++";
+		assertEquals(oldValue, service.getTopic(id).getText());
+		
+		service.updateTopicText(id, newValue);
+		assertEquals(newValue, service.getTopic(id).getText());
+		
+		service.updateTopicText(id, oldValue);
+		assertEquals(oldValue, service.getTopic(id).getText());
+	}
 
 	@Test
 	public void testUpdateTopicName() {
@@ -128,6 +137,18 @@ public class NoteServiceTest {
 	public void testAddUser() {
 		NoteUser user = service.addUser("Kevin Abbort", "send@mail.com", "abcdefg");
 		assertNotNull(user.getId());
+	}
+	
+	@Test
+	public void testUpdateUserDesc() {
+		String oldValue = "meat lover";
+		String newValue = "laywer";
+		assertEquals(oldValue, service.findUserByName("David").getDesc());
+		service.updateUserDesc(service.findUserByName("David").getId(), newValue);
+		assertEquals(newValue, service.findUserByName("David").getDesc());
+		
+		service.updateUserDesc(service.findUserByName("David").getId(), oldValue);
+		assertEquals(oldValue, service.findUserByName("David").getDesc());
 	}
 	
 }

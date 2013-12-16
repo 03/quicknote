@@ -19,6 +19,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
+import org.hibernate.envers.Audited;
 
 /**
  * Id, Name, IconUrl, Status, ParentId, Text, Attachment, Created, Updated
@@ -40,10 +41,9 @@ import org.hibernate.annotations.NamedQuery;
 
 @Entity
 @Table(name = "notenodes")
-public class NoteNode {
+public class NoteNode /* extends DefaultRevisionEntity */ {
 
 	@Id
-	//@GeneratedValue(strategy = GenerationType.AUTO)
 	@SequenceGenerator(name = "NodeSequence", sequenceName = "node_seq", allocationSize=5)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="NodeSequence")
 	private long id;
@@ -57,23 +57,34 @@ public class NoteNode {
 	//@Fetch(FetchMode.JOIN)
 	private List<NoteNode> children = new ArrayList<NoteNode>();
 	
+	@Audited
 	@Column(name="name")
 	private String name;
 	
+	@Audited
 	@Column(name="tag")
 	private String tag;
+	
+	@Audited
 	@Column(name="text", length=4000)
 	private String text;
+	
+	@Audited
 	@Column(name="attachment")
 	private byte[] attachment;
+	
+	@Audited
 	@Column(name="iconurl")
 	private String icon;
+	
+	@Audited
 	@Column(name="status")
 	private String status;
 	
 	@Column(name="created")
 	private Date created;
-	@Column(name="updated")
+	
+	@Column(name="updated", nullable=true)
 	private Date updated;
 	
 	public NoteNode() {
@@ -87,7 +98,7 @@ public class NoteNode {
 	public void setId(long id) {
 		this.id = id;
 	}
-
+	
 	public String getName() {
 		return name;
 	}

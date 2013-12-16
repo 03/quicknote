@@ -36,5 +36,7 @@ public interface NoteService {
 	public NoteUser addUser(String name, String email, String password);
 
 	public NoteUser findUserByName(String name);
+
+	public void updateUserDesc(long userId, String desc);
 	
 }

@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.wind.quicknote.model.NoteNode;
@@ -21,27 +20,23 @@ import com.wind.quicknote.model.NoteNode;
  */
 @SuppressWarnings("unchecked")
 @Repository("noteNodeDAO")
-public class NoteNodeDAOImpl implements NoteNodeDAO {
+public class NoteNodeDAOImpl extends GenericDao<NoteNode> implements NoteNodeDAO {
 
-	@SuppressWarnings("rawtypes")
-	@Autowired
-	private IGenericDao genericDao;
-	
 	public List<NoteNode> findAll() {
-        return genericDao.search("from NoteNode");
+        return search("from NoteNode");
 	}
 
 	public List<NoteNode> findAllAvailableByUser(long userId) {
         
-        Map<String, String> sqlParams = new HashMap<String, String> ();
+        Map<String, Object> sqlParams = new HashMap<String, Object> ();
 		sqlParams.put("status", "a");
-		return genericDao.search("from NoteNode where status=:status", sqlParams);
+		return search("from NoteNode where status=:status", sqlParams);
 	}
 	
 	@Override
 	public List<NoteNode> findChildren(long id) {
 		
-		NoteNode entity = (NoteNode) genericDao.findById(id, NoteNode.class);
+		NoteNode entity = (NoteNode) findById(NoteNode.class, id);
 		if(entity.hasChildren()) {
 			List<NoteNode> list = entity.getChildren();
 	        return list;
@@ -53,13 +48,13 @@ public class NoteNodeDAOImpl implements NoteNodeDAO {
 
 	public void remove(long id) {
 		
-		NoteNode node = (NoteNode) genericDao.findById(id, NoteNode.class);
+		NoteNode node = (NoteNode) findById(NoteNode.class, id);
 		if (node.hasChildren()) {
 			for (NoteNode child : node.getChildren()) {
 				remove(child.getId());
 			}
 		}
-		genericDao.delete(node);
+		delete(node);
 	}
 
 	@Override
@@ -69,11 +64,11 @@ public class NoteNodeDAOImpl implements NoteNodeDAO {
 		Map sqlParams = new HashMap();
 		sqlParams.put("userId", userId);
 		
-		List<NoteNode> list = genericDao.executeNamedQuery(
+		List<NoteNode> list = executeNamedQuery(
 				"findRootNoteByUser", sqlParams, 1);
 		NoteNode rootnote = list.get(0);
 		if (rootnote != null) {
-			// set children manually
+			// setting up children manually
 			findChildNodes(rootnote);
 			return rootnote;
 
@@ -85,7 +80,7 @@ public class NoteNodeDAOImpl implements NoteNodeDAO {
     		note.setParent(null);
         	note.setCreated(new Date());
         	
-        	genericDao.save(note);
+        	save(note);
     		return note;
 		}
         
@@ -116,39 +111,34 @@ public class NoteNodeDAOImpl implements NoteNodeDAO {
 	@Override
 	public void updateText(long id, String text) {
 
-		NoteNode entity = (NoteNode) genericDao.findById(id, NoteNode.class);
+		NoteNode entity = (NoteNode) findById(NoteNode.class, id);
 		entity.setUpdated(new Date());
 		entity.setText(text);
-		genericDao.merge(entity);
+		merge(entity);
 	}
 	
 	@Override
 	public void updateName(long id, String name) {
 
-		NoteNode entity = (NoteNode) genericDao.findById(id, NoteNode.class);
+		NoteNode entity = (NoteNode) findById(NoteNode.class, id);
 		entity.setName(name);
 		entity.setUpdated(new Date());
-		genericDao.merge(entity);
+		merge(entity);
 	}
 
 	@Override
 	public void updateIcon(long id, String iconSrc) {
-		NoteNode entity = (NoteNode) genericDao.findById(id, NoteNode.class);
+		NoteNode entity = (NoteNode) findById(NoteNode.class, id);
 		entity.setIcon(iconSrc);
 		entity.setUpdated(new Date());
-		genericDao.merge(entity);
+		merge(entity);
 		
 	}
 	
 	@Override
-	public NoteNode findById(long id) {
-		return (NoteNode) genericDao.findById(id, NoteNode.class);
-	}
-
-	@Override
 	public NoteNode addChild(long pid, String name, String text, String picUrl) {
 
-		NoteNode parent = (NoteNode) genericDao.findById(pid, NoteNode.class);
+		NoteNode parent = (NoteNode) findById(NoteNode.class, pid);
 		NoteNode note = new NoteNode();
 		note.setParent(parent);
 		note.setName(name);
@@ -156,19 +146,17 @@ public class NoteNodeDAOImpl implements NoteNodeDAO {
 		note.setIcon(picUrl == null? parent.getIcon():picUrl);
 		note.setCreated(new Date());
 		
-		genericDao.save(note);
+		save(note);
 		return note;
 	}
 
 	@Override
 	public void changeParent(long id, long pid) {
-		NoteNode parent = (NoteNode) genericDao.findById(pid, NoteNode.class);
-		NoteNode entity = (NoteNode) genericDao.findById(id, NoteNode.class);
+		NoteNode parent = (NoteNode) findById(NoteNode.class, pid);
+		NoteNode entity = (NoteNode) findById(NoteNode.class, id);
 		entity.setParent(parent);
-		genericDao.merge(entity);
 		
 	}
-
 
 
 }

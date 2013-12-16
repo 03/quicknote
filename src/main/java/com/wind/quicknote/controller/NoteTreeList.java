@@ -222,10 +222,8 @@ public class NoteTreeList extends Div implements IdSpace {
 	@Listen("onClick=#btnSmartInsert")
    	public void smartInsertItem() {
     	
-    	TopicItem currentItem = getCurrentItem();
-		if (currentItem != null) {
+		if (getCurrentItem() != null) {
 
-			// current item
 			Treeitem selectedTreeItem = topicTree.getSelectedItem();
 			// selectedTreeItem[UI] as parent node[ViewModel]
 			TopicItemTreeNode selectedNode = (TopicItemTreeNode) selectedTreeItem.getValue();
@@ -234,34 +232,27 @@ public class NoteTreeList extends Div implements IdSpace {
 			
 			Treeitem parentTreeItem = selectedTreeItem.getParentItem();
 			if (parentTreeItem == null) {
-        		// if on top level, add node on same level
+				// if on top level, add node on same level
 				topicTreeModel.addToRoot();
-				
-        	} else {
-        		
+			} else {
 				if (selectedItem.isLeaf()) {
-                	// if current node has no children , append it as the first child
-                    topicTreeModel.addToNode(selectedNode);
-                    
-                } else { 
-                	// if current node has children, add it as the last child
-                	topicTreeModel.insertAtLast(parentNode);
-                	
-                }
-        		
-        	}
+					// if current node has no children , append it as the first
+					// child
+					topicTreeModel.addToNode(selectedNode);
+				} else {
+					// if current node has children, add it as the last child
+					topicTreeModel.insertAtLast(parentNode);
+				}
+			}
             
 		} else {
 
-			int countOfChildren = topicTreeModel.getRoot().getChildCount();
-			if (countOfChildren == 0) {
+			if (topicTreeModel.getRoot().getChildCount() == 0) {
 				// add new node
 				topicTreeModel.addToRoot();
-				
 			} else {
 				showWarningDialog();
 			}
-			
 		}
        	
    	}

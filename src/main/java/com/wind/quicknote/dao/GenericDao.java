@@ -39,7 +39,7 @@ public class GenericDao<T> implements IGenericDao<T> {
 	}
 	
 	@Override
-	public T findById(Long id, Class<T> cls) {
+	public T findById(Class<T> cls, Long id) {
 		//T t = (T) getSession().load(cls, id);
 		T t = (T) getSession().get(cls, id);
 		return t;
@@ -120,6 +120,13 @@ public class GenericDao<T> implements IGenericDao<T> {
 	@Override
 	public <T> void merge(T t) {
 		getSession().merge(t);
+	}
+
+	@Override
+	public <T> List<T> findAll(Class<T> cls) {
+		
+		Query query = getSession().createQuery("from " + cls.getName());
+		return query.list();
 	}
 
 	

@@ -22,13 +22,15 @@ public interface IGenericDao<T> {
 
 	<T> void create(T t);
 
-	void delete(T t);
-
 	<T> void merge(T t);
 
 	void save(T t);
 
 	void update(T t);
 
-	T findById(Long id, Class<T> cls);
+	void delete(T t);
+
+	T findById(Class<T> cls, Long id);
+	
+	<T> List<T> findAll(Class<T> cls);
 }

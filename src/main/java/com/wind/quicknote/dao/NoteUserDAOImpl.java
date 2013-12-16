@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.wind.quicknote.model.NoteNode;
@@ -19,25 +18,15 @@ import com.wind.quicknote.model.NoteUser;
  *         storage system
  * 
  */
-@SuppressWarnings({ "unchecked" })
 @Repository("noteUserDAO") 
-public class NoteUserDAOImpl implements NoteUserDAO {
-
-	@SuppressWarnings("rawtypes")
-	@Autowired
-	private IGenericDao genericDao;
-	
-	public List<NoteUser> findAll() {
-		System.out.println("---> "+ genericDao);
-		return genericDao.search("from NoteUser");
-	}
+public class NoteUserDAOImpl extends GenericDao<NoteUser> implements NoteUserDAO {
 
 	@Override
 	public NoteUser findByName(String name) {
 		
-		Map<String, String> sqlParams = new HashMap<String, String> ();
+		Map<String, Object> sqlParams = new HashMap<String, Object> ();
 		sqlParams.put("name", name);
-		List<NoteUser> records = genericDao.search("from NoteUser where name=:name", sqlParams);
+		List<NoteUser> records = search("from NoteUser where name=:name", sqlParams);
 		
 		if (records.size() > 0) 
 			return records.get(0);
@@ -62,8 +51,20 @@ public class NoteUserDAOImpl implements NoteUserDAO {
 		user.setCreated(new Date());
 		user.setRootnote(node);
 		
-		genericDao.save(user);
+		save(user);
 		return user;
+	}
+
+	@Override
+	public void updateDesc(long userId, String desc) {
+
+		NoteUser user = (NoteUser) findById(NoteUser.class, userId);
+		user.setDesc(desc);
+	}
+
+	@Override
+	public List<NoteUser> findAll() {
+		return findAll(NoteUser.class);
 	}
 
 }

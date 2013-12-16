@@ -34,8 +34,10 @@ public class NoteUser {
 	private String password;
 	@Column(name="email")
 	private String email;
+	
 	@Column(name="description")
 	private String desc;
+	
 	@Column(name="iconUrl")
 	private String icon;
 	@Column(name="status")
@@ -47,9 +49,10 @@ public class NoteUser {
 	
 	@Column(name="created")
 	private Date created;
-	@Column(name="updated")
+	
+	@Column(name="updated", nullable=true)
 	private Date updated;
-
+	
 	public NoteUser() {
 		
 	}
@@ -61,7 +64,7 @@ public class NoteUser {
 	public void setId(long id) {
 		this.id = id;
 	}
-
+	
 	public String getName() {
 		return name;
 	}

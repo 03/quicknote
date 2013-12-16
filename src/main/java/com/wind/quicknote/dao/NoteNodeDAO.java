@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.wind.quicknote.model.NoteNode;
 
-public interface NoteNodeDAO {
+public interface NoteNodeDAO extends IGenericDao<NoteNode>{
 
 	List<NoteNode> findAll();
 	
@@ -12,8 +12,6 @@ public interface NoteNodeDAO {
 
 	List<NoteNode> findAllAvailableByUser(long userId);
 	
-	NoteNode findById(long id);
-
 	void remove(long id);
 	
 	NoteNode addChild(long pid, String name, String content, String picUrl);
