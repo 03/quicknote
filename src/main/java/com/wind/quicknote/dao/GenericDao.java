@@ -91,7 +91,7 @@ public class GenericDao<T> implements IGenericDao<T> {
 
 	@Override
 	public <T> List<T> executeNamedQuery(String queryName, Map<String, Object> params, Integer maxResults) {
-		Assert.notNull(queryName, "queryName is required");		
+		Assert.notNull(queryName, "QueryName is required.");		
 		Query query = getSession().getNamedQuery(queryName);
 		return executeQuery(query, params, maxResults);
 	}
@@ -114,13 +114,8 @@ public class GenericDao<T> implements IGenericDao<T> {
 	}
 	
 	@Override
-	public <T> void create(T t) {
-		getSession().persist(t);
-	}
-
-	@Override
-	public <T> void merge(T t) {
-		getSession().merge(t);
+	public <T> T merge(T t) {
+		return (T) getSession().merge(t);
 	}
 
 	@Override

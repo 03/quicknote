@@ -60,7 +60,7 @@ public class LoginViewCtrl extends SelectorComposer<Window> {
 		if (mgmt.isAuthenticated()) {
 			// put it in session
 			HttpSession hSess = (HttpSession) ((HttpServletRequest)Executions.getCurrent().getNativeRequest()).getSession();
-			String userName = mgmt.getUser().getName();
+			String userName = mgmt.getUser().getLoginName();
 			hSess.setAttribute("user", userName);
 			
 			Executions.getCurrent().sendRedirect(URL_HOME_PAGE);

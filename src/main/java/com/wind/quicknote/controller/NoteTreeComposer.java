@@ -33,6 +33,10 @@ public class NoteTreeComposer extends GenericForwardComposer<Tree> {
 				Tree tree = (Tree) event.getTarget();
 				
 				Treeitem item = (Treeitem) tree.getTreechildren().getFirstChild();
+				if(item == null) {
+					// no children found, could be the case for new user or user delete all its notes
+					return;
+				}
 				tree.setSelectedItem(item);
 				
 				TopicItem currentNode = ((TopicItemTreeNode) item.getValue()).getData();

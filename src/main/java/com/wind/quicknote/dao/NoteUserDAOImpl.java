@@ -25,8 +25,8 @@ public class NoteUserDAOImpl extends GenericDao<NoteUser> implements NoteUserDAO
 	public NoteUser findByName(String name) {
 		
 		Map<String, Object> sqlParams = new HashMap<String, Object> ();
-		sqlParams.put("name", name);
-		List<NoteUser> records = search("from NoteUser where name=:name", sqlParams);
+		sqlParams.put("loginName", name);
+		List<NoteUser> records = search("from NoteUser where loginName=:loginName", sqlParams);
 		
 		if (records.size() > 0) 
 			return records.get(0);
@@ -45,7 +45,7 @@ public class NoteUserDAOImpl extends GenericDao<NoteUser> implements NoteUserDAO
 		
 		// Create user
 		NoteUser user = new NoteUser();
-		user.setName(username);
+		user.setLoginName(username);
 		user.setEmail(email);
 		user.setPassword(password);
 		user.setCreated(new Date());
@@ -58,6 +58,23 @@ public class NoteUserDAOImpl extends GenericDao<NoteUser> implements NoteUserDAO
 	@Override
 	public List<NoteUser> findAll() {
 		return findAll(NoteUser.class);
+	}
+
+	@Override
+	public NoteUser createUser(NoteUser user) {
+		// Create root note
+		NoteNode node = new NoteNode();
+		node.setText("Root(invisible) of user[" + user.getLoginName() + "]");
+		node.setName("Root");
+		node.setCreated(new Date());
+		node.setParent(null);
+
+		// Create user
+		user.setCreated(new Date());
+		user.setRootnote(node);
+
+		save(user);
+		return user;
 	}
 
 }

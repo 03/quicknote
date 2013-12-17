@@ -1,5 +1,8 @@
-QuickNote WebApp Created by Luke on Apr.2013
+QuickNote WebApp
 ================================================
+
+Created by Luke on Apr.2013
+------------------------------------------------
 
 v0.1 25/04/2013
 implemented: tree node list
@@ -35,4 +38,7 @@ v0.45, 16/12/2013
 - implement genericDao
 - apply p6spy to display real sql stmt on testing
 - use hibernate envers for record versioning
+
+v0.46, 17/12/2013
+SignUp screen added
 

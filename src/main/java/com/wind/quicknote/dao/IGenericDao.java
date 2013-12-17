@@ -21,9 +21,7 @@ public interface IGenericDao<T> {
 
 	<T> List<T> executeNamedQuery(String queryName, Map<String, Object> params, Integer maxResults);
 
-	<T> void create(T t);
-
-	<T> void merge(T t);
+	<T> T merge(T t);
 
 	void save(T t);
 

@@ -1,0 +1,69 @@
+<?link rel="shortcut icon" href="http://www.google.com.au/favicon.ico" ?>
+<zk>
+    <window id="signupWin" height="400px" width="550px" title="Sign Up" border="normal" closable="true" apply="org.zkoss.bind.BindComposer"
+        viewModel="@id('vm') @init('com.wind.quicknote.controller.SignupViewModel')"
+        validationMessages="@id('vmsgs')"
+        form="@id('fx') @load(vm.noteUser) @save(vm.noteUser, before='submit') @validator('com.wind.quicknote.controller.SignupValidator', retypedPassword=vm.retypedPassword)">
+        <grid>
+            <columns>
+                <column label="" width="120px" />
+                <column label="" />
+            </columns>
+            <rows>
+                <row>
+                    <label value="UserName" width="150px" />
+                    <hlayout>
+                        <textbox value="@bind(fx.loginName)"
+                            width="150px" tabindex="1" />
+                    </hlayout>
+                </row>
+                <row>
+                    Password
+                    <textbox type="password" value="@bind(fx.password)"
+                        width="150px" tabindex="2" />
+                </row>
+                <row>
+                    Confirm Password
+                    <cell>
+                        <textbox type="password" value="@bind(vm.retypedPassword)"
+                             width="150px"  tabindex="3" />
+                        <label class="error"
+                            value="@load(vmsgs['password'])" />
+                    </cell>
+                </row>
+                <row>
+                    E-mail:
+                    <cell>
+                        <textbox value="@bind(fx.email)" width="150px" tabindex="9" />
+                        <label class="error"
+                            value="@load(vmsgs['email'])" />
+                    </cell>
+                </row>
+                <row>
+                    Description:
+                    <vlayout>
+                        <div style="width:375px;text-align:right;padding:0;">
+                            Adjust Height:
+                            <spinner constraint="no negative,no zero"
+                                value="@load(vm.memoHeight)"
+                                onChanging="@command('changeMemoHeight')" tabindex="10" />
+                        </div>
+                        <textbox rows="@load(vm.memoHeight)" value="@bind(fx.desc)"
+                            width="370px;" tabindex="11" />
+                    </vlayout>
+                </row>
+                <row>
+                    <cell colspan="3" style="text-align:center">
+                        <vlayout>
+                            <!-- <label visible="@load(empty vmsgs)"
+                                value="@load(empty vmsgs ? 'Form successfully submitted!' : '', before='submit')" /> -->
+                                
+                            <button label="Submit" onClick="@command('submit', cmp=signupWin)"
+                                width="100px" height="30px" />
+                        </vlayout>
+                    </cell>
+                </row>
+            </rows>
+        </grid>
+    </window>
+</zk>

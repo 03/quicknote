@@ -104,8 +104,13 @@ public class NoteServiceImpl implements NoteService {
 	}
 	
 	@Override
-	public NoteUser addUser(String name, String email, String password) {
-		return userDAO.createUser(name, email, password);
+	public NoteUser addUser(String loginName, String email, String password) {
+		return userDAO.createUser(loginName, email, password);
+	}
+	
+	@Override
+	public NoteUser addUser(NoteUser user) {
+		return userDAO.createUser(user);
 	}
 
 	@Override

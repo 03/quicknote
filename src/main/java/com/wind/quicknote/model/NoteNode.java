@@ -40,7 +40,7 @@ import org.hibernate.envers.Audited;
 })
 
 @Entity
-@Table(name = "notenodes")
+@Table(name = "note_nodes")
 public class NoteNode /* extends DefaultRevisionEntity */ {
 
 	@Id
@@ -49,7 +49,7 @@ public class NoteNode /* extends DefaultRevisionEntity */ {
 	private long id;
 
 	@ManyToOne
-	@JoinColumn(name="parentId")
+	@JoinColumn(name="pid")
 	private NoteNode parent;
 	
 	@OneToMany(cascade = CascadeType.PERSIST, mappedBy = "parent", fetch = FetchType.LAZY)
@@ -74,7 +74,7 @@ public class NoteNode /* extends DefaultRevisionEntity */ {
 	private byte[] attachment;
 	
 	@Audited
-	@Column(name="iconurl")
+	@Column(name="icon_url")
 	private String icon;
 	
 	@Audited
@@ -84,7 +84,7 @@ public class NoteNode /* extends DefaultRevisionEntity */ {
 	@Column(name="created")
 	private Date created;
 	
-	@Column(name="updated", nullable=true)
+	@Column(name="updated")
 	private Date updated;
 	
 	public NoteNode() {

@@ -35,7 +35,9 @@ public interface NoteService {
 	public void changeParentId(long id, long pid);
 	
 	// User
-	public NoteUser addUser(String name, String email, String password);
+	public NoteUser addUser(String loginName, String email, String password);
+	
+	public NoteUser addUser(NoteUser user);
 
 	public NoteUser findUserByName(String name);
 

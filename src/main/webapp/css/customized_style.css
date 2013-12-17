@@ -5,3 +5,6 @@ display: block; width:80px; text-align:center; }
 
 .count { font-weight: bold; font-size: 10px; }
 
+.hightlight { color: #1469AB; font-weight: bold; } 
+		
+.error { color: red; }

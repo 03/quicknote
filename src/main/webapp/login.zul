@@ -1,28 +1,29 @@
 <?link rel="shortcut icon" href="http://www.google.com.au/favicon.ico" ?>
 <vlayout xmlns:c="client">
-    <window id="loginWin" title="Welcome!! ^_^" width="300px" minimizable="true" 
+    <window id="loginWin" title="Welcome ^_^" width="300px" minimizable="true" 
     	border='normal' apply="com.wind.quicknote.controller.LoginViewCtrl">
         <style>
-        div.minimize {
-            border: 1px solid #79858E;
-            background: #D3E1EC;
-            position: absolute;
-            opacity: 0.8;       
-        }
-        div.loginGrid { 
-            border: none;
-        }
-        td.loginCtl {
-            text-align: center;
-        }
-        td.loginCtl .z-label {
-            color: red;         
-            font-style: italic;
-        }
-        .ctlBtn { border: 1px outset #20; background:#cfeaf1; margin: 2px;
-			margin-right: 10px; padding-left: 2px; padding-right: 2px;
-			display: block; width:80px; text-align:center; 
-		}
+	        div.minimize {
+	            border: 1px solid #79858E;
+	            background: #D3E1EC;
+	            position: absolute;
+	            opacity: 0.8;       
+	        }
+	        div.loginGrid { 
+	            border: none;
+	        }
+	        td.loginCtl {
+	            text-align: center;
+	        }
+	        td.loginCtl .z-label {
+	            color: red;         
+	            font-style: italic;
+	        }
+	        .ctlBtn { border: 1px outset #20; background:#cfeaf1; margin: 2px;
+				margin-right: 10px; padding-left: 2px; padding-right: 2px;
+				display: block; width:80px; text-align:center; 
+			}
+			.ctlBtn_signup { background:#cfeaf1; width:120px; }
         </style>
         <grid sclass="loginGrid">
             <columns>
@@ -31,10 +32,29 @@
             <rows>
                 <row>Username : <textbox id="nameTxb" value="zk" c:onFocus="this.select()" /></row>
                 <row>Password : <textbox id="passwordTxb" type="password" value="zk" c:onFocus="this.select()"/></row>
-                <row><cell sclass="loginCtl" colspan="2"><vlayout>
-                    <button id="confirmBtn" label="Sign In" sclass="ctlBtn" />
-                    <label id="mesgLbl" />
-                </vlayout></cell></row>
+                <row>
+                	<cell sclass="loginCtl" colspan="2">
+                		<vlayout>
+                			<button id="confirmBtn" label="Sign In"
+                				sclass="ctlBtn" />
+                			<label id="mesgLbl" />
+                		</vlayout>
+                	</cell>
+                </row>
+                <row>
+                	Not having an account yet?
+                	<button id="signupBtn" label="Sign Up Now"
+                		sclass="ctlBtn_signup">
+                		<attribute name="onClick">
+							{
+								final Window win = (Window) Executions.createComponents("/signup.zul",
+										null, null);
+								win.setMaximizable(true);
+								win.doModal();
+							}
+						</attribute>
+                	</button>
+                </row>
             </rows>
         </grid>
     </window>

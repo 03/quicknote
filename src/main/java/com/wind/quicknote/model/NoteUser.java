@@ -17,7 +17,7 @@ import javax.persistence.Table;
  * 
  */
 @Entity
-@Table(name="noteusers")
+@Table(name="note_users")
 public class NoteUser {
 	
 	@Id
@@ -26,31 +26,37 @@ public class NoteUser {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="UserSequence")
 	private long id;
 	
-	@Column(name="name")
-	private String name;
+	@Column(name="login_name")
+	private String loginName;
+	@Column(name="first_name")
+	private String firstName;
+	@Column(name="last_name")
+	private String lastName;
 	@Column(name="role")
 	private String role;
 	@Column(name="password")
 	private String password;
 	@Column(name="email")
 	private String email;
-	
 	@Column(name="description")
 	private String desc;
-	
-	@Column(name="iconUrl")
+	@Column(name="icon_url")
 	private String icon;
 	@Column(name="status")
 	private String status;
 	
-	@JoinColumn(name="rootid")
+	@JoinColumn(name="root_id")
 	@OneToOne(cascade = CascadeType.ALL, optional = true)
 	private NoteNode rootnote;
+	
+	/*@OneToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "user_rootnodes", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "node_id"))
+	private Set<NoteNode> nodes;*/
 	
 	@Column(name="created")
 	private Date created;
 	
-	@Column(name="updated", nullable=true)
+	@Column(name="updated")
 	private Date updated;
 	
 	public NoteUser() {
@@ -65,12 +71,28 @@ public class NoteUser {
 		this.id = id;
 	}
 	
-	public String getName() {
-		return name;
+	public String getLoginName() {
+		return loginName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setLoginName(String loginName) {
+		this.loginName = loginName;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
 	public String getRole() {

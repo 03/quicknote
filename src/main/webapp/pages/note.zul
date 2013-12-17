@@ -1,6 +1,6 @@
 <zk>
 
-<?page title="QuickNote v0.45"?>
+<?page title="QuickNote v0.46"?>
 <?link rel="shortcut icon" href="http://www.google.com.au/favicon.ico" ?>
 <?component name="NoteTreeList" class="com.wind.quicknote.controller.NoteTreeList" ?>
 

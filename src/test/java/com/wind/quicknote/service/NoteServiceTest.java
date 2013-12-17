@@ -143,7 +143,7 @@ public class NoteServiceTest {
 	@Test
 	public void testUpdateUser() {
 
-		String userName = "David";
+		String userName = "Shado";
 		String oldValue = "meat lover";
 		String newValue = "laywer";
 		

@@ -11,5 +11,7 @@ public interface NoteUserDAO extends IGenericDao<NoteUser> {
 	NoteUser findByName(String name);
 	
 	NoteUser createUser(String username, String email, String password);
+	
+	NoteUser createUser(NoteUser user);
 
 }
