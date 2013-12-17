@@ -36,7 +36,7 @@ public class NoteNodeDAOImpl extends GenericDao<NoteNode> implements NoteNodeDAO
 	@Override
 	public List<NoteNode> findChildren(long id) {
 		
-		NoteNode entity = (NoteNode) findById(NoteNode.class, id);
+		NoteNode entity = (NoteNode) find(NoteNode.class, id);
 		if(entity.hasChildren()) {
 			List<NoteNode> list = entity.getChildren();
 	        return list;
@@ -48,7 +48,7 @@ public class NoteNodeDAOImpl extends GenericDao<NoteNode> implements NoteNodeDAO
 
 	public void remove(long id) {
 		
-		NoteNode node = (NoteNode) findById(NoteNode.class, id);
+		NoteNode node = (NoteNode) find(NoteNode.class, id);
 		if (node.hasChildren()) {
 			for (NoteNode child : node.getChildren()) {
 				remove(child.getId());
@@ -109,36 +109,9 @@ public class NoteNodeDAOImpl extends GenericDao<NoteNode> implements NoteNodeDAO
 	}
 	
 	@Override
-	public void updateText(long id, String text) {
-
-		NoteNode entity = (NoteNode) findById(NoteNode.class, id);
-		entity.setUpdated(new Date());
-		entity.setText(text);
-		merge(entity);
-	}
-	
-	@Override
-	public void updateName(long id, String name) {
-
-		NoteNode entity = (NoteNode) findById(NoteNode.class, id);
-		entity.setName(name);
-		entity.setUpdated(new Date());
-		merge(entity);
-	}
-
-	@Override
-	public void updateIcon(long id, String iconSrc) {
-		NoteNode entity = (NoteNode) findById(NoteNode.class, id);
-		entity.setIcon(iconSrc);
-		entity.setUpdated(new Date());
-		merge(entity);
-		
-	}
-	
-	@Override
 	public NoteNode addChild(long pid, String name, String text, String picUrl) {
 
-		NoteNode parent = (NoteNode) findById(NoteNode.class, pid);
+		NoteNode parent = (NoteNode) find(NoteNode.class, pid);
 		NoteNode note = new NoteNode();
 		note.setParent(parent);
 		note.setName(name);
@@ -152,8 +125,8 @@ public class NoteNodeDAOImpl extends GenericDao<NoteNode> implements NoteNodeDAO
 
 	@Override
 	public void changeParent(long id, long pid) {
-		NoteNode parent = (NoteNode) findById(NoteNode.class, pid);
-		NoteNode entity = (NoteNode) findById(NoteNode.class, id);
+		NoteNode parent = (NoteNode) find(NoteNode.class, pid);
+		NoteNode entity = (NoteNode) find(NoteNode.class, id);
 		entity.setParent(parent);
 		
 	}

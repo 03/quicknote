@@ -1,5 +1,6 @@
 package com.wind.quicknote.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -47,6 +48,11 @@ public class NoteServiceImpl implements NoteService {
 		return nodeDAO.findAll();
 	}
 	
+	@Override
+	public NoteNode findTopic(long id) {
+		return nodeDAO.find(NoteNode.class, id);
+	}
+	
 	public List<NoteNode> findChildTopics(long id) {
 		return nodeDAO.findChildren(id);
 	}
@@ -57,15 +63,24 @@ public class NoteServiceImpl implements NoteService {
 	}
 	
 	public void updateTopicIcon(long id, String iconSrc) {
-		nodeDAO.updateIcon(id, iconSrc);
+		NoteNode entity = nodeDAO.find(NoteNode.class, id);
+		entity.setIcon(iconSrc);
+		entity.setUpdated(new Date());
+		nodeDAO.merge(entity);
 	}
 	
 	public void updateTopicText(long id, String text) {
-		nodeDAO.updateText(id, text);
+		NoteNode entity = nodeDAO.find(NoteNode.class, id);
+		entity.setText(text);
+		entity.setUpdated(new Date());
+		nodeDAO.merge(entity);
 	}
 	
 	public void updateTopicName(long id, String name) {
-		nodeDAO.updateName(id, name);
+		NoteNode entity = nodeDAO.find(NoteNode.class, id);
+		entity.setName(name);
+		entity.setUpdated(new Date());
+		nodeDAO.merge(entity);
 	}
 	
 	public void removeTopic(long id) {
@@ -94,18 +109,17 @@ public class NoteServiceImpl implements NoteService {
 	}
 
 	@Override
-	public NoteNode getTopic(long id) {
-		return nodeDAO.findById(NoteNode.class, id);
-	}
-
-	@Override
 	public NoteUser findUserByName(String name) {
 		return userDAO.findByName(name);
 	}
 
 	@Override
-	public void updateUserDesc(long userId, String desc) {
-		userDAO.updateDesc(userId, desc);
+	public void updateUser(NoteUser user) {
+		userDAO.merge(user);
 	}
-	
+
+	@Override
+	public void removeUser(NoteUser user) {
+		userDAO.delete(user);
+	}
 }

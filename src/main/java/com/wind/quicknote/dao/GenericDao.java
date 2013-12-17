@@ -1,5 +1,6 @@
 package com.wind.quicknote.dao;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -39,7 +40,7 @@ public class GenericDao<T> implements IGenericDao<T> {
 	}
 	
 	@Override
-	public T findById(Class<T> cls, Long id) {
+	public T find(Class<T> cls, Serializable id) {
 		//T t = (T) getSession().load(cls, id);
 		T t = (T) getSession().get(cls, id);
 		return t;

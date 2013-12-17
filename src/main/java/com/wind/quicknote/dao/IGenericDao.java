@@ -1,5 +1,6 @@
 package com.wind.quicknote.dao;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -30,7 +31,7 @@ public interface IGenericDao<T> {
 
 	void delete(T t);
 
-	T findById(Class<T> cls, Long id);
+	T find(Class<T> cls, Serializable id);
 	
 	<T> List<T> findAll(Class<T> cls);
 }

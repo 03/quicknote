@@ -1,4 +1,5 @@
 QuickNote WebApp Created by Luke on Apr.2013
+================================================
 
 v0.1 25/04/2013
 implemented: tree node list
@@ -18,7 +19,7 @@ Added unit-test
 v0.41, 29/08/2013
 Remove ownerId from Note to simplify data model
 Add rootId to User as it's more relevant
-One user can have only one root note (set as 1-to-1 one way relationship)
+One user can have only one root (set as 1-to-1 one way relationship)
 
 v0.42, 29/11/2013
 upgrade to Spring 2.3 and HB 4.2.6
@@ -30,8 +31,8 @@ v0.44, 11/12/2013
 implement item moving, refactoring
 
 v0.45, 16/12/2013
-upgrade to HB 4.2.8
-implement genericDao to simplify db oper
-apply p6spy to display real sql stmt on testing
-use hibernate envers for record versioning
+- upgrade to HB 4.2.8
+- implement genericDao
+- apply p6spy to display real sql stmt on testing
+- use hibernate envers for record versioning
 

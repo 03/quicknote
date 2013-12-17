@@ -56,13 +56,6 @@ public class NoteUserDAOImpl extends GenericDao<NoteUser> implements NoteUserDAO
 	}
 
 	@Override
-	public void updateDesc(long userId, String desc) {
-
-		NoteUser user = (NoteUser) findById(NoteUser.class, userId);
-		user.setDesc(desc);
-	}
-
-	@Override
 	public List<NoteUser> findAll() {
 		return findAll(NoteUser.class);
 	}

@@ -2,6 +2,7 @@ package com.wind.quicknote.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
@@ -17,14 +18,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.wind.quicknote.model.NoteNode;
 import com.wind.quicknote.model.NoteUser;
-import com.wind.quicknote.service.NoteService;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/applicationContext.xml", 
 								  "/dataAccessContext.xml"})
 public class NoteServiceTest {
-	
 	
 	@Autowired
 	@Qualifier("noteService")
@@ -65,23 +64,18 @@ public class NoteServiceTest {
 		assertTrue(userlist.size() > 0);
 	}
 
-	/*@Test
-	public void testUpdateTopicIcon() {
-		fail("Not yet implemented");
-	}*/
-
 	@Test
 	public void testUpdateTopicText() {
 		long id = 3L;
 		String oldValue = "hi there 3";
 		String newValue = "hi there 3++";
-		assertEquals(oldValue, service.getTopic(id).getText());
+		assertEquals(oldValue, service.findTopic(id).getText());
 		
 		service.updateTopicText(id, newValue);
-		assertEquals(newValue, service.getTopic(id).getText());
+		assertEquals(newValue, service.findTopic(id).getText());
 		
 		service.updateTopicText(id, oldValue);
-		assertEquals(oldValue, service.getTopic(id).getText());
+		assertEquals(oldValue, service.findTopic(id).getText());
 	}
 
 	@Test
@@ -91,27 +85,29 @@ public class NoteServiceTest {
 		String oldValue = "third topic";
 		String newValue = "new third topic";
 		
-		NoteNode note = service.getTopic(id);
+		NoteNode note = service.findTopic(id);
 		assertEquals(oldValue, note.getName());
 		
 		service.updateTopicName(id, newValue);
-		note = service.getTopic(id);
+		note = service.findTopic(id);
 		assertEquals(newValue, note.getName());
 		
 		service.updateTopicName(id, oldValue);
-		note = service.getTopic(id);
+		note = service.findTopic(id);
 		assertEquals(oldValue, note.getName());
 	}
 
-	/*@Test
-	public void testRemoveTopic() {
-		fail("Not yet implemented");
-	}
-
 	@Test
-	public void testAddTopic() {
-		fail("Not yet implemented");
-	}*/
+	public void testAddAndRemoveTopic() {
+		
+		NoteNode topic = service.addTopic(1, "Added", "content", "URL");
+		Long id = topic.getId();
+		assertNotNull(id);
+		
+		service.removeTopic(id);
+		topic = service.findTopic(id);
+		assertNull(topic);
+	}
 
 	@Test
 	public void testChangeParentId() {
@@ -120,35 +116,47 @@ public class NoteServiceTest {
 		long oldParentId = 3L;
 		long newParentId = 4L;
 		
-		NoteNode note = service.getTopic(id);
+		NoteNode note = service.findTopic(id);
 		assertEquals(oldParentId, note.getParent().getId());
 		
 		service.changeParentId(id, newParentId);
-		note = service.getTopic(id);
+		note = service.findTopic(id);
 		assertEquals(newParentId, note.getParent().getId());
 		
 		service.changeParentId(id, oldParentId);
-		note = service.getTopic(id);
+		note = service.findTopic(id);
 		assertEquals(oldParentId, note.getParent().getId());
 		
 	}
 
 	@Test
-	public void testAddUser() {
+	public void testAddAndRemoveUser() {
+		
 		NoteUser user = service.addUser("Kevin Abbort", "send@mail.com", "abcdefg");
 		assertNotNull(user.getId());
+		
+		service.removeUser(user);
+		user = service.findUserByName("Kevin Abbort");
+		assertNull(user);
 	}
 	
 	@Test
-	public void testUpdateUserDesc() {
+	public void testUpdateUser() {
+
+		String userName = "David";
 		String oldValue = "meat lover";
 		String newValue = "laywer";
-		assertEquals(oldValue, service.findUserByName("David").getDesc());
-		service.updateUserDesc(service.findUserByName("David").getId(), newValue);
-		assertEquals(newValue, service.findUserByName("David").getDesc());
 		
-		service.updateUserDesc(service.findUserByName("David").getId(), oldValue);
-		assertEquals(oldValue, service.findUserByName("David").getDesc());
+		NoteUser user = service.findUserByName(userName);
+		assertEquals(oldValue, user.getDesc());
+		
+		user.setDesc(newValue);
+		service.updateUser(user);
+		assertEquals(newValue, service.findUserByName(userName).getDesc());
+		
+		user.setDesc(oldValue);
+		service.updateUser(user);
+		assertEquals(oldValue, service.findUserByName(userName).getDesc());
 	}
 	
 }
