@@ -25,7 +25,8 @@
       <attribute value="jar:file:/C:/Software/1_LIB/repository/cglib/cglib/2.2/cglib-2.2-javadoc.jar!/" name="javadoc_location"/>
     </attributes>
   </classpathentry>
-  <classpathentry kind="var" path="M2_REPO/org/zkoss/zkforge/ckez/3.6.4.0/ckez-3.6.4.0.jar" sourcepath="M2_REPO/org/zkoss/zkforge/ckez/3.6.4.0/ckez-3.6.4.0-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/zkoss/zkforge/ckez/4.1.1.0/ckez-4.1.1.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/commons-codec/commons-codec/1.8/commons-codec-1.8.jar"/>
   <classpathentry kind="var" path="M2_REPO/commons-dbcp/commons-dbcp/1.4/commons-dbcp-1.4.jar" sourcepath="M2_REPO/commons-dbcp/commons-dbcp/1.4/commons-dbcp-1.4-sources.jar">
     <attributes>
       <attribute value="jar:file:/C:/Software/1_LIB/repository/commons-dbcp/commons-dbcp/1.4/commons-dbcp-1.4-javadoc.jar!/" name="javadoc_location"/>
@@ -116,6 +117,7 @@
       <attribute value="jar:file:/C:/Software/1_LIB/repository/org/slf4j/slf4j-api/1.6.1/slf4j-api-1.6.1-javadoc.jar!/" name="javadoc_location"/>
     </attributes>
   </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/org/slf4j/slf4j-jdk14/1.7.5/slf4j-jdk14-1.7.5.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/springframework/spring-aop/3.2.5.RELEASE/spring-aop-3.2.5.RELEASE.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/springframework/spring-aspects/3.2.5.RELEASE/spring-aspects-3.2.5.RELEASE.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/springframework/spring-beans/3.2.5.RELEASE/spring-beans-3.2.5.RELEASE.jar"/>
@@ -129,55 +131,23 @@
   <classpathentry kind="var" path="M2_REPO/org/springframework/spring-tx/3.2.5.RELEASE/spring-tx-3.2.5.RELEASE.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/springframework/spring-web/3.2.5.RELEASE/spring-web-3.2.5.RELEASE.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/springframework/spring-webmvc/3.2.5.RELEASE/spring-webmvc-3.2.5.RELEASE.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/zkoss/common/zcommon/6.5.2/zcommon-6.5.2.jar" sourcepath="M2_REPO/org/zkoss/common/zcommon/6.5.2/zcommon-6.5.2-sources.jar">
-    <attributes>
-      <attribute value="jar:file:/C:/Software/1_LIB/repository/org/zkoss/common/zcommon/6.5.2/zcommon-6.5.2-javadoc.jar!/" name="javadoc_location"/>
-    </attributes>
-  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/org/zkoss/common/zcommon/7.0.0/zcommon-7.0.0.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/zkoss/zkforge/el/zcommons-el/1.1.0/zcommons-el-1.1.0.jar" sourcepath="M2_REPO/org/zkoss/zkforge/el/zcommons-el/1.1.0/zcommons-el-1.1.0-sources.jar">
     <attributes>
       <attribute value="jar:file:/C:/Software/1_LIB/repository/org/zkoss/zkforge/el/zcommons-el/1.1.0/zcommons-el-1.1.0-javadoc.jar!/" name="javadoc_location"/>
     </attributes>
   </classpathentry>
-  <classpathentry kind="var" path="M2_REPO/org/zkoss/common/zel/6.5.2/zel-6.5.2.jar" sourcepath="M2_REPO/org/zkoss/common/zel/6.5.2/zel-6.5.2-sources.jar">
-    <attributes>
-      <attribute value="jar:file:/C:/Software/1_LIB/repository/org/zkoss/common/zel/6.5.2/zel-6.5.2-javadoc.jar!/" name="javadoc_location"/>
-    </attributes>
-  </classpathentry>
-  <classpathentry kind="var" path="M2_REPO/org/zkoss/zk/zhtml/6.5.2/zhtml-6.5.2.jar" sourcepath="M2_REPO/org/zkoss/zk/zhtml/6.5.2/zhtml-6.5.2-sources.jar">
-    <attributes>
-      <attribute value="jar:file:/C:/Software/1_LIB/repository/org/zkoss/zk/zhtml/6.5.2/zhtml-6.5.2-javadoc.jar!/" name="javadoc_location"/>
-    </attributes>
-  </classpathentry>
-  <classpathentry kind="var" path="M2_REPO/org/zkoss/zk/zk/6.5.2/zk-6.5.2.jar" sourcepath="M2_REPO/org/zkoss/zk/zk/6.5.2/zk-6.5.2-sources.jar">
-    <attributes>
-      <attribute value="jar:file:/C:/Software/1_LIB/repository/org/zkoss/zk/zk/6.5.2/zk-6.5.2-javadoc.jar!/" name="javadoc_location"/>
-    </attributes>
-  </classpathentry>
-  <classpathentry kind="var" path="M2_REPO/org/zkoss/zk/zkbind/6.5.2/zkbind-6.5.2.jar" sourcepath="M2_REPO/org/zkoss/zk/zkbind/6.5.2/zkbind-6.5.2-sources.jar">
-    <attributes>
-      <attribute value="jar:file:/C:/Software/1_LIB/repository/org/zkoss/zk/zkbind/6.5.2/zkbind-6.5.2-javadoc.jar!/" name="javadoc_location"/>
-    </attributes>
-  </classpathentry>
-  <classpathentry kind="var" path="M2_REPO/org/zkoss/zk/zkplus/6.5.2/zkplus-6.5.2.jar" sourcepath="M2_REPO/org/zkoss/zk/zkplus/6.5.2/zkplus-6.5.2-sources.jar">
-    <attributes>
-      <attribute value="jar:file:/C:/Software/1_LIB/repository/org/zkoss/zk/zkplus/6.5.2/zkplus-6.5.2-javadoc.jar!/" name="javadoc_location"/>
-    </attributes>
-  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/org/zkoss/common/zel/7.0.0/zel-7.0.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/zkoss/zk/zhtml/7.0.0/zhtml-7.0.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/zkoss/zk/zk/7.0.0/zk-7.0.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/zkoss/zk/zkbind/7.0.0/zkbind-7.0.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/zkoss/zk/zkplus/7.0.0/zkplus-7.0.0.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/zkoss/zk/zkspring-core/3.1/zkspring-core-3.1.jar" sourcepath="M2_REPO/org/zkoss/zk/zkspring-core/3.1/zkspring-core-3.1-sources.jar">
     <attributes>
       <attribute value="jar:file:/C:/Software/1_LIB/repository/org/zkoss/zk/zkspring-core/3.1/zkspring-core-3.1-javadoc.jar!/" name="javadoc_location"/>
     </attributes>
   </classpathentry>
-  <classpathentry kind="var" path="M2_REPO/org/zkoss/zk/zul/6.5.2/zul-6.5.2.jar" sourcepath="M2_REPO/org/zkoss/zk/zul/6.5.2/zul-6.5.2-sources.jar">
-    <attributes>
-      <attribute value="jar:file:/C:/Software/1_LIB/repository/org/zkoss/zk/zul/6.5.2/zul-6.5.2-javadoc.jar!/" name="javadoc_location"/>
-    </attributes>
-  </classpathentry>
-  <classpathentry kind="var" path="M2_REPO/org/zkoss/common/zweb/6.5.2/zweb-6.5.2.jar" sourcepath="M2_REPO/org/zkoss/common/zweb/6.5.2/zweb-6.5.2-sources.jar">
-    <attributes>
-      <attribute value="jar:file:/C:/Software/1_LIB/repository/org/zkoss/common/zweb/6.5.2/zweb-6.5.2-javadoc.jar!/" name="javadoc_location"/>
-    </attributes>
-  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/org/zkoss/zk/zul/7.0.0/zul-7.0.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/zkoss/common/zweb/7.0.0/zweb-7.0.0.jar"/>
   <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 </classpath>

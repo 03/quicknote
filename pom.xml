@@ -8,7 +8,7 @@
 	<url>http://maven.apache.org</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<zk.version>6.5.2</zk.version>
+		<zk.version>7.0.0</zk.version>
 		<zkel.version>1.1.0</zkel.version>
 		<commons-lang.version>2.4</commons-lang.version>
 		<servlet.version>2.4</servlet.version>
@@ -58,7 +58,8 @@
 		<dependency>
 			<groupId>org.zkoss.zkforge</groupId>
 			<artifactId>ckez</artifactId>
-			<version>3.6.4.0</version>
+			<!-- <version>3.6.4.0</version> http://forum.zkoss.org/question/87609/zk-ckeditor-component-uicolor-plugin/ -->
+			<version>4.1.1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.zkoss.zkforge.el</groupId>

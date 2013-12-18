@@ -66,8 +66,8 @@ public class NoteMainCtrl extends SelectorComposer<Window> {
 		 * http://www.zkoss.org/zkdemo/input/wysiwyg_editor
 		 * http://books.zkoss.org/wiki/ZK_Developer's_Reference/Event_Handling/Event_Queues
 		 */
-		editor.setCustomConfigurationsPath("/js/ckeditorcfg.js");
-		//editor.setToolbar("MyToolbar");
+		//editor.setCustomConfigurationsPath("/js/ckeditorcfg.js");
+		//editor.setToolbar("Full");
 		
 		EventQueues.lookup("myqueue1", EventQueues.APPLICATION, true)
 				.subscribe(new EventListener() {

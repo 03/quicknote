@@ -12,7 +12,6 @@ public class SignupValidator extends AbstractValidator {
 		//all the bean properties
 		Map<String,Property> beanProps = ctx.getProperties(ctx.getProperty().getBase());
 		
-		//first let's check the passwords match
 		validatePasswords(ctx, (String)beanProps.get("password").getValue(), (String)ctx.getValidatorArg("retypedPassword"));
 		validateEmail(ctx, (String)beanProps.get("email").getValue());
 	}
@@ -24,14 +23,11 @@ public class SignupValidator extends AbstractValidator {
 	}
 	
 	private void validateEmail(ValidationContext ctx, String email) {
-		if(email == null || !email.matches(".+@.+\\.[a-z]+")) {
+		if(email == null) return;
+		if("".equals(email.trim())) return;
+		
+		if(!email.matches(".+@.+\\.[a-z]+")) {
 			this.addInvalidMessage(ctx, "email", "Please enter a valid email!");			
-		}
-	}
-	
-	private void validateCaptcha(ValidationContext ctx, String captcha, String captchaInput) {
-		if(captchaInput == null || !captcha.equals(captchaInput)) {
-			this.addInvalidMessage(ctx, "captcha", "The captcha doesn't match!");
 		}
 	}
 	

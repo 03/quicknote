@@ -1,18 +1,23 @@
 CKEDITOR.editorConfig = function(config) {
-    config.extraPlugins = 'uicolor';
-    config.resize_enabled = false;
+	config.resize_enabled = true;
     config.toolbar = 'MyToolbar';
-    config.toolbar_MyToolbar1 = [
+    config.toolbar_MyToolbar = [
             [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript',
                     'Superscript', 'TextColor', 'BGColor', '-', 'Cut', 'Copy',
-                    'Paste', 'Link', 'Unlink' ],
+                    'Paste', 'Link', 'Unlink', 'Image'],
             [ 'Undo', 'Redo', '-', 'JustifyLeft', 'JustifyCenter',
                     'JustifyRight', 'JustifyBlock' ],
             [ 'Table', 'Smiley', 'SpecialChar', 'PageBreak',
-                    'Styles', 'Format', 'Font', 'FontSize', 'Maximize',
-                    'UIColor' ] ];
+                    'Styles', 'Format', 'Font', 'FontSize', 'Maximize'] ];
+};
 
-    
+/* 
+// valid on v3.6.4.0
+CKEDITOR.editorConfig = function(config) {
+    config.extraPlugins = 'uicolor';
+    config.resize_enabled = false;
+    config.toolbar = 'MyToolbar';
+   
     config.toolbar_MyToolbar =
     	[
     		{ name: 'document',		items : [ 'Source','-','NewPage','DocProps','Print','-','Templates','Maximize' ] },
@@ -48,3 +53,4 @@ CKEDITOR.editorConfig = function(config) {
     	];
     
 };
+*/

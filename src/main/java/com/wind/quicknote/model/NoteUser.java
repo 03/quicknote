@@ -21,7 +21,6 @@ import javax.persistence.Table;
 public class NoteUser {
 	
 	@Id
-	//@GeneratedValue(strategy = GenerationType.AUTO)
 	@SequenceGenerator(name = "UserSequence", sequenceName = "user_seq", allocationSize=5)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="UserSequence")
 	private long id;

@@ -40,9 +40,18 @@
 	                    		<label>Welcome</label>
 	                    		<label id="loginUsrName">
 	                    		</label>
-	                    		<toolbarbutton
+	                    		<!-- <toolbarbutton
 	                    			image="/assets/images/male.png"
-	                    			onClick='alert(":)")' />
+	                    			onClick='alert(":)")' /> -->
+	                    		<toolbarbutton
+	                    			image="/assets/images/male.png">
+	                    			<attribute name="onClick">{
+										final Window win = (Window) Executions.createComponents(
+												"/pages/userEdit.zul", null, null);
+										win.setMaximizable(true);
+										win.doModal();
+									}</attribute>
+								</toolbarbutton>
 	                    		<toolbarbutton
 	                    			image="/assets/images/tools.png">
 	                    			<attribute name="onClick">{
@@ -71,9 +80,10 @@
 	            	<div>
 		            	<button id="btnsave" label="Done"
 		            		image="/assets/images/save.png" width="75px" />
-		            	<ckeditor id="editor">
-						</ckeditor>
-					</div>
+		            	<ckeditor id="editor"
+		            		filebrowserImageBrowseUrl="/assets/images">
+		            	</ckeditor>
+	            	</div>
 	            </center>
 	        </borderlayout>
 	    </center>

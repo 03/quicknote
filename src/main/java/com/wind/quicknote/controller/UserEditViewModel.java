@@ -1,13 +1,9 @@
 package com.wind.quicknote.controller;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
-import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zul.Window;
@@ -17,9 +13,9 @@ import com.wind.quicknote.service.NoteService;
 import com.wind.quicknote.system.UserCredentialManager;
 
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
-public class SignupViewModel {
+public class UserEditViewModel {
 
-	private static Logger log = LoggerFactory.getLogger(SignupViewModel.class);
+	private static Logger log = LoggerFactory.getLogger(UserEditViewModel.class);
 	
 	@WireVariable
 	private NoteService noteService;
@@ -27,26 +23,19 @@ public class SignupViewModel {
 	@Command
     public void submit(@BindingParam("cmp")  Window win) {
 		
-		log.debug("----------- Proceeding to create user -----------");
-		NoteUser user = noteService.addUser(noteUser);
-		if(user != null) {
-			
-			win.detach();
-			
-			UserCredentialManager mgmt = UserCredentialManager.getIntance();
-			mgmt.login(user.getLoginName(), user.getPassword());
-			if (mgmt.isAuthenticated()) {
-				// put it in session
-				HttpSession hSess = (HttpSession) ((HttpServletRequest)Executions.getCurrent().getNativeRequest()).getSession();
-				String userName = mgmt.getUser().getLoginName();
-				hSess.setAttribute("user", userName);
-				
-				Executions.getCurrent().sendRedirect(LoginViewCtrl.URL_HOME_PAGE);
-			}
-		}
+		log.debug("----------- Proceeding to update user -----------");
+		
+		if(newPassword != null && !noteUser.getPassword().equals(newPassword))
+			noteUser.setPassword(newPassword);
+		
+		noteService.updateUser(noteUser);
+		// win.detach();
     }
 	
-	private NoteUser noteUser = new NoteUser();
+	private NoteUser noteUser = UserCredentialManager.getIntance().getUser();
+	
+	private String oldPassword;
+	private String newPassword;
 	private String retypedPassword;
 
 	public NoteUser getNoteUser() {
@@ -65,4 +54,21 @@ public class SignupViewModel {
 		this.retypedPassword = retypedPassword;
 	}
 
+	public String getOldPassword() {
+		return oldPassword;
+	}
+
+	public void setOldPassword(String oldPassword) {
+		this.oldPassword = oldPassword;
+	}
+
+	public String getNewPassword() {
+		return newPassword;
+	}
+
+	public void setNewPassword(String newPassword) {
+		this.newPassword = newPassword;
+	}
+
+	
 }
