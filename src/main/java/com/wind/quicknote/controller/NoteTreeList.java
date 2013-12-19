@@ -263,7 +263,6 @@ public class NoteTreeList extends Div implements IdSpace {
 	/**
 	 * properties
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Listen("onClick=#btnProp")
 	public void showItemProperties() {
 		log.debug("#Show Properties");
