@@ -258,15 +258,39 @@ public class NoteTreeList extends Div implements IdSpace {
    	}
     
     
+
+
 	/**
-     * removeItem
-     */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-	@Listen("onClick=#btnremove")
+	 * properties
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Listen("onClick=#btnProp")
+	public void showItemProperties() {
+		log.debug("#Show Properties");
+		TopicItem currentItem = getCurrentItem();
+		if (currentItem != null) {
+			Map<String, Object> myMap = new HashMap<String, Object>();
+			myMap.put("topicItem", currentItem);
+
+			final Window win = (Window) Executions.createComponents(
+					"/pages/popup/noteProp.zul", null, myMap);
+			win.setMaximizable(true);
+			win.doModal();
+
+		} else {
+			showWarningDialog();
+		}
+	}
+    
+
+	/**
+	 * removeItem
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Listen("onClick=#btnRemove")
 	public void removeItem() {
     	
     	TopicItem currentItem = getCurrentItem();
-    	
 		if (currentItem != null) {
 			
 			Messagebox.show("Delete it?", "Confirm", Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION, new EventListener() {
@@ -300,7 +324,7 @@ public class NoteTreeList extends Div implements IdSpace {
     	
     	if(currentItem != null) {
     		long id = currentItem.getId();
-        	Messagebox.show("current topic id["+id+"] name:"+currentItem.getName(), "Information", Messagebox.OK, Messagebox.INFORMATION);
+        	Messagebox.show("Current node["+id+"]: "+currentItem.getName(), "Information", Messagebox.OK, Messagebox.INFORMATION);
         	
     	} else {
     		showWarningDialog();
@@ -312,7 +336,9 @@ public class NoteTreeList extends Div implements IdSpace {
      */
     private final class TopicTreeRenderer implements TreeitemRenderer<TopicItemTreeNode> {
     	
-        public void render(final Treeitem treeItem, TopicItemTreeNode treeNode, int index) throws Exception {
+        private static final String HEIGHT_16PX = "16px";
+
+		public void render(final Treeitem treeItem, TopicItemTreeNode treeNode, int index) throws Exception {
         	
         	TopicItemTreeNode ctn = treeNode;
         	TopicItem topicItem = (TopicItem) ctn.getData();
@@ -326,8 +352,8 @@ public class NoteTreeList extends Div implements IdSpace {
         	hlayout.setSclass("h-inline-block");
         	
             final Image image = new Image(topicItem.getIcon());
-            image.setWidth("20px");
-            image.setHeight("20px");
+            image.setWidth(HEIGHT_16PX);
+            image.setHeight(HEIGHT_16PX);
             hlayout.appendChild(image);
             
             final Label label = new Label(topicItem.getName());
@@ -551,8 +577,7 @@ public class NoteTreeList extends Div implements IdSpace {
             itemProp.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
                 @Override
                 public void onEvent(Event event) throws Exception {
-
-                	log.debug("Properties");
+                	showItemProperties();
                 }
             });
             popup.appendChild(itemProp);

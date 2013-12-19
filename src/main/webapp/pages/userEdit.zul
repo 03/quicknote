@@ -1,17 +1,18 @@
 <?link rel="shortcut icon" href="http://www.google.com.au/favicon.ico" ?>
 <zk>
-	<window id="userWin" height="420px" width="500px" title="User Edit"
+	<window id="userWin" height="420px" width="530px" title="User Edit"
 		border="normal" closable="true" apply="org.zkoss.bind.BindComposer"
 		viewModel="@id('vm') @init('com.wind.quicknote.controller.UserEditViewModel')"
 		validationMessages="@id('vmsgs')"
 		form="@id('fx') @load(vm.noteUser) @save(vm.noteUser, before='submit') 
-        @validator('com.wind.quicknote.controller.UserEditValidator', oldPassword=vm.oldPassword, newPassword=vm.newPassword, retypedPassword=vm.retypedPassword)">
+        @validator('com.wind.quicknote.controller.UserEditValidator', oldPassword=vm.oldPassword, 
+        newPassword=vm.newPassword, retypedPassword=vm.retypedPassword)">
 		<style src="/css/customized_style.css" />
 
 		<grid>
 			<columns>
 				<column label="" width="130px" />
-				<column width="340px" />
+				<column width="370px" />
 			</columns>
 			<rows>
 				<row>
@@ -31,7 +32,7 @@
 									<grid>
 										<columns>
 											<column label="" width="130px" />
-											<column width="310px" />
+											<column width="340px"/>
 										</columns>
 										<rows>
 											<row>
@@ -54,7 +55,7 @@
 												</cell>
 											</row>
 											<row>
-												<label sclass="hightlight" value="Description" />
+												<label sclass="text" value="Description" />
 												<textbox rows="5" value="@bind(fx.desc)" width="320px;" tabindex="4" />
 											</row>
 										</rows>
@@ -64,7 +65,7 @@
 									<grid>
 										<columns>
 											<column label="" width="130px" />
-											<column width="310px" />
+											<column width="340px" />
 										</columns>
 										<rows>
 											<row visible="false">

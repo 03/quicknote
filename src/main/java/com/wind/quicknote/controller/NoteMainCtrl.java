@@ -23,6 +23,7 @@ import org.zkoss.zul.Window;
 import com.wind.quicknote.model.NoteNode;
 import com.wind.quicknote.model.NoteUser;
 import com.wind.quicknote.service.NoteService;
+import com.wind.quicknote.system.SessionCacheManager;
 import com.wind.quicknote.system.UserCredentialManager;
 import com.wind.quicknote.view.tree.TopicItem;
 
@@ -73,7 +74,7 @@ public class NoteMainCtrl extends SelectorComposer<Window> {
 				.subscribe(new EventListener() {
 					public void onEvent(Event evt) {
 						TopicItem item = (TopicItem) evt.getData();
-						log.debug("I got this!! " + item.getId());
+						log.info("I've got this!! " + item.getId());
 						
 						currentNodeId = item.getId();
 						editor.setValue(item.getText());
@@ -104,6 +105,9 @@ public class NoteMainCtrl extends SelectorComposer<Window> {
 	@Listen("onClick=#btnsave")
 	public void updateContent() {
 		String text = editor.getValue();
+		
+		// update cache
+		SessionCacheManager.put(currentNodeId, text);
 		noteService.updateTopicText(currentNodeId, text);
 	}
 
@@ -119,7 +123,17 @@ public class NoteMainCtrl extends SelectorComposer<Window> {
 
 		NoteTreeList item = (NoteTreeList) fe.getTarget();
 		currentNodeId = item.getCurrentItem().getId();
-		editor.setValue(item.getCurrentItem().getText());
+		
+		// search in cache first
+		String content = SessionCacheManager.get(currentNodeId);
+		if(content == null)
+		{
+			NoteNode note = noteService.findTopic(currentNodeId);
+			content = note.getText();
+			SessionCacheManager.put(currentNodeId, note.getText());
+		}
+		
+		editor.setValue(content);
 	}
 	
 	

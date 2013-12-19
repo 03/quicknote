@@ -1,0 +1,33 @@
+<zk>
+
+	<window title="Properties" height="380px" width="380px"
+		apply="org.zkoss.bind.BindComposer"
+		viewModel="@id('vm') @init('com.wind.quicknote.controller.NotePropVM')"
+		border="normal" closable="true">
+		<style src="/css/customized_style.css" />
+
+		<grid>
+			<columns>
+				<column label="" width="100px" />
+				<column width="255px" />
+			</columns>
+			<rows>
+				<row>
+					<label sclass="hightlight" width="100px"
+						value="Created" />
+					<label sclass="text" width="130px"
+						value="@bind(vm.node.created)" />
+				</row>
+
+				<row>
+					<label sclass="hightlight" width="100px"
+						value="Updated" />
+					<label sclass="text" width="130px"
+						value="@bind(vm.node.updated)" />
+				</row>
+			</rows>
+		</grid>
+
+	</window>
+
+</zk>

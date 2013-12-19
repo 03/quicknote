@@ -7,44 +7,43 @@
 <style dynamic="true">
 	.h-inline-block {
 		display: inline-block;
-		_display: inline;
 	}
 	.z-toolbar a, .z-toolbar a:visited, .z-toolbar a:hover {
     background-color:transparent;
     border:0 none;
 	}
 	.vista {
-    background:#110000 url(/assets/images/bar.png) repeat-x 0 0;
+    background:#001100 url('../assets/images/bar.png') repeat-x 0 0;
     color:white;
-    padding-top:7px;
+    padding-top:2px;
+    border:0 none;
 	}
 </style>
 
 <window id="noteWindow" border="normal" 
 	apply="com.wind.quicknote.controller.NoteMainCtrl" >
 	
-	<borderlayout height="600px" visible="true">
-	    <north maxsize="430" size="17%" height="120px" splittable="true" collapsible="true" style="padding:5px;">
+	<borderlayout height="600px">
+	    <north maxsize="150" size="17%" height="120px" splittable="false" collapsible="true" style="padding:3px;">
 	        <borderlayout>
-	            <west border="normal" size="210" style="border:1px solid white">
+	            <west border="normal" size="210" style="border:2px solid white">
 	                <div align="left" height="115px">
 	                    <image sclass="logo" src="/assets/images/qnote.png" height="110px" width="200px"/>
 	                </div>
 	            </west>
-	            <center border="none" hflex="true" style="background-image:url('/assets/images/CrownLand.jpg')">
-	                <div>
-	                    <image src="/assets/images/CrownLand.jpg" height="85px" width="100%"/>
-	                    <div align="right">
-	                    	<toolbar id="tb" height="18px" align="end"
-	                    		sclass="vista">
+	            <center border="none" hflex="true">
+	                <vlayout>
+	                    <image src="/assets/images/CrownLand.jpg" height="80px" width="100%"/>
+	                    <div align="right" height="29px">
+	                    	<toolbar id="tb" height="28px" align="end" sclass="vista">
 	                    		<label>Welcome</label>
 	                    		<label id="loginUsrName">
 	                    		</label>
 	                    		<!-- <toolbarbutton
-	                    			image="/assets/images/male.png"
+	                    			image="/assets/images/person.png"
 	                    			onClick='alert(":)")' /> -->
-	                    		<toolbarbutton
-	                    			image="/assets/images/male.png">
+	                    		<toolbarbutton tooltiptext="User Profile"
+	                    			image="/assets/images/person.png">
 	                    			<attribute name="onClick">{
 										final Window win = (Window) Executions.createComponents(
 												"/pages/userEdit.zul", null, null);
@@ -52,8 +51,8 @@
 										win.doModal();
 									}</attribute>
 								</toolbarbutton>
-	                    		<toolbarbutton
-	                    			image="/assets/images/tools.png">
+	                    		<toolbarbutton tooltiptext="Settings"
+	                    			image="/assets/images/config.png">
 	                    			<attribute name="onClick">{
 										final Window win = (Window) Executions.createComponents(
 												"/pages/popup/sayHello.zul", null, null);
@@ -61,26 +60,27 @@
 										win.doModal();
 									}</attribute>
 								</toolbarbutton>
-	                    		<toolbarbutton id="logoutBtn"
-	                    			image="/assets/images/logout.jpg" />
+	                    		<toolbarbutton id="logoutBtn" tooltiptext="Log Out"
+	                    			image="/assets/images/logout.png" />
 	                    	</toolbar>
 	                    </div>
-	                </div>
+	                </vlayout>
 	            </center>
 	        </borderlayout>
 	    </north>
 	    <center border="none">
 	        <borderlayout>
-	            <west maxsize="450" size="20%" border="none" splittable="true" collapsible="true" margins="0,5,0,0">
+	            <west maxsize="480" size="20%" border="none" splittable="true" collapsible="true" margins="1,0,1,1">
 	                <vlayout spacing="1">
 	                    <NoteTreeList id="notetreeList" ></NoteTreeList>
 	                </vlayout>
 	            </west>
-	            <center border="none" autoscroll="true" vflex="true" >
+	            <center border="none" autoscroll="true" vflex="true" margins="1,1,1,1" style="padding:3px;">
 	            	<div>
-		            	<button id="btnsave" label="Done"
-		            		image="/assets/images/save.png" width="75px" />
-		            	<ckeditor id="editor"
+		            	<button id="btnsave" tooltiptext="Save" 
+		            		image="/assets/images/save.png" width="50px" />
+		            	<separator height="3px"/>
+		            	<ckeditor id="editor" height="306px"
 		            		filebrowserImageBrowseUrl="/assets/images">
 		            	</ckeditor>
 	            	</div>

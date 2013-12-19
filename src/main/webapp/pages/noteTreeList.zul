@@ -1,32 +1,33 @@
 <zk>
-	<grid height="40px" vflex="true">
+	<grid height="36px">
 		<rows>
 			<row>
 				<hbox>
-					<hbox visible="false">
-						<button id="btnshow" tooltip="Show current node"
+					<hbox visible="true">
+						<button id="btnshow" tooltip="MyHelp" style="cursor:help"
 							image="/assets/images/m1.gif" hoverImage="/assets/images/m2.gif"
-							width="30px" />
+							width="45px" />
 					</hbox>
 					<hbox>
 						<toolbarbutton id="btnInsert"
-							tooltiptext="Insert Item" image="/assets/images/add-folder.png" />
+							tooltiptext="Add Item" image="/assets/images/add-folder.png" />
 						<toolbarbutton id="btnInsertChild"
-							tooltiptext="Insert Child Item" image="/assets/images/add-file.png" />
-						<toolbarbutton id="btnremove"
-							tooltiptext="Remove Item"
+							tooltiptext="Add Child Item" image="/assets/images/add-file.png" />
+						<toolbarbutton id="btnRemove"
+							tooltiptext="Delete Item"
 							image="/assets/images/remove.jpg" />
-						<toolbarbutton id="btnrename"
-							tooltip="MyHelp"
-							image="/assets/images/prop.png" style="cursor: help"/>
+						<toolbarbutton id="btnProp"
+							tooltip="Properties"
+							image="/assets/images/prop.png" />
 					</hbox>
 				</hbox>
 			</row>
 		</rows>
 	</grid>
 	
-	<borderlayout height="290px">
-		<center border="none" autoscroll="true">
+	
+	<borderlayout height="270px" vflex="false">
+		<center border="normal" autoscroll="true">
 			<div>
 				<vlayout id="pLayout">
 					<tree id="topicTree" apply="com.wind.quicknote.controller.NoteTreeComposer"/>
@@ -34,11 +35,22 @@
 			</div>
 		</center>
 	</borderlayout>
-
+		
 	<popup id="MyHelp" width="300px">
-		<html>Properties ...</html>
+		<html>Click to show current Node ... need help? Go to </html>
 		<toolbarbutton label="ZK Forum" target="zksandbox"
 			href="http://www.zkoss.org/forum" />
 	</popup>
+	
+	<separator height="2px"/>
+
+	<grid height="170px">
+		<rows >
+			<row>
+				<calendar/>
+			</row>
+		</rows>
+	</grid>
+
 
 </zk>

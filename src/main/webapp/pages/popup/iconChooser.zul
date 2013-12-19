@@ -43,11 +43,11 @@
 	
 	<hbox>
 		<button sclass="ctlBtn" id="confirmBtn" label="OK"
-			image="/assets/images/yesSign.jpg"
+			image="/assets/images/y.png"
 			onClick="@command('confirm', cmp=iconChooserWin)" />
 		<button id="mybutton" sclass="ctlBtn"
 			onClick="iconChooserWin.detach()" label="Cancel"
-			image="/assets/images/noSign.jpg" />
+			image="/assets/images/x.png" />
 	</hbox>
 
 </window>

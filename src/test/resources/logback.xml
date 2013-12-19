@@ -37,7 +37,7 @@
 	<!-- Logs the JDBC parameters passed to a query -->
 	<!-- <logger name="org.hibernate.type" level="TRACE" /> -->
 
-	<root level="INFO">
+	<root level="DEBUG">
 		<!-- <appender-ref ref="FILE" /> -->
 		<appender-ref ref="STDOUT" />
 	</root>

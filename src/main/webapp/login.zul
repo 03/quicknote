@@ -1,36 +1,18 @@
 <?link rel="shortcut icon" href="http://www.google.com.au/favicon.ico" ?>
 <vlayout xmlns:c="client">
-    <window id="loginWin" title="Welcome ^_^" width="300px" minimizable="true" 
+    <window id="loginWin" title="Welcome ^_^" width="300px" minimizable="false" 
     	border='normal' apply="com.wind.quicknote.controller.LoginViewCtrl">
-        <style>
-	        div.minimize {
-	            border: 1px solid #79858E;
-	            background: #D3E1EC;
-	            position: absolute;
-	            opacity: 0.8;       
-	        }
-	        div.loginGrid { 
-	            border: none;
-	        }
-	        td.loginCtl {
-	            text-align: center;
-	        }
-	        td.loginCtl .z-label {
-	            color: red;         
-	            font-style: italic;
-	        }
-        </style>
         <style src="/css/customized_style.css" />
         <grid sclass="loginGrid">
             <columns>
-                <column width="100px" />
+                <column width="120px" />
                 <column/>
             </columns>
             <rows>
-                <row>Username : <textbox id="nameTxb" value="zk" c:onFocus="this.select()" /></row>
-                <row>Password : <textbox id="passwordTxb" type="password" value="zk" c:onFocus="this.select()"/></row>
+                <row><label sclass="text" value="UserName"/> <textbox id="nameTxb" value="zk" c:onFocus="this.select()" /></row>
+                <row><label sclass="text" value="Password"/><textbox id="passwordTxb" type="password" value="zk" c:onFocus="this.select()"/></row>
                 <row>
-                	<cell sclass="loginCtl" colspan="2">
+                	<cell colspan="2">
                 		<vlayout>
                 			<button id="confirmBtn" label="Sign In"
                 				sclass="ctlBtn" />
@@ -39,9 +21,8 @@
                 	</cell>
                 </row>
                 <row>
-                	Not having an account yet?
-                	<button id="signupBtn" label="Sign Up Now"
-                		sclass="ctlBtn">
+                	<label sclass="text" value="Not having an account yet?"/>
+                	<button id="signupBtn" label="Sign Up Now" sclass="ctlBtn">
                 		<attribute name="onClick">
 							{
 								final Window win = (Window) Executions.createComponents("/signup.zul",
@@ -55,8 +36,4 @@
             </rows>
         </grid>
     </window>
-    <script>
-    
-    </script>
-    <script type="text/javascript" src="/js/customized_effect.js" /> 
 </vlayout>

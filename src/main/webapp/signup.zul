@@ -55,7 +55,7 @@
                     </cell>
                 </row>
                 <row>
-                    <label sclass="hightlight" value="Description"/>
+                    <label sclass="text" value="Description"/>
                     <textbox rows="5" value="@bind(fx.desc)"
                             width="320px;" tabindex="7" />
                 </row>
