@@ -3,20 +3,22 @@
     <window id="loginWin" title="Welcome ^_^" width="300px" minimizable="false" 
     	border='normal' apply="com.wind.quicknote.controller.LoginViewCtrl">
         <style src="/css/customized_style.css" />
+        <script type="text/javascript" src="/js/customized_effect.js" />
+        <script type="text/javascript" src="/js/jquery-ui.custom.min.js" />
         <grid sclass="loginGrid">
             <columns>
                 <column width="120px" />
                 <column/>
             </columns>
             <rows>
-                <row><label sclass="text" value="UserName"/> <textbox id="nameTxb" value="zk" c:onFocus="this.select()" /></row>
+                <row><label sclass="text" value="Username"/> <textbox id="nameTxb" value="zk" c:onFocus="this.select()" /></row>
                 <row><label sclass="text" value="Password"/><textbox id="passwordTxb" type="password" value="zk" c:onFocus="this.select()"/></row>
                 <row>
                 	<cell colspan="2">
                 		<vlayout>
+                			<label id="mesgLbl" class="error"/>
                 			<button id="confirmBtn" label="Sign In"
                 				sclass="ctlBtn" />
-                			<label id="mesgLbl" />
                 		</vlayout>
                 	</cell>
                 </row>

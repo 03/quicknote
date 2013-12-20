@@ -16,7 +16,7 @@
 			</columns>
 			<rows>
 				<row>
-					<label sclass="hightlight" width="130px" value="UserName" />
+					<label sclass="hightlight" width="130px" value="Username" />
 					<label sclass="text" width="130px" value="@bind(fx.loginName)" />
 				</row>
 				<row>
@@ -36,13 +36,13 @@
 										</columns>
 										<rows>
 											<row>
-												<label sclass="text" width="130px" value="FirstName" />
+												<label sclass="text" width="130px" value="First Name" />
 												<hlayout>
 													<textbox value="@bind(fx.firstName)" width="150px" tabindex="1" />
 												</hlayout>
 											</row>
 											<row>
-												<label sclass="text" width="130px" value="LastName" />
+												<label sclass="text" width="130px" value="Last Name" />
 												<hlayout>
 													<textbox value="@bind(fx.lastName)" width="150px" tabindex="2" />
 												</hlayout>

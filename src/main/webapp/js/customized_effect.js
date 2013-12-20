@@ -1,4 +1,4 @@
-function loginSucess(wleft, wtop) {
+function loginSuccess(wleft, wtop) {
 	
 	var w = jq('$loginWin'), b = jq('$initBtn');
 	//Minimize from the login Window
@@ -19,22 +19,19 @@ function loginSucess(wleft, wtop) {
 		jq(this).remove();
 	});
 }
-function loginFaild() { //Shake the window
-	var l = jq("$loginWin").position().left;
-	jq("$loginWin").animate({
-		left : l - 25
-	}, 50).animate({
-		backgroundColor : "red"
-	}, 50).animate({
-		left : l
-	}, 50).animate({
-		left : l + 25
-	}, 50).animate({
-		left : l
-	}, 50).animate({
-		backgroundColor : "white"
-	}, 50);
-	jq("$loginWin").css('background-color','transparent');
+function loginFailed() { //Shake the window
+	var originalLeft = jq("$loginWin").position().left;
+	var loginWin = jq("$loginWin");
+	var previousBackgroundColor = loginWin.css('background-color');
+
+	loginWin.animate({left : originalLeft - 25, backgroundColor : "blue"}, 50)
+		.animate({left : originalLeft}, 50)
+		.animate({left : originalLeft + 25}, 50)
+		.animate({left : originalLeft}, 50)
+		.animate({backgroundColor : previousBackgroundColor}, 250, 
+			function() {
+				loginWin.css('background-color', 'transparent');
+			} );
 }
 
 function showResult() {

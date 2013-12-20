@@ -395,6 +395,7 @@ public class NoteTreeList extends Div implements IdSpace {
                 }
             });
             
+            treeCell.setWidth("100%");
         	treeCell.appendChild(hlayout);
             dataRow.appendChild(treeCell);
             dataRow.setContext(popup);
@@ -428,7 +429,7 @@ public class NoteTreeList extends Div implements IdSpace {
                     topicTreeModel.moveToNode( (TopicItemTreeNode) treeItem.getValue(), (TopicItemTreeNode) draggedItem.getValue());
                 }
             });
- 
+            
         }
 
 		/**

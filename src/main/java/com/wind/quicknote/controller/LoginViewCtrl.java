@@ -71,9 +71,8 @@ public class LoginViewCtrl extends SelectorComposer<Window> {
 			
 		} else {
 			
-			Clients.evalJavaScript("loginFaild()");
+			Clients.evalJavaScript("loginFailed()");
 			mesgLbl.setValue("The Username or Password is invalid!");
-			
 		}
 	}
 
