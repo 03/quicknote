@@ -90,7 +90,8 @@ public class NoteTreeList extends Div implements IdSpace {
 	 */
 	public void refreshTopicTree() {
 		
-		topicTree.setSizedByContent(true);
+		// topicTree.setSizedByContent(true);
+		topicTree.setSpan(true);
 		topicTree.setItemRenderer(new TopicTreeRenderer());
 		topicTreeModel = TopicTreeModel.getInstance();
 		topicTree.setModel(topicTreeModel);
@@ -395,7 +396,6 @@ public class NoteTreeList extends Div implements IdSpace {
                 }
             });
             
-            treeCell.setWidth("100%");
         	treeCell.appendChild(hlayout);
             dataRow.appendChild(treeCell);
             dataRow.setContext(popup);

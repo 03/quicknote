@@ -4,9 +4,10 @@
 <?link rel="shortcut icon" href="http://www.google.com.au/favicon.ico" ?>
 <?component name="NoteTreeList" class="com.wind.quicknote.controller.NoteTreeList" ?>
 
-<style dynamic="true">
+<style>
 	.h-inline-block {
 		display: inline-block;
+		_display: inline;
 	}
 	.z-toolbar a, .z-toolbar a:visited, .z-toolbar a:hover {
     background-color:transparent;
