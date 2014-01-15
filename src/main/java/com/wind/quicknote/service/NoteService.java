@@ -32,6 +32,8 @@ public interface NoteService {
 	
 	public NoteNode addTopic(long pid, String name, String content, String picUrl);
 	
+	public NoteNode addTopic(long pid, int pos, String name, String content, String picUrl);
+	
 	public void changeParentId(long id, long pid);
 	
 	// User
@@ -44,5 +46,8 @@ public interface NoteService {
 	public void updateUser(NoteUser user);
 	
 	public void removeUser(NoteUser user);
+
+	public void swapTopicPosition(long pid, int pos1, int pos2);
+	
 	
 }

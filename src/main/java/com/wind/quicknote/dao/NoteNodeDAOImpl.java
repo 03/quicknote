@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.wind.quicknote.model.NoteNode;
@@ -21,6 +23,10 @@ import com.wind.quicknote.model.NoteNode;
 @SuppressWarnings("unchecked")
 @Repository("noteNodeDAO")
 public class NoteNodeDAOImpl extends GenericDao<NoteNode> implements NoteNodeDAO {
+	
+	private static Logger log = LoggerFactory.getLogger(NoteNodeDAOImpl.class);
+
+	private static final int DEFAULT_SORTING = 100;
 
 	public List<NoteNode> findAll() {
         return search("from NoteNode");
@@ -43,7 +49,6 @@ public class NoteNodeDAOImpl extends GenericDao<NoteNode> implements NoteNodeDAO
 		}
 		
 		return new ArrayList<NoteNode>();
-		
 	}
 
 	public void remove(long id) {
@@ -64,8 +69,7 @@ public class NoteNodeDAOImpl extends GenericDao<NoteNode> implements NoteNodeDAO
 		Map sqlParams = new HashMap();
 		sqlParams.put("userId", userId);
 		
-		List<NoteNode> list = executeNamedQuery(
-				"findRootNoteByUser", sqlParams, 1);
+		List<NoteNode> list = executeNamedQuery( "findRootNoteByUser", sqlParams, 1);
 		NoteNode rootnote = list.get(0);
 		if (rootnote != null) {
 			// setting up children manually
@@ -79,6 +83,7 @@ public class NoteNodeDAOImpl extends GenericDao<NoteNode> implements NoteNodeDAO
             note.setName("ROOT");
     		note.setParent(null);
         	note.setCreated(new Date());
+        	note.setSorting(DEFAULT_SORTING);
         	
         	save(note);
     		return note;
@@ -119,6 +124,66 @@ public class NoteNodeDAOImpl extends GenericDao<NoteNode> implements NoteNodeDAO
 		note.setIcon(picUrl == null? parent.getIcon():picUrl);
 		note.setCreated(new Date());
 		
+		List<NoteNode> children = parent.getChildren();
+		int size = children.size();
+		if(size == 0) {
+			note.setSorting(DEFAULT_SORTING);
+		} else {
+			NoteNode lastChild = children.get(size - 1);
+			note.setSorting(lastChild.getSorting() + DEFAULT_SORTING);
+		}
+		
+		save(note);
+		return note;
+	}
+	
+	@Override
+	public NoteNode addChild(long pid, int pos, String name, String text, String picUrl) {
+
+		NoteNode parent = (NoteNode) find(NoteNode.class, pid);
+		NoteNode note = new NoteNode();
+		note.setParent(parent);
+		note.setName(name);
+		note.setText(text);
+		note.setIcon(picUrl == null ? parent.getIcon() : picUrl);
+		note.setCreated(new Date());
+		note.setSorting(DEFAULT_SORTING);
+
+		List<NoteNode> children = parent.getChildren();
+		int size = children.size();
+		if (pos < 0) {
+			// add before the first child
+			NoteNode currentChild = children.get(0);
+			note.setSorting(currentChild.getSorting() - DEFAULT_SORTING);
+
+		} else if (pos + 1 >= size) {
+			// add after the last child
+			NoteNode currentChild = children.get(pos);
+			note.setSorting(currentChild.getSorting() + DEFAULT_SORTING);
+
+		} else {
+			
+			int currentChildSorting = children.get(pos).getSorting();
+			int nextChildSorting = children.get(pos + 1).getSorting();
+			int diff = (nextChildSorting - currentChildSorting) / 2;
+
+			log.debug("addChild: diff is " + diff);
+			
+			if (diff > 0) {
+				note.setSorting(currentChildSorting + diff);
+			} else {
+				
+				log.debug("reassign orders for all children");
+
+				for(int i=0; i<size; i++) {
+					children.get(i).setSorting(DEFAULT_SORTING * i);
+				}
+				
+				note.setSorting(children.get(pos).getSorting() + DEFAULT_SORTING / 2);
+			}
+
+		}
+
 		save(note);
 		return note;
 	}
@@ -128,6 +193,28 @@ public class NoteNodeDAOImpl extends GenericDao<NoteNode> implements NoteNodeDAO
 		NoteNode parent = (NoteNode) find(NoteNode.class, pid);
 		NoteNode entity = (NoteNode) find(NoteNode.class, id);
 		entity.setParent(parent);
+
+		// update sorting
+		List<NoteNode> children = parent.getChildren();
+		if (children.size() > 0) {
+			entity.setSorting(children.get(children.size() - 1).getSorting()
+					+ DEFAULT_SORTING);
+		} else {
+			entity.setSorting(DEFAULT_SORTING);
+		}
+
+	}
+
+	@Override
+	public void swapPosition(long pid, int pos1, int pos2) {
+		
+		NoteNode parent = (NoteNode) find(NoteNode.class, pid);
+		List<NoteNode> children = parent.getChildren();
+		
+		int sorting1 = children.get(pos1).getSorting();
+		int sorting2 = children.get(pos2).getSorting();
+		children.get(pos1).setSorting(sorting2);
+		children.get(pos2).setSorting(sorting1);
 		
 	}
 

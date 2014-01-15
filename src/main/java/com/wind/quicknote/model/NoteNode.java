@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -53,6 +54,7 @@ public class NoteNode /* extends DefaultRevisionEntity */ {
 	private NoteNode parent;
 	
 	@OneToMany(cascade = CascadeType.PERSIST, mappedBy = "parent", fetch = FetchType.LAZY)
+	@OrderBy("sorting")
 	//@OneToMany(cascade = CascadeType.PERSIST, mappedBy = "parent", fetch = FetchType.EAGER)
 	//@Fetch(FetchMode.JOIN)
 	private List<NoteNode> children = new ArrayList<NoteNode>();
@@ -87,6 +89,9 @@ public class NoteNode /* extends DefaultRevisionEntity */ {
 	@Column(name="updated")
 	private Date updated;
 	
+	@Column(name="sorting")
+	private int sorting;
+	
 	public NoteNode() {
 		super();
 	}
@@ -99,6 +104,14 @@ public class NoteNode /* extends DefaultRevisionEntity */ {
 		this.id = id;
 	}
 	
+	public int getSorting() {
+		return sorting;
+	}
+
+	public void setSorting(int sorting) {
+		this.sorting = sorting;
+	}
+
 	public String getName() {
 		return name;
 	}

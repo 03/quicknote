@@ -91,11 +91,20 @@ public class NoteServiceImpl implements NoteService {
 		return nodeDAO.addChild(pid, name, content, picUrl);
 	}
 	
+	@Override
+	public NoteNode addTopic(long pid, int pos, String name, String content,
+			String picUrl) {
+		return nodeDAO.addChild(pid, pos, name, content, picUrl);
+	}
+	
 	public void changeParentId(long id, long pid) {
 		nodeDAO.changeParent(id, pid);
 	}
-	
 
+	@Override
+	public void swapTopicPosition(long pid, int pos1, int pos2) {
+		nodeDAO.swapPosition(pid, pos1, pos2);
+	}
 	/*
 	 * user DAO
 	 */
@@ -127,4 +136,5 @@ public class NoteServiceImpl implements NoteService {
 	public void removeUser(NoteUser user) {
 		userDAO.delete(user);
 	}
+
 }

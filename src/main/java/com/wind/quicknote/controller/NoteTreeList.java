@@ -131,7 +131,6 @@ public class NoteTreeList extends Div implements IdSpace {
     	TopicItem currentItem = getCurrentItem();
 		if (currentItem != null) {
 
-			// current item
 			Treeitem selectedTreeItem = topicTree.getSelectedItem();
 			TopicItemTreeNode selectedNode = (TopicItemTreeNode) selectedTreeItem.getValue();
 			TopicItemTreeNode parentNode = (TopicItemTreeNode) selectedNode.getParent();
@@ -140,29 +139,47 @@ public class NoteTreeList extends Div implements IdSpace {
 			if (parentTreeItem == null) {
 				topicTreeModel.addToRoot();
         	} else {
-        		topicTreeModel.insertAtLast(parentNode);
+        		topicTreeModel.insertAfter(parentNode, parentNode.getChildCount() - 1);
         	}
             
 		} else {
-
-			if (topicTreeModel.getRoot().getChildCount() == 0) {
-				// add new node
-				topicTreeModel.addToRoot();
-				
-			} else {
-				showWarningDialog();
-			}
-			
+			addNodeToRoot();
 		}
        	
    	}
+	
+	@Listen("onClick=#btnInsertChild")
+   	public void insertChildItem() {
+		
+		log.debug("#insertChildItem");
+    	TopicItem currentItem = getCurrentItem();
+		if (currentItem != null) {
+
+			Treeitem selectedTreeItem = topicTree.getSelectedItem();
+			TopicItemTreeNode selectedNode = (TopicItemTreeNode) selectedTreeItem.getValue();
+			topicTreeModel.addToNode(selectedNode);
+            
+		} else {
+			addNodeToRoot();
+		}
+       	
+   	}
+
+	private void addNodeToRoot() {
+		if (topicTreeModel.getRoot().getChildCount() == 0) {
+			// add new node
+			topicTreeModel.addToRoot();
+		} else {
+			showWarningDialog();
+		}
+	}
 	
 	public void insertBefore() {
 		
 		TopicItemTreeNode selectedNode = getCurrentNode();
 		TopicItemTreeNode parentNode = (TopicItemTreeNode) selectedNode.getParent();
 
-		topicTreeModel.insertAt(parentNode, parentNode.getIndex(selectedNode));
+		topicTreeModel.insertBefore(parentNode, parentNode.getIndex(selectedNode));
    	}
 	
 	public void insertAfter() {
@@ -170,7 +187,7 @@ public class NoteTreeList extends Div implements IdSpace {
 		TopicItemTreeNode selectedNode = getCurrentNode();
 		TopicItemTreeNode parentNode = (TopicItemTreeNode) selectedNode.getParent();
 		
-		topicTreeModel.insertAt(parentNode, parentNode.getIndex(selectedNode) + 1);
+		topicTreeModel.insertAfter(parentNode, parentNode.getIndex(selectedNode));
    	}
 	
 	public void moveUp() {
@@ -191,76 +208,6 @@ public class NoteTreeList extends Div implements IdSpace {
 		topicTreeModel.swapPos(parentNode, idx, idx+1);
    	}
 	
-	@Listen("onClick=#btnInsertChild")
-   	public void insertChildItem() {
-		
-		log.debug("#insertChildItem");
-    	TopicItem currentItem = getCurrentItem();
-		if (currentItem != null) {
-
-			// current item
-			Treeitem selectedTreeItem = topicTree.getSelectedItem();
-			TopicItemTreeNode selectedNode = (TopicItemTreeNode) selectedTreeItem.getValue();
-			topicTreeModel.addToNode(selectedNode);
-            
-		} else {
-
-			if (topicTreeModel.getRoot().getChildCount() == 0) {
-				// add new node
-				topicTreeModel.addToRoot();
-				
-			} else {
-				showWarningDialog();
-			}
-			
-		}
-       	
-   	}
-	
-	/**
-     * smart insert
-     */
-	@Listen("onClick=#btnSmartInsert")
-   	public void smartInsertItem() {
-    	
-		if (getCurrentItem() != null) {
-
-			Treeitem selectedTreeItem = topicTree.getSelectedItem();
-			// selectedTreeItem[UI] as parent node[ViewModel]
-			TopicItemTreeNode selectedNode = (TopicItemTreeNode) selectedTreeItem.getValue();
-			TopicItem selectedItem = selectedNode.getData();
-			TopicItemTreeNode parentNode = (TopicItemTreeNode) selectedNode.getParent();
-			
-			Treeitem parentTreeItem = selectedTreeItem.getParentItem();
-			if (parentTreeItem == null) {
-				// if on top level, add node on same level
-				topicTreeModel.addToRoot();
-			} else {
-				if (selectedItem.isLeaf()) {
-					// if current node has no children , append it as the first
-					// child
-					topicTreeModel.addToNode(selectedNode);
-				} else {
-					// if current node has children, add it as the last child
-					topicTreeModel.insertAtLast(parentNode);
-				}
-			}
-            
-		} else {
-
-			if (topicTreeModel.getRoot().getChildCount() == 0) {
-				// add new node
-				topicTreeModel.addToRoot();
-			} else {
-				showWarningDialog();
-			}
-		}
-       	
-   	}
-    
-    
-
-
 	/**
 	 * properties
 	 */

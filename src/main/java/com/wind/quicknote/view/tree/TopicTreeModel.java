@@ -116,60 +116,26 @@ public class TopicTreeModel extends DefaultTreeModel<TopicItem> {
         remove(parent, index, index);
     }
     
-    /**
-     * insert new nodes which parent is <code>parent</code> with indexes
-     * <code>indexes</code> by new nodes <code>newNodes</code>
-     * 
-     * @param parent
-     *            The parent of nodes are inserted
-     * @param indexFrom
-     *            the lower index of the change range
-     * @param indexTo
-     *            the upper index of the change range
-     * @param newNodes
-     *            New nodes which are inserted
-     * @throws IndexOutOfBoundsException
-     *             - indexFrom < 0 or indexTo > number of parent's children
-     */
-    public void insert(DefaultTreeNode<TopicItem> parent, int indexFrom, int indexTo, DefaultTreeNode<TopicItem>[] newNodes)
-            throws IndexOutOfBoundsException {
-        DefaultTreeNode<TopicItem> stn = parent;
-        for (int i = indexFrom; i <= indexTo; i++) {
-            try {
-                stn.getChildren().add(i, newNodes[i - indexFrom]);
-            } catch (Exception exp) {
-                throw new IndexOutOfBoundsException("Out of bound: " + i + " while size=" + stn.getChildren().size());
-            }
-        }
-    }
-    
-    @SuppressWarnings("unchecked")
-	public void insertAtLast(DefaultTreeNode<TopicItem> parent) throws IndexOutOfBoundsException {
+	public void insertBefore(DefaultTreeNode<TopicItem> parent, int position) throws IndexOutOfBoundsException {
     	
     	long pid = parent.getData().getId();
     	// save to database
-		NoteNode note = noteService.addTopic(pid, TOPIC_NEW_ITEM, TOPIC_NEWLY_ADDED_CONTENT, QUtils.getRandomIconURL());
+		NoteNode note = noteService.addTopic(pid, position - 1, TOPIC_NEW_ITEM, TOPIC_NEWLY_ADDED_CONTENT, QUtils.getRandomIconURL());
 		
-    	int index = parent.getChildCount() - 1;
 		if (parent instanceof TopicItemTreeNode) {
-            insert((TopicItemTreeNode)parent, index, index,
-                    new DefaultTreeNode[] { new TopicItemTreeNode(new TopicItem(note), null, true) });
+			parent.getChildren().add(position, new TopicItemTreeNode(new TopicItem(note), null, true));
     	}
-        
     }
-    
-    @SuppressWarnings("unchecked")
-	public void insertAt(DefaultTreeNode<TopicItem> parent, int position) throws IndexOutOfBoundsException {
+	
+	public void insertAfter(DefaultTreeNode<TopicItem> parent, int position) throws IndexOutOfBoundsException {
     	
     	long pid = parent.getData().getId();
     	// save to database
-		NoteNode note = noteService.addTopic(pid, TOPIC_NEW_ITEM, TOPIC_NEWLY_ADDED_CONTENT, QUtils.getRandomIconURL());
+		NoteNode note = noteService.addTopic(pid, position, TOPIC_NEW_ITEM, TOPIC_NEWLY_ADDED_CONTENT, QUtils.getRandomIconURL());
 		
 		if (parent instanceof TopicItemTreeNode) {
-            insert((TopicItemTreeNode)parent, position, position,
-                    new DefaultTreeNode[] { new TopicItemTreeNode(new TopicItem(note), null, true) });
+			parent.getChildren().add(position + 1, new TopicItemTreeNode(new TopicItem(note), null, true));
     	}
-        
     }
     
 	public void swap(DefaultTreeNode<TopicItem> parent, int position, int newPosition)
@@ -209,8 +175,8 @@ public class TopicTreeModel extends DefaultTreeModel<TopicItem> {
 	public void swapPos(DefaultTreeNode<TopicItem> parent, int pos, int newPos) {
     	
     	// save to database
-    	// long pid = parent.getData().getId();
-		// NoteNode note = noteService.updateTopicPos(pid, TOPIC_NEW_ITEM, TOPIC_NEWLY_ADDED_CONTENT, QUtils.getRandomIconURL());
+		long pid = parent.getData().getId();
+		noteService.swapTopicPosition(pid, pos, newPos);
 		
 		if (parent instanceof TopicItemTreeNode) {
             swap((TopicItemTreeNode)parent, pos, newPos);
@@ -221,7 +187,7 @@ public class TopicTreeModel extends DefaultTreeModel<TopicItem> {
 	
 	public void updateTopicName(TopicItem topicItem, String value) {
 		
-		noteService.updateTopicName( topicItem.getId(), value);
+		noteService.updateTopicName(topicItem.getId(), value);
 		topicItem.setName(value);
     }
     
@@ -246,40 +212,32 @@ public class TopicTreeModel extends DefaultTreeModel<TopicItem> {
     }
     
     /**
-     * append new node to parent
+     * Add as last child to node
      * 
-     * @param parent
-     *            The parent of nodes are appended
-     * @param newNode
-     *            New node which are appended
+     * @param node
      */
-    public void add(DefaultTreeNode<TopicItem> parent, DefaultTreeNode<TopicItem> newNode) {
-        DefaultTreeNode<TopicItem> stn = (DefaultTreeNode<TopicItem>) parent;
-        stn.getChildren().add(newNode);
-    }
-    
 	public void addToNode(TopicItemTreeNode node) {
     	// save to database
     	NoteNode note_added = noteService.addTopic(node.getData().getId(), TOPIC_NEW_ITEM, TOPIC_NEWLY_ADDED_CONTENT, QUtils.getRandomIconURL());
-        add(node, new TopicItemTreeNode(new TopicItem(note_added), null, true));
+        node.getChildren().add(new TopicItemTreeNode(new TopicItem(note_added), null, true));
     }
     
     /**
-     * move node to new parent
+     * move node as last child to the new parent
      * 
      * @param parent
-     * @param node
+     * @param nodeTobeAdded
      */
-	public void moveToNode(TopicItemTreeNode parent, TopicItemTreeNode node) {
+	public void moveToNode(TopicItemTreeNode parent, TopicItemTreeNode nodeTobeAdded) {
 		
 		// cancel if on current parent
-		if(node.getParent().getData().getId() == parent.getData().getId()) {
+		if(nodeTobeAdded.getParent().getData().getId() == parent.getData().getId()) {
 			return;
 		}
 		
     	// change parent
-    	noteService.changeParentId(node.getData().getId(), parent.getData().getId());
-        add(parent, node);
+    	noteService.changeParentId(nodeTobeAdded.getData().getId(), parent.getData().getId());
+        parent.getChildren().add(nodeTobeAdded);
     }
     
     public void addToRoot() {

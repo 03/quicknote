@@ -49,9 +49,17 @@ public class NoteServiceTest {
 	@Test
 	public void testFindChildTopics() {
 		List<NoteNode> items = service.findChildTopics(3L);
-		assertEquals(2 , items.size());
-	}
+		assertEquals(3, items.size());
 
+		for (int i = 0; i < items.size(); i++) {
+			if (i > 0) {
+				NoteNode previousItem = items.get(i - 1);
+				NoteNode currentItem = items.get(i);
+				assertTrue(previousItem.getSorting() < currentItem.getSorting());
+			}
+		}
+	}
+	
 	@Test
 	public void testFindRootTopicByUser() {
 		NoteNode node = service.findRootTopicByUser(1L);
@@ -128,7 +136,7 @@ public class NoteServiceTest {
 		assertEquals(oldParentId, note.getParent().getId());
 		
 	}
-
+	
 	@Test
 	public void testAddAndRemoveUser() {
 		

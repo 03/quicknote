@@ -37,4 +37,7 @@ v0.45, 19/12/2013
 - Upgrade to Zk7 (IE6,7 won't be supported) + ckeditor 4.1
 - Add properties page, layout adjustment
 
+v0.46, 15/01/2014
+- Sorting implemented
+
 
