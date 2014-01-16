@@ -31,7 +31,7 @@ public class TopicTreeModel extends DefaultTreeModel<TopicItem> {
 	 */
 	private static final long serialVersionUID = 7973634536446973065L;
 	
-	private static NoteService noteService = SpringBeanUtil.getBean("noteService", NoteService.class);;
+	private static NoteService noteService = SpringBeanUtil.getBean("noteService", NoteService.class);
 	
     DefaultTreeNode<TopicItem> _root;
     
@@ -160,8 +160,6 @@ public class TopicTreeModel extends DefaultTreeModel<TopicItem> {
 			stn.getChildren().add(position, newElem);
 		}
 		
-		/*stn.getChildren().set(newPosition, (TreeNode<TopicItem>) elem.clone());
-		stn.getChildren().set(position, (TreeNode<TopicItem>) newElem.clone());*/
     }
     
 	/**

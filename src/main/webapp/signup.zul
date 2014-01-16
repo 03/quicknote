@@ -16,6 +16,8 @@
                     <hlayout>
                         <textbox value="@bind(fx.loginName)" constraint="no empty"
                             width="150px" tabindex="1" />
+                        <label class="error"
+                            value="@load(vmsgs['loginname'])" />
                     </hlayout>
                 </row>
                 <row>

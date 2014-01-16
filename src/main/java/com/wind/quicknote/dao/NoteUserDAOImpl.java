@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.wind.quicknote.model.NoteNode;
 import com.wind.quicknote.model.NoteUser;
+import com.wind.quicknote.model.UserRole;
 
 
 /**
@@ -72,6 +73,7 @@ public class NoteUserDAOImpl extends GenericDao<NoteUser> implements NoteUserDAO
 		// Create user
 		user.setCreated(new Date());
 		user.setRootnote(node);
+		user.setRole(UserRole.Standard);
 
 		save(user);
 		return user;

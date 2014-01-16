@@ -5,6 +5,8 @@ import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -32,7 +34,8 @@ public class NoteUser {
 	@Column(name="last_name")
 	private String lastName;
 	@Column(name="role")
-	private String role;
+	@Enumerated(EnumType.STRING)
+	private UserRole role;
 	@Column(name="password")
 	private String password;
 	@Column(name="email")
@@ -94,11 +97,11 @@ public class NoteUser {
 		this.lastName = lastName;
 	}
 
-	public String getRole() {
+	public UserRole getRole() {
 		return role;
 	}
 
-	public void setRole(String role) {
+	public void setRole(UserRole role) {
 		this.role = role;
 	}
 

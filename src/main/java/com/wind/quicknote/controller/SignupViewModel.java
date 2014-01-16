@@ -27,7 +27,7 @@ public class SignupViewModel {
 	@Command
     public void submit(@BindingParam("cmp")  Window win) {
 		
-		log.debug("----------- Proceeding to create user -----------");
+		log.debug("----------- Sumbit to create user -----------");
 		NoteUser user = noteService.addUser(noteUser);
 		if(user != null) {
 			

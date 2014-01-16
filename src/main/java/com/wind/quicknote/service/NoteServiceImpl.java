@@ -137,4 +137,9 @@ public class NoteServiceImpl implements NoteService {
 		userDAO.delete(user);
 	}
 
+	@Override
+	public boolean isLoginNameAvailable(String name) {
+		return userDAO.findByName(name) == null;
+	}
+
 }

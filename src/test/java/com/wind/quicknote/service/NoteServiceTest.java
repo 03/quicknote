@@ -25,6 +25,8 @@ import com.wind.quicknote.model.NoteUser;
 								  "/dataAccessContext.xml"})
 public class NoteServiceTest {
 	
+	private static final int DEFAULT_SORTING = 100;
+	
 	@Autowired
 	@Qualifier("noteService")
 	private NoteService service;
@@ -106,12 +108,103 @@ public class NoteServiceTest {
 	}
 
 	@Test
-	public void testAddAndRemoveTopic() {
+	public void testAddAndRemoveTopicToRoot() {
 		
 		NoteNode topic = service.addTopic(1, "Added", "content", "URL");
 		Long id = topic.getId();
 		assertNotNull(id);
+
+		service.removeTopic(id);
+		topic = service.findTopic(id);
+		assertNull(topic);
+	}
+	
+	@Test
+	public void testAddTopicToNodeWithoutChildren() {
 		
+		long parentId = 7L;
+		assertTrue(service.findChildTopics(parentId).size() == 0);
+		
+		NoteNode topic = service.addTopic(parentId, "Added", "content", "URL");
+		Long id = topic.getId();
+		assertNotNull(id);
+		assertEquals(DEFAULT_SORTING, topic.getSorting());
+		
+		service.removeTopic(id);
+		topic = service.findTopic(id);
+		assertNull(topic);
+	}
+	
+	@Test
+	public void testAddTopicToNodeWithChildren() {
+		
+		long parentId = 4L;
+		int numOfChildren = service.findChildTopics(parentId).size();
+		assertTrue(numOfChildren > 0);
+		
+		NoteNode topic = service.addTopic(parentId, "Added", "content", "URL");
+		Long id = topic.getId();
+		assertNotNull(id);
+		assertEquals(DEFAULT_SORTING * (numOfChildren + 1), topic.getSorting());
+		
+		service.removeTopic(id);
+		topic = service.findTopic(id);
+		assertNull(topic);
+	}
+	
+	@Test
+	public void testAddTopicToNodeWithChildrenAtFirst() {
+		
+		long parentId = 3L;
+		int numOfChildren = service.findChildTopics(parentId).size();
+		assertTrue(numOfChildren > 0);
+		
+		NoteNode topic = service.addTopic(parentId, -1, "Added", "content", "URL");
+		Long id = topic.getId();
+		assertNotNull(id);
+		assertEquals(0, topic.getSorting());
+		
+		service.removeTopic(id);
+		topic = service.findTopic(id);
+		assertNull(topic);
+	}
+	
+	@Test
+	public void testAddTopicToNodeWithChildrenAtLast() {
+		
+		long parentId = 3L;
+		int numOfChildren = service.findChildTopics(parentId).size();
+		assertTrue(numOfChildren > 0);
+		
+		NoteNode topic = service.addTopic(parentId, (numOfChildren - 1), "Added", "content", "URL");
+		Long id = topic.getId();
+		assertNotNull(id);
+		assertEquals(DEFAULT_SORTING * (numOfChildren + 1), topic.getSorting());
+		
+		service.removeTopic(id);
+		topic = service.findTopic(id);
+		assertNull(topic);
+	}
+	
+	@Test
+	public void testAddTopicToNodeWithChildrenAtMiddle() {
+		
+		long parentId = 3L;
+		
+		List<NoteNode> children = service.findChildTopics(parentId);
+		int numOfChildren = children.size();
+		assertTrue(numOfChildren > 2);
+		
+		int position = 1;
+		NoteNode topic = service.addTopic(parentId, position, "Added", "content", "URL");
+		Long id = topic.getId();
+		assertNotNull(id);
+		assertEquals(
+				(children.get(position + 1).getSorting() - children.get(
+						position).getSorting())
+						/ 2 + children.get(position).getSorting(),
+				topic.getSorting());
+
 		service.removeTopic(id);
 		topic = service.findTopic(id);
 		assertNull(topic);
@@ -134,6 +227,31 @@ public class NoteServiceTest {
 		service.changeParentId(id, oldParentId);
 		note = service.findTopic(id);
 		assertEquals(oldParentId, note.getParent().getId());
+		
+	}
+	
+	@Test
+	public void testChangeParentIdAndSorting() {
+		
+		long id = 8L;
+		long oldParentId = 3L;
+		long newParentId = 4L;
+		int oldSorting = 300;
+		int newSorting = 200;
+		
+		NoteNode note = service.findTopic(id);
+		assertEquals(oldParentId, note.getParent().getId());
+		assertEquals(oldSorting, note.getSorting());
+		
+		service.changeParentId(id, newParentId);
+		note = service.findTopic(id);
+		assertEquals(newParentId, note.getParent().getId());
+		assertEquals(newSorting, note.getSorting());
+		
+		service.changeParentId(id, oldParentId);
+		note = service.findTopic(id);
+		assertEquals(oldParentId, note.getParent().getId());
+		assertEquals(oldSorting, note.getSorting());
 		
 	}
 	

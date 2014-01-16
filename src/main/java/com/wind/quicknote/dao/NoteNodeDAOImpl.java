@@ -163,18 +163,16 @@ public class NoteNodeDAOImpl extends GenericDao<NoteNode> implements NoteNodeDAO
 
 		} else {
 			
-			int currentChildSorting = children.get(pos).getSorting();
-			int nextChildSorting = children.get(pos + 1).getSorting();
-			int diff = (nextChildSorting - currentChildSorting) / 2;
-
+			int start = children.get(pos).getSorting();
+			int end = children.get(pos + 1).getSorting();
+			int diff = (end - start) / 2;
 			log.debug("addChild: diff is " + diff);
 			
 			if (diff > 0) {
-				note.setSorting(currentChildSorting + diff);
-			} else {
+				note.setSorting(start + diff);
 				
+			} else {
 				log.debug("reassign orders for all children");
-
 				for(int i=0; i<size; i++) {
 					children.get(i).setSorting(DEFAULT_SORTING * i);
 				}
@@ -194,7 +192,7 @@ public class NoteNodeDAOImpl extends GenericDao<NoteNode> implements NoteNodeDAO
 		NoteNode entity = (NoteNode) find(NoteNode.class, id);
 		entity.setParent(parent);
 
-		// update sorting
+		// update sorting on new location
 		List<NoteNode> children = parent.getChildren();
 		if (children.size() > 0) {
 			entity.setSorting(children.get(children.size() - 1).getSorting()

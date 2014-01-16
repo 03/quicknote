@@ -48,6 +48,8 @@ public interface NoteService {
 	public void removeUser(NoteUser user);
 
 	public void swapTopicPosition(long pid, int pos1, int pos2);
+
+	public boolean isLoginNameAvailable(String name);
 	
 	
 }
