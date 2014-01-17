@@ -27,10 +27,10 @@ v0.43, 06/12/2013
 - New Layout, added adding child item
 
 v0.44, 16/12/2013
-- upgrade to HB 4.2.8
-- implement genericDao
-- apply p6spy to display real sql stmt on testing
-- use hibernate envers for record versioning
+- Upgrade to HB 4.2.8
+- Implement genericDao
+- Apply p6spy to display real sql stmt on testing
+- Use hibernate envers for record versioning
 
 v0.45, 19/12/2013
 - SignUp screen added
@@ -39,5 +39,6 @@ v0.45, 19/12/2013
 
 v0.46, 15/01/2014
 - Sorting implemented
+- Admin function - user list added
 
 
