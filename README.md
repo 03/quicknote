@@ -17,8 +17,7 @@ v0.4, 28/08/2013
 
 v0.41, 29/08/2013
 - Remove ownerId from Note to simplify data model
-- Add rootId to User as it's more relevant
-- One user can have only one root (set as 1-to-1 one way relationship)
+- One user can have only one root (1:1 relationship)
 
 v0.42, 29/11/2013
 - Upgrade to Spring 2.3 and HB 4.2.6
@@ -30,7 +29,7 @@ v0.44, 16/12/2013
 - Upgrade to HB 4.2.8
 - Implement genericDao
 - Apply p6spy to display real sql stmt on testing
-- Use hibernate envers for record versioning
+- Apply hibernate envers for versioning
 
 v0.45, 19/12/2013
 - SignUp screen added

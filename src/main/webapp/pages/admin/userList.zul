@@ -15,8 +15,8 @@
 			<listheader label="Role" width="60px" />
 			<listheader label="Email" width="100px" />
 			<listheader label="Description" width="110px" />
-			<listheader label="Created Date" width="200px" />
-			<listheader label="Updated Date" width="200px" />
+			<listheader label="Created" width="200px" />
+			<listheader label="Updated" width="200px" />
 		</listhead>
 		<template name="model">
 			<listitem value="${each}">
