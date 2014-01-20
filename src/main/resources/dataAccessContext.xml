@@ -27,7 +27,7 @@
     <!-- <jee:jndi-lookup id="dataSource" jndi-name="java:comp/env/jdbc/MyDataSource"/> -->
     
 	
-	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+	<!-- <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
 		destroy-method="close">
 		<property name="driverClass" value="${db.driverClassName}" />
 		<property name="jdbcUrl" value="${db.url}" />
@@ -40,10 +40,10 @@
 		<property name="preferredTestQuery" value="${db.acquireIncrement}" />
 		<property name="idleConnectionTestPeriod" value="${db.idleConnectionTestPeriod}" />
 		<property name="maxIdleTimeExcessConnections" value="${db.maxIdleTimeExcessConnections}" />	
-	</bean>
+	</bean> -->
 	
 	<!-- Heroku settings -->
-	<!-- <bean class="java.net.URI" id="dbUrl">
+	<bean class="java.net.URI" id="dbUrl">
 		<constructor-arg value="#{systemEnvironment['DATABASE_URL']}" />
 	</bean>
 
@@ -51,7 +51,7 @@
 		<property name="url" value="#{ 'jdbc:postgresql://' + @dbUrl.getHost() + ':' + @dbUrl.getPort() + @dbUrl.getPath() }" />
 		<property name="username" value="#{ @dbUrl.getUserInfo().split(':')[0] }" />
 		<property name="password" value="#{ @dbUrl.getUserInfo().split(':')[1] }" />
-	</bean> -->
+	</bean>
 	<!-- Heroku settings end -->
 	
 	<bean id="sessionFactory"
