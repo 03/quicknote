@@ -1,0 +1,97 @@
+<zk>
+    <script type="text/javascript" content="zk.googleAPIkey='ABQIAAAAmGxmYR57XDAbAumS9tV5fxQXyylOlR69a1vFTcUcpV6DXdesOBSMEHfkewcSzwEwBT7UzVx8ep8vjA'" />
+	<style dynamic="true" src="/css/customized_style.css" />
+	
+	<hlayout style="padding:5px;">
+		<gmaps id="mymap" width="600px" height="450px" showSmallCtrl="false" onCreate="self.panTo(-37.814095245980404, 144.96318341552728);self.setZoom(15);">
+	        <attribute name="onMapMove"><![CDATA[
+	            ((Doublebox) self.getFellow("mylat")).setValue(self.getLat());
+	            ((Doublebox) self.getFellow("mylng")).setValue(self.getLng());
+	        ]]></attribute>
+	        <attribute name="onMapZoom"><![CDATA[
+	            ((Intbox) self.getFellow("myzoom")).setValue(self.getZoom());
+	        ]]></attribute>
+	        <attribute name="onMapClick"><![CDATA[
+	            org.zkoss.gmaps.Gmarker gmarker = event.getGmarker();
+	            if (gmarker != null)
+	                gmarker.setOpen(true);
+	        ]]></attribute>
+	         
+	        <ginfo id="myinfo" open="true" lat="-37.814095245980404" lng="144.96318341552728">
+	            <attribute name="content"><![CDATA[
+	                Hi there, Melbourne CBD is here ^_^
+	            ]]></attribute>
+	        </ginfo>
+	        
+	        <gpolyline id="myarea" points="-37.815875147907576,144.9568641310882,
+	        3,-37.81527125742076,144.95720208942407,3,-37.81593235832911,144.9572450047683,3,
+	        -37.815875147907576,144.9568641310882,3" weight="30" color="cyan"/>
+	        
+	        <gmarker id="mymark" lat="-37.81600651992066" lng="144.95728792011255" open="false">
+	            <attribute name="content"><![CDATA[
+	                Land Victoria.
+	            ]]></attribute>
+	        </gmarker>
+	        
+	        <gmarker id="mymark2" lat="-37.81879917934106" lng="144.95300175010675" open="false">
+	            <attribute name="content"><![CDATA[
+	                Southern Cross Station.
+	            ]]></attribute>
+	        </gmarker>
+	        
+	    </gmaps>
+	    
+	    <grid width="220px">
+	        <rows>
+	            <row>
+	                <label value="Latitude:" />
+	                <doublebox id="mylat" value="${mymap.lat}">
+	                    <attribute name="onChange"><![CDATA[
+	                        mymap.panTo(self.doubleValue(), mymap.getLng());
+	                    ]]></attribute>
+	                </doublebox>
+	            </row>
+	            <row>
+	                <label value="Longitude:" /> 
+	                <doublebox id="mylng" value="${mymap.lng}">
+	                    <attribute name="onChange"><![CDATA[
+	                        mymap.panTo(mymap.getLat(), self.doubleValue());
+	                    ]]></attribute>
+	                </doublebox>
+	            </row>
+	            <row>
+	                <label value="Zoom Level:" /> 
+	                <intbox id="myzoom" value="${mymap.zoom}">
+	                    <attribute name="onChange"><![CDATA[
+	                        mymap.setZoom(self.getValue());
+	                    ]]></attribute>
+	                </intbox>
+	            </row>
+	            <row>
+	                <label value="Open Info:" />
+	                <button label="Change" sclass="ctlBtn">
+	                    <attribute name="onClick"><![CDATA[
+	                        if(myinfo.isOpen())
+	                        	myinfo.setOpen(false);
+	                        else
+	                            myinfo.setOpen(true);
+	                    ]]></attribute>
+	                </button>
+	            </row>
+	            <row>
+	                <label value="Show LV:" />
+	                <button label="Change" sclass="ctlBtn">
+	                    <attribute name="onClick"><![CDATA[
+	                        if(mymark.isOpen())
+	                            mymark.setOpen(false);
+	                        else
+	                        	mymark.setOpen(true);
+	                    ]]></attribute>
+	                </button>
+	            </row>
+	        </rows>
+	    </grid>
+	    
+	</hlayout>
+    
+</zk>

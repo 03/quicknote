@@ -1,0 +1,94 @@
+<zk>
+
+<?page title="QuickNote v0.46"?>
+<?link rel="shortcut icon" href="http://www.google.com.au/favicon.ico" ?>
+<?component name="NoteTreeList" class="com.wind.quicknote.controller.NoteTreeList" ?>
+
+<style>
+	.h-inline-block {
+		display: inline-block;
+		_display: inline;
+	}
+	.z-toolbar a, .z-toolbar a:visited, .z-toolbar a:hover {
+    background-color:transparent;
+    border:0 none;
+	}
+	.vista {
+    background:#001100 url('../assets/images/bar.png') repeat-x 0 0;
+    color:white;
+    padding-top:2px;
+    border:0 none;
+	}
+</style>
+
+<window id="noteWindow" border="normal" 
+	apply="com.wind.quicknote.controller.NoteMainCtrl" >
+	
+	<borderlayout height="600px">
+	    <north maxsize="150" size="17%" height="120px" splittable="false" collapsible="true" style="padding:3px;">
+	        <borderlayout>
+	            <west border="normal" size="210" style="border:2px solid white">
+	                <div align="left" height="115px">
+	                    <image sclass="logo" src="/assets/images/qnote.png" height="110px" width="200px"/>
+	                </div>
+	            </west>
+	            <center border="none" hflex="true">
+	                <vlayout>
+	                    <image src="/assets/images/CrownLand.jpg" height="80px" width="100%"/>
+	                    <div align="right" height="29px">
+	                    	<toolbar id="tb" height="28px" align="end" sclass="vista">
+	                    		<label>Welcome</label>
+	                    		<label id="loginUsrName">
+	                    		</label>
+	                    		<!-- <toolbarbutton
+	                    			image="/assets/images/person.png"
+	                    			onClick='alert(":)")' /> -->
+	                    		<toolbarbutton tooltiptext="User Profile"
+	                    			image="/assets/images/person.png">
+	                    			<attribute name="onClick">{
+										final Window win = (Window) Executions.createComponents(
+												"/pages/userEdit.zul", null, null);
+										win.setMaximizable(true);
+										win.doModal();
+									}</attribute>
+								</toolbarbutton>
+	                    		<toolbarbutton tooltiptext="Settings"
+	                    			image="/assets/images/config.png">
+	                    			<attribute name="onClick">{
+										final Window win = (Window) Executions.createComponents(
+												"/pages/popup/sayHello.zul", null, null);
+										win.setMaximizable(true);
+										win.doModal();
+									}</attribute>
+								</toolbarbutton>
+	                    		<toolbarbutton id="logoutBtn" tooltiptext="Log Out"
+	                    			image="/assets/images/logout.png" />
+	                    	</toolbar>
+	                    </div>
+	                </vlayout>
+	            </center>
+	        </borderlayout>
+	    </north>
+	    <center border="none">
+	        <borderlayout>
+	            <west maxsize="480" size="20%" border="none" splittable="true" collapsible="true" margins="1,0,1,1">
+	                <vlayout spacing="1">
+	                    <NoteTreeList id="notetreeList" ></NoteTreeList>
+	                </vlayout>
+	            </west>
+	            <center border="none" autoscroll="true" vflex="true" margins="1,1,1,1" style="padding:3px;">
+	            	<div>
+		            	<button id="btnsave" tooltiptext="Save" 
+		            		image="/assets/images/save.png" width="50px" />
+		            	<separator height="3px"/>
+		            	<ckeditor id="editor" height="306px"
+		            		filebrowserImageBrowseUrl="/assets/images">
+		            	</ckeditor>
+	            	</div>
+	            </center>
+	        </borderlayout>
+	    </center>
+	</borderlayout>
+
+</window>
+</zk>

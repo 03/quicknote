@@ -1,0 +1,55 @@
+<div apply="com.wind.quicknote.controller.admin.OnlineUserViewCtrl">
+
+	<listbox id="userList" mold="paging" pageSize="3" pagingPosition="top" multiple="true" checkmark="true">
+		<auxhead>
+			<auxheader colspan="10" label="Online User List" />
+		</auxhead>
+		<listhead sizable="true">
+			<listheader image="/assets/images/Bullet.png" align="center"
+				width="100px" />
+			<listheader label="ID" width="40px" />
+			<listheader label="User Name" width="80px" />
+			<listheader label="First Name" width="80px" />
+			<listheader label="Last Name" width="80px" />
+			<listheader label="Role" width="50px" />
+			<listheader label="Email" width="100px" />
+			<listheader label="Description" width="110px" />
+			<listheader label="Created" width="130px" />
+			<listheader label="Updated" width="130px" />
+		</listhead>
+		<template name="model">
+			<listitem value="${each}">
+				<listcell>
+					<image height="18px" width="18px" src="${each.icon}" />
+				</listcell>
+				<listcell>
+					<label value="${each.id}" />
+				</listcell>
+				<listcell>
+					<label value="${each.loginName}" />
+				</listcell>
+				<listcell>
+					<label value="${each.firstName}" />
+				</listcell>
+				<listcell>
+					<label value="${each.lastName}" />
+				</listcell>
+				<listcell>
+					<label value="${each.role}" />
+				</listcell>
+				<listcell>
+					<label value="${each.email}" />
+				</listcell>
+				<listcell>
+					<label value="${each.desc}" />
+				</listcell>
+				<listcell>
+					<label value="${each.created}" />
+				</listcell>
+				<listcell>
+					<label value="${each.updated}" />
+				</listcell>
+			</listitem>
+		</template>
+	</listbox>
+</div>

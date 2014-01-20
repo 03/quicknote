@@ -1,0 +1,95 @@
+<zk>
+
+<window id="noteWindow" border="normal" 
+	apply="com.wind.quicknote.controller.AdminMainCtrl" >
+	
+	<borderlayout height="600px">
+	    <north maxsize="150" size="17%" height="120px" splittable="false" collapsible="true" style="padding:3px;">
+	        <borderlayout>
+	            <west border="normal" size="210" style="border:2px solid white">
+	                <div align="left" height="115px">
+	                    <image sclass="logo" src="/assets/images/qnote.png" height="110px" width="200px"/>
+	                </div>
+	            </west>
+	            <center border="none" hflex="true">
+	                <vlayout>
+	                    <image src="/assets/images/CrownLand.jpg" height="80px" width="100%"/>
+	                    <div align="right" height="29px">
+	                    	<toolbar id="tb" height="28px" align="end" sclass="vista">
+	                    		<label>Welcome</label>
+	                    		<label id="loginUsrName">
+	                    		</label>
+	                    		<toolbarbutton tooltiptext="User Profile"
+	                    			image="/assets/images/person.png">
+	                    			<attribute name="onClick">{
+										final Window win = (Window) Executions.createComponents(
+												"/pages/userEdit.zul", null, null);
+										win.setMaximizable(true);
+										win.doModal();
+									}</attribute>
+								</toolbarbutton>
+	                    		<toolbarbutton tooltiptext="Settings"
+	                    			image="/assets/images/config.png">
+	                    			<attribute name="onClick">{
+										final Window win = (Window) Executions.createComponents(
+												"/pages/popup/sayHello.zul", null, null);
+										win.setMaximizable(true);
+										win.doModal();
+									}</attribute>
+								</toolbarbutton>
+	                    		<toolbarbutton id="logoutBtn" tooltiptext="Log Out"
+	                    			image="/assets/images/logout.png" />
+	                    	</toolbar>
+	                    </div>
+	                </vlayout>
+	            </center>
+	        </borderlayout>
+	    </north>
+	    <center border="none">
+	        <borderlayout>
+	            <west maxsize="480" size="20%" border="none" splittable="true" collapsible="true" margins="1,0,1,1">
+	                <vlayout spacing="1">
+	                    <tree id="tree" width="100%" rows="12">
+								    <treechildren>
+								        <treeitem>
+								            <treerow>
+								                <treecell label="User Management" />
+								            </treerow>
+								            <treechildren>
+								                <treeitem>
+								                    <treerow>
+								                        <treecell label="User List" onClick='inc.setSrc("/pages/admin/userList.zul")'/>
+								                    </treerow>
+								                </treeitem>
+								                <treeitem>
+								                    <treerow>
+								                        <treecell label="Online User List" onClick='inc.setSrc("/pages/admin/onlineUser.zul")' tooltiptext="distributor,wsrprocessor,daemons"/>
+								                    </treerow>
+								                </treeitem>
+								            </treechildren>
+								        </treeitem>
+								        <treeitem>
+								            <treerow>
+								                <treecell label="Experimental" />
+								            </treerow>
+								            <treechildren>
+								            	<treeitem>
+								                    <treerow>
+								                        <treecell label="Google Maps" onClick='inc.setSrc("/pages/admin/googlemap.zul")' />
+								                    </treerow>
+								                </treeitem>
+								            </treechildren>
+								        </treeitem>
+								    </treechildren>
+								</tree>
+	                </vlayout>
+	            </west>
+	            <center border="none" autoscroll="true" vflex="true" margins="1,1,1,1" style="padding:2px;">
+	            	<include id="inc" src="/pages/admin/userList.zul" mode="defer" />
+	            </center>
+	        </borderlayout>
+	    </center>
+	</borderlayout>
+
+</window>
+</zk>
