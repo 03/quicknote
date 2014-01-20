@@ -12,6 +12,7 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
+import com.wind.quicknote.model.UserRole;
 import com.wind.quicknote.system.UserCredentialManager;
 
 
@@ -21,6 +22,8 @@ import com.wind.quicknote.system.UserCredentialManager;
 public class LoginViewCtrl extends SelectorComposer<Window> {
 
 	public static final String URL_HOME_PAGE = "/pages/note.zul";
+	public static final String URL_HOME_PAGE_ADMIN = "/pages/admin.zul";
+	public static final String URL_HOME_PAGE_PREMIUM = "/pages/premium.zul";
 
 	private static final long serialVersionUID = 5730426085235946339L;
 	
@@ -58,19 +61,25 @@ public class LoginViewCtrl extends SelectorComposer<Window> {
 		UserCredentialManager mgmt = UserCredentialManager.getIntance();
 		mgmt.login(nameTxb.getValue(), passwordTxb.getValue());
 		if (mgmt.isAuthenticated()) {
+
 			// put it in session
-			HttpSession hSess = (HttpSession) ((HttpServletRequest)Executions.getCurrent().getNativeRequest()).getSession();
+			HttpSession hSess = (HttpSession) ((HttpServletRequest) Executions
+					.getCurrent().getNativeRequest()).getSession();
 			String userName = mgmt.getUser().getLoginName();
 			hSess.setAttribute("user", userName);
 			
-			Executions.getCurrent().sendRedirect(URL_HOME_PAGE);
-			//Executions.getCurrent().sendRedirect("/pages/noteWithList.zul");
-			/*if("didev".equals(userName)) {
-				Executions.getCurrent().sendRedirect("/pages/note.zul");
-			}*/
-			
+			// redirect by role
+			UserRole role = mgmt.getUser().getRole();
+			if (UserRole.Admin.equals(role)) {
+				Executions.getCurrent().sendRedirect(URL_HOME_PAGE_ADMIN);
+			} else if (UserRole.Premium.equals(role)) {
+				Executions.getCurrent().sendRedirect(URL_HOME_PAGE_PREMIUM);
+			} else {
+				Executions.getCurrent().sendRedirect(URL_HOME_PAGE);
+			}
+
 		} else {
-			
+
 			Clients.evalJavaScript("loginFailed()");
 			mesgLbl.setValue("The Username or Password is invalid!");
 		}

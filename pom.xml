@@ -66,6 +66,12 @@
 			<artifactId>zcommons-el</artifactId>
 			<version>${zkel.version}</version>
 		</dependency>
+		<!-- gmapsz -->
+		<dependency>
+			<groupId>org.zkoss.zkforge</groupId>
+			<artifactId>gmapsz</artifactId>
+			<version>3.0.0</version>
+		</dependency>
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>

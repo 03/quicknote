@@ -39,5 +39,5 @@ v0.45, 19/12/2013
 v0.46, 15/01/2014
 - Sorting implemented
 - Admin function - user list added
-
+- Admin function - online user list added
 

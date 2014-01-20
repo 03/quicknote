@@ -1,5 +1,8 @@
 package com.wind.quicknote.system;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Session;
 
@@ -30,20 +33,55 @@ public class UserCredentialManager {
 			}
 			return userModel;
 		}
+		
+		
 	}
 
 	public synchronized void login(String name, String password) {
 		NoteUser tempUser = noteService.findUserByName(name);
 		if (tempUser != null && tempUser.getPassword().equals(password)) {
 			user = tempUser;
+			addUserToWebApp();
 		} else {
 			user = null;
 		}
+		
+	}
+	
+
+	@SuppressWarnings("unchecked")
+	public void addUserToWebApp() {
+
+		List<NoteUser> userList = (List<NoteUser>) Executions.getCurrent().getDesktop().getWebApp().getAttribute("ONLINE_USER_LIST");
+		if(userList == null) {
+			userList = new ArrayList<NoteUser>();
+			userList.add(user);
+			Executions.getCurrent().getDesktop().getWebApp().setAttribute("ONLINE_USER_LIST", userList);
+		} else {
+			userList.add(user);
+		}
+		
+	}
+	
+	public void removeUserFromWebApp() {
+		
+		@SuppressWarnings("unchecked")
+		List<NoteUser> userList = (List<NoteUser>) Executions.getCurrent().getDesktop().getWebApp().getAttribute("ONLINE_USER_LIST");
+		if(userList == null) {
+			userList = new ArrayList<NoteUser>();
+			Executions.getCurrent().getDesktop().getWebApp().setAttribute("ONLINE_USER_LIST", userList);
+		} else {
+			userList.remove(user);
+		}
+		
 	}
 
 	public synchronized void logOff() {
+		removeUserFromWebApp();
 		this.user = null;
 	}
+
+	
 
 	public synchronized NoteUser getUser() {
 		return user;

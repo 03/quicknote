@@ -57,7 +57,7 @@ public class NoteMainCtrl extends SelectorComposer<Window> {
 		UserCredentialManager mgmt = UserCredentialManager.getIntance();
 		NoteUser user = mgmt.getUser();
 		if(user!=null) {
-			String name = user.getLoginName();
+			String name = user.getFirstName() + " " + user.getLastName();
 			String role = user.getRole().name();
 			loginUsrName.setValue(name + " (" + role + ")");
 		} else {

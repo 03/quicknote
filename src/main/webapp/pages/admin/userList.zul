@@ -1,9 +1,8 @@
 <div apply="com.wind.quicknote.controller.admin.UserViewCtrl">
 
-	<listbox id="userList" mold="paging" pageSize="3" pagingPosition="top" 
-		multiple="false" checkmark="true">
+	<listbox id="userList" mold="paging" pageSize="3" pagingPosition="top">
 		<auxhead>
-			<auxheader colspan="8" label="User List" />
+			<auxheader colspan="10" label="User List" />
 		</auxhead>
 		<listhead sizable="true">
 			<listheader image="/assets/images/Bullet.png" align="center"
@@ -12,17 +11,16 @@
 			<listheader label="User Name" width="80px" />
 			<listheader label="First Name" width="80px" />
 			<listheader label="Last Name" width="80px" />
-			<listheader label="Role" width="60px" />
+			<listheader label="Role" width="50px" />
 			<listheader label="Email" width="100px" />
 			<listheader label="Description" width="110px" />
-			<listheader label="Created" width="200px" />
-			<listheader label="Updated" width="200px" />
+			<listheader label="Created" width="130px" />
+			<listheader label="Updated" width="130px" />
 		</listhead>
 		<template name="model">
 			<listitem value="${each}">
 				<listcell>
-					<image height="50px" width="50px"
-						src="${each.icon}" />
+					<image height="18px" width="18px" src="${each.icon}" />
 				</listcell>
 				<listcell>
 					<label value="${each.id}" />
