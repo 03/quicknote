@@ -41,3 +41,6 @@ v0.46, 15/01/2014
 - Admin function - user list added
 - Admin function - online user list added
 
+v0.47, 21/01/2014
+- WebService (Apache CXF) init
+

@@ -15,6 +15,7 @@
 		<spring.version>3.2.5.RELEASE</spring.version>
 		<hibernate.version>4.2.8.Final</hibernate.version>
 		<aspectj.version>1.7.2</aspectj.version>
+		<apache.cxf.version>2.7.8</apache.cxf.version>
 	</properties>
 	<repositories>
 		<repository>
@@ -257,6 +258,30 @@
 			<artifactId>logback-classic</artifactId>
 			<version>0.9.28</version>
 		</dependency>
+		
+		<!-- Apache CXF -->
+		<dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-frontend-jaxws</artifactId>
+            <version>${apache.cxf.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-databinding-aegis</artifactId>
+            <version>${apache.cxf.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-transports-http</artifactId>
+            <version>${apache.cxf.version}</version>
+        </dependency>
+        <!-- Jetty is needed if you're using the CXFServlet -->
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-transports-http-jetty</artifactId>
+            <version>${apache.cxf.version}</version>
+        </dependency>
+        
 	</dependencies>
 	
 	<build>

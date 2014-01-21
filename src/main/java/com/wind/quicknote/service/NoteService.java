@@ -2,9 +2,12 @@ package com.wind.quicknote.service;
 
 import java.util.List;
 
+import javax.jws.WebService;
+
 import com.wind.quicknote.model.NoteNode;
 import com.wind.quicknote.model.NoteUser;
 
+@WebService
 public interface NoteService {
 	
 	public void init();
@@ -30,14 +33,14 @@ public interface NoteService {
 	
 	public NoteNode findTopic(long id);
 	
-	public NoteNode addTopic(long pid, String name, String content, String picUrl);
+	public NoteNode addTopicAtLast(long pid, String name, String content, String picUrl);
 	
 	public NoteNode addTopic(long pid, int pos, String name, String content, String picUrl);
 	
 	public void changeParentId(long id, long pid);
 	
 	// User
-	public NoteUser addUser(String loginName, String email, String password);
+	public NoteUser addUserByEmail(String loginName, String email, String password);
 	
 	public NoteUser addUser(NoteUser user);
 

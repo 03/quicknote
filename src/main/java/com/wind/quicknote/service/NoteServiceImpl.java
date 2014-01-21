@@ -3,6 +3,8 @@ package com.wind.quicknote.service;
 import java.util.Date;
 import java.util.List;
 
+import javax.jws.WebService;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,7 @@ import com.wind.quicknote.model.NoteUser;
 
 @Transactional
 @Service("noteService")
+@WebService(endpointInterface = "com.wind.quicknote.service.NoteService")
 public class NoteServiceImpl implements NoteService {
 	
 	private static Logger log = LoggerFactory.getLogger(NoteServiceImpl.class);
@@ -87,7 +90,7 @@ public class NoteServiceImpl implements NoteService {
 		nodeDAO.remove(id);
 	}
 	
-	public NoteNode addTopic(long pid, String name, String content, String picUrl) {
+	public NoteNode addTopicAtLast(long pid, String name, String content, String picUrl) {
 		return nodeDAO.addChild(pid, name, content, picUrl);
 	}
 	
@@ -113,7 +116,7 @@ public class NoteServiceImpl implements NoteService {
 	}
 	
 	@Override
-	public NoteUser addUser(String loginName, String email, String password) {
+	public NoteUser addUserByEmail(String loginName, String email, String password) {
 		return userDAO.createUser(loginName, email, password);
 	}
 	

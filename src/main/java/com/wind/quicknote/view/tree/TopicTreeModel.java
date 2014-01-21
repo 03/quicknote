@@ -216,7 +216,7 @@ public class TopicTreeModel extends DefaultTreeModel<TopicItem> {
      */
 	public void addToNode(TopicItemTreeNode node) {
     	// save to database
-    	NoteNode note_added = noteService.addTopic(node.getData().getId(), TOPIC_NEW_ITEM, TOPIC_NEWLY_ADDED_CONTENT, QUtils.getRandomIconURL());
+    	NoteNode note_added = noteService.addTopicAtLast(node.getData().getId(), TOPIC_NEW_ITEM, TOPIC_NEWLY_ADDED_CONTENT, QUtils.getRandomIconURL());
         node.getChildren().add(new TopicItemTreeNode(new TopicItem(note_added), null, true));
     }
     
@@ -240,7 +240,7 @@ public class TopicTreeModel extends DefaultTreeModel<TopicItem> {
     
     public void addToRoot() {
     	// save to database
-    	NoteNode note_added = noteService.addTopic(getRoot().getData().getId(), TOPIC_NEW_ITEM, TOPIC_NEWLY_ADDED_CONTENT, QUtils.getRandomIconURL());
+    	NoteNode note_added = noteService.addTopicAtLast(getRoot().getData().getId(), TOPIC_NEW_ITEM, TOPIC_NEWLY_ADDED_CONTENT, QUtils.getRandomIconURL());
     	
     	getRoot().add(new TopicItemTreeNode(new TopicItem(note_added), null, true));
     }

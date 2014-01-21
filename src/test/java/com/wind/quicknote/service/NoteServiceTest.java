@@ -110,7 +110,7 @@ public class NoteServiceTest {
 	@Test
 	public void testAddAndRemoveTopicToRoot() {
 		
-		NoteNode topic = service.addTopic(1, "Added", "content", "URL");
+		NoteNode topic = service.addTopicAtLast(1, "Added", "content", "URL");
 		Long id = topic.getId();
 		assertNotNull(id);
 
@@ -125,7 +125,7 @@ public class NoteServiceTest {
 		long parentId = 7L;
 		assertTrue(service.findChildTopics(parentId).size() == 0);
 		
-		NoteNode topic = service.addTopic(parentId, "Added", "content", "URL");
+		NoteNode topic = service.addTopicAtLast(parentId, "Added", "content", "URL");
 		Long id = topic.getId();
 		assertNotNull(id);
 		assertEquals(DEFAULT_SORTING, topic.getSorting());
@@ -142,7 +142,7 @@ public class NoteServiceTest {
 		int numOfChildren = service.findChildTopics(parentId).size();
 		assertTrue(numOfChildren > 0);
 		
-		NoteNode topic = service.addTopic(parentId, "Added", "content", "URL");
+		NoteNode topic = service.addTopicAtLast(parentId, "Added", "content", "URL");
 		Long id = topic.getId();
 		assertNotNull(id);
 		assertEquals(DEFAULT_SORTING * (numOfChildren + 1), topic.getSorting());
@@ -258,7 +258,7 @@ public class NoteServiceTest {
 	@Test
 	public void testAddAndRemoveUser() {
 		
-		NoteUser user = service.addUser("Kevin Abbort", "send@mail.com", "abcdefg");
+		NoteUser user = service.addUserByEmail("Kevin Abbort", "send@mail.com", "abcdefg");
 		assertNotNull(user.getId());
 		
 		service.removeUser(user);
