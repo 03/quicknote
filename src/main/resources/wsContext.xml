@@ -7,10 +7,16 @@
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
 
-	<jaxws:endpoint id="noteServiceEndpoint" implementor="#noteService"
+	<jaxws:endpoint id="noteServiceEndpoint" implementor="#noteServiceWS"
+		address="/ws" />
+
+	<jaxws:client id="noteClientWS" serviceClass="com.wind.quicknote.service.NoteServiceWS"
+		address="http://localhost:8000/qnote/services/ws" />
+	
+	<!-- <jaxws:endpoint id="noteServiceEndpoint" implementor="#noteService"
 		address="/ws" />
 
 	<jaxws:client id="noteClient" serviceClass="com.wind.quicknote.service.NoteService"
-		address="http://localhost:8000/qnote/services/ws" />
+		address="http://qnote-app-beta.herokuapp.com/services/ws" /> -->
 	
 </beans>

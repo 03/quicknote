@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,9 +23,6 @@ import com.wind.quicknote.model.NoteUser;
 public class NoteServiceImpl implements NoteService {
 	
 	private static Logger log = LoggerFactory.getLogger(NoteServiceImpl.class);
-	
-	@Value("${constants.testText}")
-	private String passcode;
 	
 	@Autowired
 	@Qualifier("noteNodeDAO")
@@ -61,7 +57,6 @@ public class NoteServiceImpl implements NoteService {
 	}
 	
 	public NoteNode findRootTopicByUser(long userId) {
-		log.debug("Passcode: " + passcode);
 		return nodeDAO.findRootByUser(userId);
 	}
 	

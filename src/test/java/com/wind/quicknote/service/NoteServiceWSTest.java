@@ -2,7 +2,6 @@ package com.wind.quicknote.service;
 
 import static org.junit.Assert.assertNotNull;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,20 +11,27 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.wind.quicknote.model.NoteUser;
 
-@Ignore
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/applicationContext.xml", 
-								  "/dataAccessContext.xml", "/webserviceContext.xml"})
+@ContextConfiguration(locations = { "/applicationContext.xml",
+		"/dataAccessContext.xml", "/wsContext.xml" })
 public class NoteServiceWSTest {
-	
+
 	@Autowired
-	@Qualifier("noteClient")
-	private NoteService noteClient;
+	@Qualifier("noteClientWS")
+	private NoteServiceWS client;
+
+	@Test
+	public void testEcho() {
+		String message = client.echo("Hello you!");
+		System.out.println("Result from server: " + message);
+		assertNotNull(message);
+	}
 	
 	@Test
 	public void testFindUserByName() {
-		NoteUser entitiy = noteClient.findUserByName("zk");
-		assertNotNull(entitiy);
+		NoteUser entity = client.findUserByName("zk");
+		System.out.println("Result from server: " + entity);
+		assertNotNull(entity);
 	}
 
 }
