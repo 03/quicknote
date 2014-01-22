@@ -55,8 +55,8 @@ public class HerokuJDBCTest {
 					"0hl9SRZ5K4ZgqRdtk21Eb4mmMq");*/
 			
 			connection = DriverManager.getConnection(
-					"jdbc:postgresql://ec2-54-252-139-4.ap-southeast-2.compute.amazonaws.com/frma", "frma",
-					"password");
+					"jdbc:postgresql://ec2-54-197-237-120.compute-1.amazonaws.com:5432/d1nq4hvfcvj4g9?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory", "fwhamjopujjwoi",
+					"58nIPmzYFXzGChEZAb0l9lOLyr");
 			
 			/*connection = DriverManager.getConnection(
 					"jdbc:postgresql://127.0.0.1:5432/quicknote", "didev",

@@ -269,7 +269,7 @@ public class NoteServiceTest {
 	@Test
 	public void testUpdateUser() {
 
-		String userName = "Shado";
+		String userName = "lv";
 		String oldValue = "meat lover";
 		String newValue = "laywer";
 		
