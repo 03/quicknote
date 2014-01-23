@@ -6,7 +6,7 @@
 	xmlns="http://www.springframework.org/schema/beans" xmlns:task="http://www.springframework.org/schema/task">
 
 	<context:component-scan base-package="com.wind.quicknote" />
-	<util:properties id="appProperties" location="classpath:config.properties" />
 	<context:property-placeholder location="classpath:config.properties" />
+	<util:properties id="appProperties" location="classpath:config.properties" />
 
 </beans>

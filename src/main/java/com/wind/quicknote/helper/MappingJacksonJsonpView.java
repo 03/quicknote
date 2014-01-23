@@ -1,16 +1,22 @@
 package com.wind.quicknote.helper;
 
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.web.servlet.view.json.MappingJacksonJsonView;
 
 public class MappingJacksonJsonpView extends MappingJacksonJsonView {
 
 	/**
-	 * Default content type. Overridable as bean property.
+	 * Default content type. Override as a bean property.
 	 */
 	public static final String DEFAULT_CONTENT_TYPE = "application/javascript";
 
@@ -19,12 +25,6 @@ public class MappingJacksonJsonpView extends MappingJacksonJsonView {
         return DEFAULT_CONTENT_TYPE;
     }
 
- 	/**
-	 * Prepares the view given the specified model, merging it with static
-	 * attributes and a RequestContext attribute, if necessary.
-	 * Delegates to renderMergedOutputModel for the actual rendering.
-	 * @see #renderMergedOutputModel
-	 */
     @Override
 	public void render(Map<String, ?> model, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
@@ -48,4 +48,13 @@ public class MappingJacksonJsonpView extends MappingJacksonJsonView {
             super.render(model, request, response);
         }
     }
+    
+	public String convertToJsonString(Object objects)
+			throws JsonGenerationException, JsonMappingException, IOException {
+		ObjectMapper mapper = new ObjectMapper();
+		Writer strWriter = new StringWriter();
+		mapper.writeValue(strWriter, objects);
+		return strWriter.toString();
+	}
+    
 }
