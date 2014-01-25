@@ -44,4 +44,5 @@ v0.46, 15/01/2014
 v0.47, 23/01/2014
 - WebService (Apache CXF) init
 - Spring MVC init
+- API updated
 
