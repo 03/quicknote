@@ -1,9 +1,7 @@
 <zk>
 
-<?page title="QuickNote v0.46"?>
+<?page title="${labels.app.title}"?>
 <?link rel="shortcut icon" href="http://www.google.com.au/favicon.ico" ?>
-<?component name="NoteTreeList" class="com.wind.quicknote.controller.NoteTreeList" ?>
-
 <style>
 	.h-inline-block {
 		display: inline-block;
@@ -20,6 +18,8 @@
     border:0 none;
 	}
 </style>
+
+<?component name="NoteTreeList" class="com.wind.quicknote.controller.NoteTreeList" ?>
 
 <window id="noteWindow" border="normal" 
 	apply="com.wind.quicknote.controller.NoteMainCtrl" >

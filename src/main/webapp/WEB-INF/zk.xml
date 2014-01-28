@@ -7,10 +7,11 @@
 -->
 
 <zk>
-    
-    <system-config>
-        <!-- <session-cache-class>my.SessionCache</session-cache-class> -->
-    </system-config>
+
+	<system-config>
+		<!-- <session-cache-class>my.SessionCache</session-cache-class> -->
+		<label-location>/WEB-INF/labels.properties</label-location>
+	</system-config>
 	
 	<device-config>
 		<device-type>ajax</device-type>

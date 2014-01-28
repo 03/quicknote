@@ -1,5 +1,8 @@
 <zk>
 
+<?page title="${labels.app.title}"?>
+<?link rel="shortcut icon" href="http://www.google.com.au/favicon.ico" ?>
+
 <window id="noteWindow" border="normal" 
 	apply="com.wind.quicknote.controller.AdminMainCtrl" >
 	
