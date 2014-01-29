@@ -1,6 +1,7 @@
 <zk>
   <zscript>
 	  String themecolor = "#008bb6";
+	  String textcolor = "#808080";
   </zscript>
   <style><![CDATA[
 	.zk .header {
@@ -10,10 +11,10 @@
 	    padding-left: 75px;
 	}
 	.zk .content-select {
-		color: #808080;
+		color: ${textcolor};
 	}
 	.zk .content-title {
-	    color: #808080;
+		color: ${textcolor};
 	}
 	.zk .footer {
 	    background-color: ${themecolor};

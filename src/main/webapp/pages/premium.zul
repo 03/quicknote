@@ -38,7 +38,7 @@
 	                    <image src="/assets/images/CrownLand.jpg" height="80px" width="100%"/>
 	                    <div align="right" height="29px">
 	                    	<toolbar id="tb" height="28px" align="end" sclass="vista">
-	                    		<label class="content-select">Style Templates: </label>
+	                    		<label class="content-select">Theme: </label>
 						        <listbox mold="select" class="content-select">
 						            <attribute name="onSelect">
 						                String templateName = self.getSelectedItem().getFirstChild().getValue();
