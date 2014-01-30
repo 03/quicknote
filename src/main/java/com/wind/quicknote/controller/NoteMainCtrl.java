@@ -15,11 +15,14 @@ import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
+import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
+import org.zkoss.zul.SimpleListModel;
 import org.zkoss.zul.Window;
 
+import com.wind.quicknote.helper.QUtils;
 import com.wind.quicknote.model.NoteNode;
 import com.wind.quicknote.model.NoteUser;
 import com.wind.quicknote.service.NoteService;
@@ -49,6 +52,9 @@ public class NoteMainCtrl extends SelectorComposer<Window> {
 	@Wire
 	private CKeditor editor;
 	
+	@Wire
+	private Combobox searchBar;
+	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void doAfterCompose(Window comp) throws Exception {
@@ -76,11 +82,13 @@ public class NoteMainCtrl extends SelectorComposer<Window> {
 					public void onEvent(Event evt) {
 						TopicItem item = (TopicItem) evt.getData();
 						log.info("I've got this!! " + item.getId());
-						
+
 						currentNodeId = item.getId();
 						editor.setValue(item.getText());
 					}
 				});
+		
+		searchBar.setModel(new SimpleListModel(QUtils.getDirectory()));
 		
 	}
 	

@@ -38,6 +38,7 @@
 	                    <image src="/assets/images/CrownLand.jpg" height="80px" width="100%"/>
 	                    <div align="right" height="29px">
 	                    	<toolbar id="tb" height="28px" align="end" sclass="vista">
+		                    	<combobox id="searchBar" autodrop="true" buttonVisible="false" height="22px"/>
 	                    		<label class="content-select">Theme: </label>
 						        <listbox mold="select" class="content-select">
 						            <attribute name="onSelect">
