@@ -45,4 +45,5 @@ v0.47, 23/01/2014
 - WebService (Apache CXF) init
 - Spring MVC init
 - API updated
+- Search filter added
 
