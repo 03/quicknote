@@ -45,7 +45,8 @@ public class NoteUser {
 	@Column(name="icon_url")
 	private String icon;
 	@Column(name="status")
-	private String status;
+	@Enumerated(EnumType.STRING)
+	private UserStatus status;
 	
 	@JoinColumn(name="root_id")
 	@OneToOne(cascade = CascadeType.ALL, optional = true)
@@ -137,11 +138,11 @@ public class NoteUser {
 		this.icon = icon;
 	}
 
-	public String getStatus() {
+	public UserStatus getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(UserStatus status) {
 		this.status = status;
 	}
 
