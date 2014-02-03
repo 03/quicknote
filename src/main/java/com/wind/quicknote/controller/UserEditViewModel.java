@@ -8,6 +8,7 @@ import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zul.Window;
 
+import com.wind.quicknote.helper.QUtils;
 import com.wind.quicknote.model.NoteUser;
 import com.wind.quicknote.service.NoteService;
 import com.wind.quicknote.system.UserCredentialManager;
@@ -21,15 +22,15 @@ public class UserEditViewModel {
 	private NoteService noteService;
 	
 	@Command
-    public void submit(@BindingParam("cmp")  Window win) {
+    public void submit(@BindingParam("cmp")  Window component) {
 		
 		log.debug("----------- Proceeding to update user -----------");
-		
 		if(newPassword != null && !noteUser.getPassword().equals(newPassword))
 			noteUser.setPassword(newPassword);
 		
 		noteService.updateUser(noteUser);
-		// win.detach();
+		
+		QUtils.showClientInfo("Save successfully!", component);
     }
 	
 	private NoteUser noteUser = UserCredentialManager.getIntance().getUser();

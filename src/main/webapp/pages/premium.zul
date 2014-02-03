@@ -23,7 +23,7 @@
 <include id="includeStyle" src="style/default.zul" />
 
 <window id="noteWindow" border="normal"
-	apply="com.wind.quicknote.controller.NoteMainCtrl" >
+	apply="com.wind.quicknote.controller.PremiumMainCtrl" >
 	
 	<borderlayout height="600px">
 	    <north maxsize="150" size="17%" height="120px" splittable="false" collapsible="true" style="padding:3px;">
@@ -38,8 +38,20 @@
 	                    <image src="/assets/images/CrownLand.jpg" height="80px" width="100%"/>
 	                    <div align="right" height="29px">
 	                    	<toolbar id="tb" height="28px" align="end" sclass="vista">
-		                    	<combobox id="searchBar" autodrop="true" buttonVisible="false" height="22px"/>
-	                    		<label class="content-select">Theme: </label>
+	                    		<!-- <combobox id="searchBar" autodrop="true" buttonVisible="false" height="22px"/> -->
+		                    	<bandbox id="searchBar" mold="rounded" autodrop="true" buttonVisible="true" height="22px">
+		                    		<bandpopup>
+		                    			<listbox id="filterbox" height="250px"
+		                    				width="450px" mold="paging" autopaging="true"
+		                    				onSelect="searchBar.value=self.selectedItem.label; searchBar.close();">
+		                    				<listhead>
+		                    					<listheader label="Languages" />
+		                    				</listhead>
+		                    				<listitem label="${each}" forEach="${languages}" />
+		                    			</listbox>
+		                    		</bandpopup>
+		                    	</bandbox>
+		                    	<label class="content-select">Theme: </label>
 						        <listbox mold="select" class="content-select">
 						            <attribute name="onSelect">
 						                String templateName = self.getSelectedItem().getFirstChild().getValue();

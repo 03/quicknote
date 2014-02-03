@@ -3,6 +3,15 @@
 <?page title="${labels.app.title}"?>
 <?link rel="shortcut icon" href="http://www.google.com.au/favicon.ico" ?>
 
+<style>
+	.vista {
+    background:#001100 url('../assets/images/bar.png') repeat-x 0 0;
+    color:white;
+    padding-top:2px;
+    border:0 none;
+	}
+</style>
+
 <window id="noteWindow" border="normal" 
 	apply="com.wind.quicknote.controller.AdminMainCtrl" >
 	
@@ -19,9 +28,8 @@
 	                    <image src="/assets/images/CrownLand.jpg" height="80px" width="100%"/>
 	                    <div align="right" height="29px">
 	                    	<toolbar id="tb" height="28px" align="end" sclass="vista">
-	                    		<label>Welcome</label>
-	                    		<label id="loginUsrName">
-	                    		</label>
+	                    		<label class="content-title">Welcome</label>
+	                    		<label id="loginUsrName" class="content-title"/>
 	                    		<toolbarbutton tooltiptext="User Profile"
 	                    			image="/assets/images/person.png">
 	                    			<attribute name="onClick">{

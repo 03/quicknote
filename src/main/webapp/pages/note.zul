@@ -37,9 +37,9 @@
 	                    <image src="/assets/images/CrownLand.jpg" height="80px" width="100%"/>
 	                    <div align="right" height="29px">
 	                    	<toolbar id="tb" height="28px" align="end" sclass="vista">
-	                    		<label>Welcome</label>
-	                    		<label id="loginUsrName">
-	                    		</label>
+	                    		<combobox id="searchBar" autodrop="true" buttonVisible="true" height="22px"/>
+	                    		<label class="content-title">Welcome</label>
+	                    		<label id="loginUsrName" class="content-title"/>
 	                    		<!-- <toolbarbutton
 	                    			image="/assets/images/person.png"
 	                    			onClick='alert(":)")' /> -->

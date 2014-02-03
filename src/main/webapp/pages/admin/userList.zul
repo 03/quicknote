@@ -1,55 +1,112 @@
-<div apply="com.wind.quicknote.controller.admin.UserViewCtrl">
+<div id="userListDiv" apply="org.zkoss.bind.BindComposer"
+	viewModel="@id('vm') @init('com.wind.quicknote.controller.admin.UserListViewModel')">
 
-	<listbox id="userList" mold="paging" pageSize="3" pagingPosition="top">
+	<listbox id="userList" mold="paging" pageSize="3"
+		pagingPosition="top" height="240px" model="@load(vm.userList)"
+		selectedItem="@bind(vm.selected)">
 		<auxhead>
-			<auxheader colspan="10" label="User List" />
+			<auxheader colspan="11" label="User List" />
 		</auxhead>
 		<listhead sizable="true">
-			<listheader image="/assets/images/Bullet.png" align="center"
-				width="100px" />
-			<listheader label="ID" width="40px" />
-			<listheader label="User Name" width="80px" />
-			<listheader label="First Name" width="80px" />
-			<listheader label="Last Name" width="80px" />
-			<listheader label="Role" width="50px" />
-			<listheader label="Email" width="100px" />
-			<listheader label="Description" width="110px" />
-			<listheader label="Created" width="130px" />
-			<listheader label="Updated" width="130px" />
+			<listheader image="/assets/images/Bullet.png" width="100px" align="center" />
+			<listheader label="ID" width="40px" align="center" />
+			<listheader label="User Name" width="80px" align="center" />
+			<listheader label="First Name" width="80px" align="center" />
+			<listheader label="Last Name" width="80px" align="center" />
+			<listheader label="Role" width="60px" align="center" />
+			<listheader label="Status" width="60px" align="center" />
+			<listheader label="Email" width="100px" align="center" />
+			<listheader label="Description" width="110px" align="center" />
+			<listheader label="Created" width="120px" align="center" />
+			<listheader label="Updated" width="120px" align="center" />
 		</listhead>
 		<template name="model">
 			<listitem value="${each}">
 				<listcell>
-					<image height="18px" width="18px" src="${each.icon}" />
+					<image height="18px" width="18px" src="@load(each.icon)" />
 				</listcell>
 				<listcell>
-					<label value="${each.id}" />
+					<label value="@load(each.id)" />
 				</listcell>
 				<listcell>
-					<label value="${each.loginName}" />
+					<label value="@load(each.loginName)" />
 				</listcell>
 				<listcell>
-					<label value="${each.firstName}" />
+					<label value="@load(each.firstName)" />
 				</listcell>
 				<listcell>
-					<label value="${each.lastName}" />
+					<label value="@load(each.lastName)" />
 				</listcell>
 				<listcell>
-					<label value="${each.role}" />
+					<label value="@load(each.role)" />
 				</listcell>
 				<listcell>
-					<label value="${each.email}" />
+					<label value="@load(each.status)" />
 				</listcell>
 				<listcell>
-					<label value="${each.desc}" />
+					<label value="@load(each.email)" />
 				</listcell>
 				<listcell>
-					<label value="${each.created}" />
+					<label value="@load(each.desc)" />
 				</listcell>
 				<listcell>
-					<label value="${each.updated}" />
+					<label value="@load(each.created)" />
+				</listcell>
+				<listcell>
+					<label value="@load(each.updated)" />
 				</listcell>
 			</listitem>
 		</template>
 	</listbox>
+
+	<space height="1px"/>
+	
+	<groupbox width="60%" mold="3d">
+		<caption label="Edit User"><label value="@bind(vm.selected.loginName)" /></caption>
+		
+		<grid height="175px">
+		<columns>
+			<column width="80px" />
+			<column width="200px" />
+			<column width="80px" />
+			<column width="200px" />
+		</columns>
+		<rows>
+			<row>
+				<label value="ID"/>
+				<label value="@load(vm.selected.id)" />
+				<label value="Icon"/>
+				<image height="18px" width="18px" src="@load(vm.selected.icon)" />
+			</row>
+			<row>
+				<label value="First Name"/>
+				<textbox value="@bind(vm.selected.firstName)" />
+				<label value="Last Name"/>
+				<textbox value="@bind(vm.selected.lastName)" />
+			</row>
+			<row>
+				<label value="Role"/>
+				<combobox model="@load(vm.userRoleList)"
+					selectedItem="@bind(vm.selected.role)" />
+				<label value="Status"/>
+				<combobox model="@load(vm.userStatusList)"
+					selectedItem="@bind(vm.selected.status)" />					
+			</row>
+			<row>
+				<label value="Email"/>
+				<textbox value="@bind(vm.selected.email)" />
+				<label value="Description"/>
+				<textbox value="@bind(vm.selected.desc)" />
+			</row>
+			<row>
+				<button label="Save"
+					onClick="@command('submit', cmp=userListDiv)" sclass="ctlBtn"
+					width="60px" height="30px"
+					style="color: #1469AB;font-weight:bold;background:#cfeaf1;display:block;" />
+			</row>
+		</rows>
+	</grid>
+	</groupbox>
+	
+
 </div>

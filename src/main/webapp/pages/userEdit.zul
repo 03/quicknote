@@ -107,8 +107,8 @@
 				<row>
 					<cell colspan="2" style="text-align:center">
 						<vlayout>
-							<label visible="@load(empty vmsgs)"
-								value="@load(empty vmsgs ? 'Saved successfully!' : '', before='submit')" />
+							<!-- <label visible="@load(empty vmsgs)"
+								value="@load(empty vmsgs ? 'Saved successfully!' : '', before='submit')" /> -->
 							<button label="Submit"
 								onClick="@command('submit', cmp=userWin)" sclass="ctlBtn"
 								width="100px" height="30px"
@@ -118,8 +118,6 @@
 				</row>
 			</rows>
 		</grid>
-
-
 
 
 	</window>

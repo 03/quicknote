@@ -3,6 +3,9 @@ package com.wind.quicknote.controller.admin;
 import java.util.List;
 
 import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
@@ -39,6 +42,19 @@ public class OnlineUserViewCtrl extends SelectorComposer<Div> {
 		if (items != null) {
 			userList.setModel(new ListModelList<NoteUser>(items));
 		}
+		
+		userList.addEventListener(Events.ON_SELECT, new EventListener<Event>() {
+            @Override
+            public void onEvent(Event event) throws Exception {
+
+            	Listbox obj = (Listbox) event.getTarget();
+            	NoteUser noteUser = obj.getSelectedItem().getValue();
+				System.out.println("----Selected Username-----> " + noteUser.getLoginName());
+            	
+            	// send event to show content in editor
+            	//Events.postEvent(new TopicItemSelectEvent());
+            }
+        });
 	}
 	
 }

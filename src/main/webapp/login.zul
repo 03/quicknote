@@ -1,6 +1,6 @@
 <?link rel="shortcut icon" href="http://www.google.com.au/favicon.ico" ?>
 <vlayout xmlns:c="client">
-    <window id="loginWin" title="Welcome ^_^" width="300px" minimizable="false" 
+    <window id="loginWin" title="Welcome" width="300px" minimizable="false" 
     	border='normal' apply="com.wind.quicknote.controller.LoginViewCtrl">
         <style src="/css/customized_style.css" />
         <script type="text/javascript" src="/js/customized_effect.js" />
@@ -17,8 +17,7 @@
                 	<cell colspan="2">
                 		<vlayout>
                 			<label id="mesgLbl" class="error"/>
-                			<button id="confirmBtn" label="Sign In"
-                				sclass="ctlBtn" />
+                			<button id="confirmBtn" label="Sign In" sclass="ctlBtn" />
                 		</vlayout>
                 	</cell>
                 </row>

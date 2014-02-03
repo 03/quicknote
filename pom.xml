@@ -311,7 +311,7 @@
 				<artifactId>jetty-maven-plugin</artifactId>
 				<version>8.1.10.v20130312</version>
 				<configuration>
-					<scanIntervalSeconds>90</scanIntervalSeconds>
+					<scanIntervalSeconds>180</scanIntervalSeconds>
 					<webApp>
 						<contextPath>/qnote</contextPath>
 					</webApp>

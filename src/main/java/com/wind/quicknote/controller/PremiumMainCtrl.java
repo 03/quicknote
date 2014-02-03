@@ -15,7 +15,6 @@ import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
-import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
@@ -36,10 +35,10 @@ import com.wind.quicknote.view.tree.TopicItem;
  * 
  */
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
-public class NoteMainCtrl extends SelectorComposer<Window> {
+public class PremiumMainCtrl extends SelectorComposer<Window> {
 
 	private static final long serialVersionUID = 5730426085235946339L;
-	private static Logger log = LoggerFactory.getLogger(NoteMainCtrl.class);
+	private static Logger log = LoggerFactory.getLogger(PremiumMainCtrl.class);
 	
 	private long currentNodeId = 0;
 	
@@ -53,9 +52,7 @@ public class NoteMainCtrl extends SelectorComposer<Window> {
 	private CKeditor editor;
 	
 	@Wire
-	private Combobox searchBar;
-	
-	
+	private Listbox filterbox;
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
@@ -90,8 +87,7 @@ public class NoteMainCtrl extends SelectorComposer<Window> {
 					}
 				});
 		
-		searchBar.setModel(new SimpleListModel(QUtils.getSampleData()));
-		
+		filterbox.setModel(new SimpleListModel(QUtils.getSampleData()));
 	}
 	
 	@Listen("onClick=#logoutBtn")

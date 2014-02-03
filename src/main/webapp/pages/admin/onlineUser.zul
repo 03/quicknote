@@ -2,20 +2,20 @@
 
 	<listbox id="userList" mold="paging" pageSize="3" pagingPosition="top" multiple="true" checkmark="true">
 		<auxhead>
-			<auxheader colspan="10" label="Online User List" />
+			<auxheader colspan="11" label="Online User List" />
 		</auxhead>
 		<listhead sizable="true">
-			<listheader image="/assets/images/Bullet.png" align="center"
-				width="100px" />
-			<listheader label="ID" width="40px" />
-			<listheader label="User Name" width="80px" />
-			<listheader label="First Name" width="80px" />
-			<listheader label="Last Name" width="80px" />
-			<listheader label="Role" width="50px" />
-			<listheader label="Email" width="100px" />
-			<listheader label="Description" width="110px" />
-			<listheader label="Created" width="130px" />
-			<listheader label="Updated" width="130px" />
+			<listheader image="/assets/images/Bullet.png" width="100px" align="center" />
+			<listheader label="ID" width="40px" align="center" />
+			<listheader label="User Name" width="80px" align="center" />
+			<listheader label="First Name" width="80px" align="center" />
+			<listheader label="Last Name" width="80px" align="center" />
+			<listheader label="Role" width="60px" align="center" />
+			<listheader label="Status" width="60px" align="center" />
+			<listheader label="Email" width="100px" align="center" />
+			<listheader label="Description" width="110px" align="center" />
+			<listheader label="Created" width="120px" align="center" />
+			<listheader label="Updated" width="120px" align="center" />
 		</listhead>
 		<template name="model">
 			<listitem value="${each}">
@@ -36,6 +36,9 @@
 				</listcell>
 				<listcell>
 					<label value="${each.role}" />
+				</listcell>
+				<listcell>
+					<label value="${each.status}" />
 				</listcell>
 				<listcell>
 					<label value="${each.email}" />
