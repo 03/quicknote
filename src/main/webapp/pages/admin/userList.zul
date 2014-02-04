@@ -1,7 +1,7 @@
 <div id="userListDiv" apply="org.zkoss.bind.BindComposer"
 	viewModel="@id('vm') @init('com.wind.quicknote.controller.admin.UserListViewModel')">
 
-	<listbox id="userList" mold="paging" pageSize="3"
+	<listbox id="userList" mold="paging" pageSize="3" autopaging="true"
 		pagingPosition="top" height="240px" model="@load(vm.userList)"
 		selectedItem="@bind(vm.selected)">
 		<auxhead>
@@ -23,7 +23,8 @@
 		<template name="model">
 			<listitem value="${each}">
 				<listcell>
-					<image height="18px" width="18px" src="@load(each.icon)" />
+					<image height="18px" width="18px"
+						src="@load(each.icon)" />
 				</listcell>
 				<listcell>
 					<label value="@load(each.id)" />

@@ -36,7 +36,7 @@ public class NoteNodeDAOImpl extends GenericDao<NoteNode> implements NoteNodeDAO
         
         Map<String, Object> sqlParams = new HashMap<String, Object> ();
 		sqlParams.put("status", "a");
-		return search("from NoteNode where status=:status", sqlParams);
+		return search("from NoteNode t where t.status=:status and t.parent is not null order by t.id", sqlParams);
 	}
 	
 	@Override

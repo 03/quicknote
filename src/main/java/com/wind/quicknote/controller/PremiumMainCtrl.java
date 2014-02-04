@@ -1,11 +1,14 @@
 package com.wind.quicknote.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.zkforge.ckez.CKeditor;
+import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -29,7 +32,6 @@ import com.wind.quicknote.system.SessionCacheManager;
 import com.wind.quicknote.system.UserCredentialManager;
 import com.wind.quicknote.view.tree.TopicItem;
 
-
 /**
  * @author Luke
  * 
@@ -47,6 +49,9 @@ public class PremiumMainCtrl extends SelectorComposer<Window> {
 	
 	@Wire
 	private Label loginUsrName;
+	
+	@Wire
+	private Label currentNote;
 	
 	@Wire
 	private CKeditor editor;
@@ -83,16 +88,34 @@ public class PremiumMainCtrl extends SelectorComposer<Window> {
 						log.info("I've got this!! " + item.getId());
 
 						currentNodeId = item.getId();
+						currentNote.setValue(item.getName());
 						editor.setValue(item.getText());
 					}
 				});
 		
-		filterbox.setModel(new SimpleListModel(QUtils.getSampleData()));
+		List<NoteNode> list = noteService.findAllTopicsByUser(user.getId());
+		filterbox.setModel(new SimpleListModel(list.toArray()));
 	}
 	
 	@Listen("onClick=#logoutBtn")
 	public void confirm() {
 		doLogout();
+	}
+	
+	@Listen("onSelect=#filterbox")
+	@NotifyChange("notetreeList")
+	public void changeNote(Event fe) {
+		
+		if (!(fe.getTarget() instanceof Listbox)) {
+			return;
+		}
+		
+		Listitem item = ((Listbox) fe.getTarget()).getSelectedItem();
+		
+		NoteNode selectedNode = (NoteNode) item.getValue();
+		currentNodeId = selectedNode.getId();
+		currentNote.setValue(selectedNode.getName());
+		editor.setValue(selectedNode.getText());
 	}
 
 	private void doLogout() {
@@ -132,6 +155,7 @@ public class PremiumMainCtrl extends SelectorComposer<Window> {
 
 		NoteTreeList item = (NoteTreeList) fe.getTarget();
 		currentNodeId = item.getCurrentItem().getId();
+		currentNote.setValue(item.getCurrentItem().getName());
 		
 		// search in cache first
 		String content = SessionCacheManager.get(currentNodeId);
@@ -145,23 +169,6 @@ public class PremiumMainCtrl extends SelectorComposer<Window> {
 		editor.setValue(content);
 	}
 	
-	
-	/**
-	 * show content when select an item in list
-	 */
-	@Listen("onTopicItemSelect=#topicList")
-	public void showTopicItemContent(Event fe) {
-
-		if (!(fe.getTarget() instanceof Listbox)) {
-			return;
-		}
-		
-		Listitem item = ((Listbox) fe.getTarget()).getSelectedItem();
-		
-		NoteNode selectedNode = (NoteNode) item.getValue();
-		currentNodeId = selectedNode.getId();
-		editor.setValue(selectedNode.getText());
-	}
 	
 }
 

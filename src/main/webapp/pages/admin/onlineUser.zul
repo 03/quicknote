@@ -1,6 +1,7 @@
 <div apply="com.wind.quicknote.controller.admin.OnlineUserViewCtrl">
 
-	<listbox id="userList" mold="paging" pageSize="3" pagingPosition="top" multiple="true" checkmark="true">
+	<listbox id="userList" mold="paging" pageSize="3" autopaging="true"
+		pagingPosition="top" multiple="true" checkmark="true">
 		<auxhead>
 			<auxheader colspan="11" label="Online User List" />
 		</auxhead>
@@ -20,7 +21,8 @@
 		<template name="model">
 			<listitem value="${each}">
 				<listcell>
-					<image height="18px" width="18px" src="${each.icon}" />
+					<image height="18px" width="18px"
+						src="${each.icon}" />
 				</listcell>
 				<listcell>
 					<label value="${each.id}" />

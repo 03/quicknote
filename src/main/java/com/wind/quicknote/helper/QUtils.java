@@ -55,6 +55,7 @@ public class QUtils {
 	
 	/*
 	 * http://www.zkoss.org/javadoc/latest/zk/org/zkoss/zk/ui/util/Clients.html
+	 * http://books.zkoss.org/wiki/ZK_Component_Reference/Essential_Components/Popup
 	 */
 	public static void showClientInfo(String message, Component component) {
 		Clients.showNotification(message,"info",component,"at_pointer",2000);

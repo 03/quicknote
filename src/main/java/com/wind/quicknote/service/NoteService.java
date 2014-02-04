@@ -10,49 +10,50 @@ import com.wind.quicknote.model.NoteUser;
 @WebService
 public interface NoteService {
 	
-	public void init();
+	void init();
 	
-	public void destroy();
+	void destroy();
 	
 	// Topic
-	public List<NoteNode> findAllTopics();
+	List<NoteNode> findAllTopics();
 	
-	public List<NoteNode> findChildTopics(long id);
+	List<NoteNode> findAllTopicsByUser(long userId);
 	
-	public NoteNode findRootTopicByUser(long userId);
+	List<NoteNode> findChildTopics(long id);
 	
-	public List<NoteUser> findAllUsers();
+	NoteNode findRootTopicByUser(long userId);
 	
-	public void updateTopicIcon(long id, String iconSrc);
+	List<NoteUser> findAllUsers();
 	
-	public void updateTopicText(long id, String text);
+	void updateTopicIcon(long id, String iconSrc);
 	
-	public void updateTopicName(long id, String name);
+	void updateTopicText(long id, String text);
 	
-	public void removeTopic(long id);
+	void updateTopicName(long id, String name);
 	
-	public NoteNode findTopic(long id);
+	void removeTopic(long id);
 	
-	public NoteNode addTopicAtLast(long pid, String name, String content, String picUrl);
+	NoteNode findTopic(long id);
 	
-	public NoteNode addTopic(long pid, int pos, String name, String content, String picUrl);
+	NoteNode addTopicAtLast(long pid, String name, String content, String picUrl);
 	
-	public void changeParentId(long id, long pid);
+	NoteNode addTopic(long pid, int pos, String name, String content, String picUrl);
+	
+	void changeParentId(long id, long pid);
 	
 	// User
-	public NoteUser addUserByEmail(String loginName, String email, String password);
+	NoteUser addUserByEmail(String loginName, String email, String password);
 	
-	public NoteUser addUser(NoteUser user);
+	NoteUser addUser(NoteUser user);
 
-	public NoteUser findUserByName(String name);
+	NoteUser findUserByName(String name);
 
-	public void updateUser(NoteUser user);
+	void updateUser(NoteUser user);
 	
-	public void removeUser(NoteUser user);
+	void removeUser(NoteUser user);
 
-	public void swapTopicPosition(long pid, int pos1, int pos2);
+	void swapTopicPosition(long pid, int pos1, int pos2);
 
-	public boolean isLoginNameAvailable(String name);
-	
+	boolean isLoginNameAvailable(String name);
 	
 }

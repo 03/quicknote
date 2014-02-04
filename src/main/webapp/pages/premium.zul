@@ -38,16 +38,24 @@
 	                    <image src="/assets/images/CrownLand.jpg" height="80px" width="100%"/>
 	                    <div align="right" height="29px">
 	                    	<toolbar id="tb" height="28px" align="end" sclass="vista">
-	                    		<!-- <combobox id="searchBar" autodrop="true" buttonVisible="false" height="22px"/> -->
-		                    	<bandbox id="searchBar" mold="rounded" autodrop="true" buttonVisible="true" height="22px">
+		                    	<bandbox id="searchBar" mold="rounded" autodrop="true" buttonVisible="true" height="22px" 
+		                    	tooltiptext="search all notes" >
 		                    		<bandpopup>
-		                    			<listbox id="filterbox" height="250px"
-		                    				width="450px" mold="paging" autopaging="true"
-		                    				onSelect="searchBar.value=self.selectedItem.label; searchBar.close();">
-		                    				<listhead>
-		                    					<listheader label="Languages" />
-		                    				</listhead>
-		                    				<listitem label="${each}" forEach="${languages}" />
+		                    			<listbox id="filterbox"
+		                    				height="280px" width="450px" 
+		                    				onSelect="searchBar.value=self.selectedItem.value.name; searchBar.close();">
+		                    				<template name="model">
+		                    					<listitem value="${each}" >
+		                    						<listcell>
+		                    							<label value="${each.name}" class="content-select" />
+		                    							<html>
+		                    								<![CDATA[<br>
+		                    								${each.text}
+		                    								]]>
+		                    							</html>
+		                    						</listcell>
+		                    					</listitem>
+		                    				</template>
 		                    			</listbox>
 		                    		</bandpopup>
 		                    	</bandbox>
@@ -102,6 +110,8 @@
 	            	<div>
 		            	<button id="btnsave" tooltiptext="Save" 
 		            		image="/assets/images/save.png" width="50px" />
+		            	<label class="content-select">Title: </label>
+	            		<label id="currentNote" class="content-select"/>
 		            	<separator height="3px"/>
 		            	<ckeditor id="editor" height="306px"
 		            		filebrowserImageBrowseUrl="/assets/images">

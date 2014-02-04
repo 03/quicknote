@@ -48,6 +48,11 @@ public class NoteServiceImpl implements NoteService {
 	}
 	
 	@Override
+	public List<NoteNode> findAllTopicsByUser(long userId) {
+		return nodeDAO.findAllAvailableByUser(userId);
+	}
+	
+	@Override
 	public NoteNode findTopic(long id) {
 		return nodeDAO.find(NoteNode.class, id);
 	}
@@ -56,6 +61,7 @@ public class NoteServiceImpl implements NoteService {
 		return nodeDAO.findChildren(id);
 	}
 	
+	@Override
 	public NoteNode findRootTopicByUser(long userId) {
 		return nodeDAO.findRootByUser(userId);
 	}
