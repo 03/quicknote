@@ -35,31 +35,38 @@
 	            </west>
 	            <center border="none" hflex="true">
 	                <vlayout>
-	                    <image src="/assets/images/CrownLand.jpg" height="80px" width="100%"/>
-	                    <div align="right" height="29px">
-	                    	<toolbar id="tb" height="28px" align="end" sclass="vista">
-		                    	<bandbox id="searchBar" mold="rounded" autodrop="true" buttonVisible="true" height="22px" 
-		                    	tooltiptext="search all notes" >
-		                    		<bandpopup>
-		                    			<listbox id="filterbox"
-		                    				height="280px" width="450px" 
-		                    				onSelect="searchBar.value=self.selectedItem.value.name; searchBar.close();">
-		                    				<template name="model">
-		                    					<listitem value="${each}" >
-		                    						<listcell>
-		                    							<label value="${each.name}" class="content-select" />
-		                    							<html>
-		                    								<![CDATA[<br>
-		                    								${each.text}
-		                    								]]>
-		                    							</html>
-		                    						</listcell>
-		                    					</listitem>
-		                    				</template>
-		                    			</listbox>
-		                    		</bandpopup>
-		                    	</bandbox>
-		                    	<label class="content-select">Theme: </label>
+	                    <image src="/assets/images/CrownLand.jpg" height="75px" width="100%"/>
+	                    <hbox width="100%" widths="30%,70%">
+	                    	
+	                    	<toolbar height="33px" sclass="vista" width="102%">
+	                    		<hbox>
+	                    			<space width="3px"/>
+	                    			<label class="content-title">Search </label>
+		                    		<bandbox id="searchBar" mold="rounded" autodrop="true" buttonVisible="true" height="22px" width="280px"
+			                    	tooltiptext="Search all notes">
+			                    		<bandpopup>
+			                    			<listbox id="filterbox"
+			                    				height="280px" width="420px" 
+			                    				onSelect="searchBar.close();">
+			                    				<template name="model">
+			                    					<listitem value="${each}" >
+			                    						<listcell>
+			                    							<label value="${each.name}" class="content-select" />
+			                    							<html>
+			                    								<![CDATA[<br>
+			                    								${each.text}
+			                    								]]>
+			                    							</html>
+			                    						</listcell>
+			                    					</listitem>
+			                    				</template>
+			                    			</listbox>
+			                    		</bandpopup>
+			                    	</bandbox>
+		                    	</hbox>
+	                    	</toolbar>
+	                    	<toolbar height="33px" align="end" sclass="vista">
+		                    	<label class="content-theme">Theme </label>
 						        <listbox mold="select" class="content-select">
 						            <attribute name="onSelect">
 						                String templateName = self.getSelectedItem().getFirstChild().getValue();
@@ -70,6 +77,8 @@
 						            <listitem><listcell label="Nature Style" value="nature" /></listitem>
 						            <listitem><listcell label="ZK Style" value="zk" /></listitem>
 						        </listbox>
+						        
+						        <space width="10px"/>
         
 	                    		<label class="content-title">Welcome</label>
 	                    		<label id="loginUsrName" class="content-title"/>
@@ -94,7 +103,7 @@
 	                    		<toolbarbutton id="logoutBtn" tooltiptext="Log Out"
 	                    			image="/assets/images/logout.png" />
 	                    	</toolbar>
-	                    </div>
+	                    </hbox>
 	                </vlayout>
 	            </center>
 	        </borderlayout>
@@ -111,7 +120,7 @@
 		            	<button id="btnsave" tooltiptext="Save" 
 		            		image="/assets/images/save.png" width="50px" />
 		            	<label class="content-select">Title: </label>
-	            		<label id="currentNote" class="content-select"/>
+	            		<label id="noteInfo" class="content-select"/>
 		            	<separator height="3px"/>
 		            	<ckeditor id="editor" height="306px"
 		            		filebrowserImageBrowseUrl="/assets/images">

@@ -16,6 +16,11 @@
 	.nature .content-title {
 	    color: ${textcolor};
 	}
+	.nature .content-theme {
+	    color: ${textcolor};
+	    font-size: 12px;
+	    letter-spacing: 0.2em;
+	}
 	.nature .footer {
 	    background-color: ${themecolor};
 	    text-align: center;

@@ -19,6 +19,8 @@ public interface NoteService {
 	
 	List<NoteNode> findAllTopicsByUser(long userId);
 	
+	List<NoteNode> findMatchedTopicsByUser(long userId, String keyword);
+	
 	List<NoteNode> findChildTopics(long id);
 	
 	NoteNode findRootTopicByUser(long userId);
@@ -55,5 +57,5 @@ public interface NoteService {
 	void swapTopicPosition(long pid, int pos1, int pos2);
 
 	boolean isLoginNameAvailable(String name);
-	
+
 }

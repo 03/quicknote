@@ -49,7 +49,12 @@ public class NoteServiceImpl implements NoteService {
 	
 	@Override
 	public List<NoteNode> findAllTopicsByUser(long userId) {
-		return nodeDAO.findAllAvailableByUser(userId);
+		return nodeDAO.findMatchedTopicsByUser(userId, null);
+	}
+	
+	@Override
+	public List<NoteNode> findMatchedTopicsByUser(long userId, String keyword) {
+		return nodeDAO.findMatchedTopicsByUser(userId, keyword);
 	}
 	
 	@Override

@@ -38,7 +38,7 @@
 		<property name="acquireIncrement" value="${db.acquireIncrement}" />
 		<property name="preferredTestQuery" value="${db.acquireIncrement}" />
 		<property name="idleConnectionTestPeriod" value="${db.idleConnectionTestPeriod}" />
-		<property name="maxIdleTimeExcessConnections" value="${db.maxIdleTimeExcessConnections}" />	
+		<property name="maxIdleTimeExcessConnections" value="${db.maxIdleTimeExcessConnections}" />
 	</bean> -->
 	
 	<!-- Heroku settings -->

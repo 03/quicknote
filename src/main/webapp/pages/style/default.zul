@@ -48,6 +48,11 @@
     line-height: 26px;
 	text-decoration: none;
 }
+.content-theme {
+    color: white;
+    font-size: 12px;
+    letter-spacing: 0.2em;
+}
 .content-title:hover {
     text-decoration: underline
 }

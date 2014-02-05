@@ -47,6 +47,18 @@ public class NoteServiceTest {
 		List<NoteNode> items = service.findAllTopics();
 		assertTrue(items.size() > 0);
 	}
+	
+	@Test
+	public void testFindAllTopicsByUser() {
+		List<NoteNode> items = service.findAllTopicsByUser(1L);
+		assertTrue(items.size() > 0);
+	}
+	
+	@Test
+	public void testFindMatchedTopicsByUser() {
+		List<NoteNode> items = service.findMatchedTopicsByUser(1L, "there 8");
+		assertTrue(items.size() > 0);
+	}
 
 	@Test
 	public void testFindChildTopics() {

@@ -32,11 +32,16 @@ public class NoteNodeDAOImpl extends GenericDao<NoteNode> implements NoteNodeDAO
         return search("from NoteNode");
 	}
 
-	public List<NoteNode> findAllAvailableByUser(long userId) {
+	public List<NoteNode> findMatchedTopicsByUser(long userId, String keyword) {
         
         Map<String, Object> sqlParams = new HashMap<String, Object> ();
-		sqlParams.put("status", "a");
-		return search("from NoteNode t where t.status=:status and t.parent is not null order by t.id", sqlParams);
+        if(keyword != null) {
+        	sqlParams.put("keyword", "%"+keyword+"%");
+        	return search("from NoteNode t where t.text like :keyword and t.parent is not null order by t.id", sqlParams);
+        } else {
+        	return search("from NoteNode t where t.parent is not null order by t.id");
+        }
+		
 	}
 	
 	@Override

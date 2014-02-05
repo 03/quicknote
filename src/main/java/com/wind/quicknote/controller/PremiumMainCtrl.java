@@ -8,16 +8,17 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.zkforge.ckez.CKeditor;
-import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.EventQueues;
+import org.zkoss.zk.ui.event.InputEvent;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
+import org.zkoss.zul.Bandbox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
@@ -51,7 +52,7 @@ public class PremiumMainCtrl extends SelectorComposer<Window> {
 	private Label loginUsrName;
 	
 	@Wire
-	private Label currentNote;
+	private Label noteInfo;
 	
 	@Wire
 	private CKeditor editor;
@@ -88,7 +89,7 @@ public class PremiumMainCtrl extends SelectorComposer<Window> {
 						log.info("I've got this!! " + item.getId());
 
 						currentNodeId = item.getId();
-						currentNote.setValue(item.getName());
+						noteInfo.setValue(item.getName());
 						editor.setValue(item.getText());
 					}
 				});
@@ -103,7 +104,8 @@ public class PremiumMainCtrl extends SelectorComposer<Window> {
 	}
 	
 	@Listen("onSelect=#filterbox")
-	@NotifyChange("notetreeList")
+	//@NotifyChange("notetreeList")
+	// Zul page example: onSelect="searchBar.value=self.selectedItem.value.name; searchBar.close();"
 	public void changeNote(Event fe) {
 		
 		if (!(fe.getTarget() instanceof Listbox)) {
@@ -114,10 +116,30 @@ public class PremiumMainCtrl extends SelectorComposer<Window> {
 		
 		NoteNode selectedNode = (NoteNode) item.getValue();
 		currentNodeId = selectedNode.getId();
-		currentNote.setValue(selectedNode.getName());
+		noteInfo.setValue(selectedNode.getName());
 		editor.setValue(selectedNode.getText());
 	}
-
+	
+	
+	/*
+	 * http://forum.zkoss.org/question/12670/get-onchanging-value-in-java/
+	 * Should use InputEvent instead of Event
+	 * 
+	 * Same effect as: searchBar.addEventListener(Events.ON_CHANGING, new EventListener<Event>() { ...
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Listen("onChanging=#searchBar")
+	public void changeSelected(InputEvent fe) {
+		String keyword = fe.getValue();
+		
+		log.debug("onChanging=#searchBar: oldVal->"
+				+ ((Bandbox) fe.getTarget()).getValue() + " newVal->" + keyword);
+		
+		// refresh list
+		List<NoteNode> list = noteService.findMatchedTopicsByUser( UserCredentialManager.getIntance().getUser().getId(), keyword);
+		filterbox.setModel(new SimpleListModel(list.toArray()));
+	}
+	
 	private void doLogout() {
 
 		UserCredentialManager mgmt = UserCredentialManager.getIntance();
@@ -155,7 +177,7 @@ public class PremiumMainCtrl extends SelectorComposer<Window> {
 
 		NoteTreeList item = (NoteTreeList) fe.getTarget();
 		currentNodeId = item.getCurrentItem().getId();
-		currentNote.setValue(item.getCurrentItem().getName());
+		noteInfo.setValue(item.getCurrentItem().getName());
 		
 		// search in cache first
 		String content = SessionCacheManager.get(currentNodeId);

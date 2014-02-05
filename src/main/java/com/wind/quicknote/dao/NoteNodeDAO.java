@@ -10,7 +10,7 @@ public interface NoteNodeDAO extends IGenericDao<NoteNode>{
 	
 	NoteNode findRootByUser(long userId);
 
-	List<NoteNode> findAllAvailableByUser(long userId);
+	List<NoteNode> findMatchedTopicsByUser(long userId, String keyword);
 	
 	void remove(long id);
 	
