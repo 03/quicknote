@@ -14,9 +14,9 @@ import com.wind.quicknote.service.NoteService;
 import com.wind.quicknote.system.UserCredentialManager;
 
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
-public class UserEditViewModel {
+public class UserEditVM {
 
-	private static Logger log = LoggerFactory.getLogger(UserEditViewModel.class);
+	private static Logger log = LoggerFactory.getLogger(UserEditVM.class);
 	
 	@WireVariable
 	private NoteService noteService;

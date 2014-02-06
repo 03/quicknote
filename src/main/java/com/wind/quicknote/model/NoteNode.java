@@ -29,6 +29,8 @@ import org.hibernate.envers.Audited;
  * http://javadigest.wordpress.com/2012/01/27/using-the-sequence-generator-in-hibernate/
  * http://www.mkyong.com/hibernate/hibernate-fetching-strategies-examples/
  * 
+ * http://stackoverflow.com/questions/10124468/jpa-query-for-getting-all-nodes-in-a-single-tree
+ * 
  */
 
 @NamedQueries
@@ -199,6 +201,24 @@ public class NoteNode /* extends DefaultRevisionEntity */ {
 	public void setTag(String tag) {
 		this.tag = tag;
 	}
+
+	public String getPath() {
+		
+		String path = getParentName(this);
+		return path.substring(4, path.length());
+	}
 	
+	private String getParentName(NoteNode note) {
+		
+		NoteNode parent = note.getParent();
+		if(parent != null) {
+			return  getParentName(parent) + " -> " +  note.getName();
+		} else {
+			// ignore root
+			// return note.getName();
+			return "";
+		}
+		
+	}
 	
 }

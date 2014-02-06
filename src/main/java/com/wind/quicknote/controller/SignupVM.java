@@ -17,9 +17,9 @@ import com.wind.quicknote.service.NoteService;
 import com.wind.quicknote.system.UserCredentialManager;
 
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
-public class SignupViewModel {
+public class SignupVM {
 
-	private static Logger log = LoggerFactory.getLogger(SignupViewModel.class);
+	private static Logger log = LoggerFactory.getLogger(SignupVM.class);
 	
 	@WireVariable
 	private NoteService noteService;

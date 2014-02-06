@@ -119,8 +119,7 @@
 	            	<div>
 		            	<button id="btnsave" tooltiptext="Save" 
 		            		image="/assets/images/save.png" width="50px" />
-		            	<label class="content-select">Title: </label>
-	            		<label id="noteInfo" class="content-select"/>
+	            		<label id="notePath" class="content-select"/>
 		            	<separator height="3px"/>
 		            	<ckeditor id="editor" height="306px"
 		            		filebrowserImageBrowseUrl="/assets/images">

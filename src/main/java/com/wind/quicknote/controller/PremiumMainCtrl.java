@@ -29,7 +29,6 @@ import com.wind.quicknote.helper.QUtils;
 import com.wind.quicknote.model.NoteNode;
 import com.wind.quicknote.model.NoteUser;
 import com.wind.quicknote.service.NoteService;
-import com.wind.quicknote.system.SessionCacheManager;
 import com.wind.quicknote.system.UserCredentialManager;
 import com.wind.quicknote.view.tree.TopicItem;
 
@@ -52,7 +51,7 @@ public class PremiumMainCtrl extends SelectorComposer<Window> {
 	private Label loginUsrName;
 	
 	@Wire
-	private Label noteInfo;
+	private Label notePath;
 	
 	@Wire
 	private CKeditor editor;
@@ -82,15 +81,20 @@ public class PremiumMainCtrl extends SelectorComposer<Window> {
 		//editor.setCustomConfigurationsPath("/js/ckeditorcfg.js");
 		//editor.setToolbar("Full");
 		
-		EventQueues.lookup("myqueue1", EventQueues.APPLICATION, true)
+		EventQueues.lookup("myqueue1", EventQueues.SESSION, true)
 				.subscribe(new EventListener() {
+					
 					public void onEvent(Event evt) {
+						if(!"onTopicInit".equals(evt.getName())) {
+							return;
+						}
 						TopicItem item = (TopicItem) evt.getData();
 						log.info("I've got this!! " + item.getId());
 
 						currentNodeId = item.getId();
-						noteInfo.setValue(item.getName());
-						editor.setValue(item.getText());
+						NoteNode node = noteService.findTopic(currentNodeId);
+						notePath.setValue(node.getPath());
+						editor.setValue(node.getText());
 					}
 				});
 		
@@ -104,7 +108,6 @@ public class PremiumMainCtrl extends SelectorComposer<Window> {
 	}
 	
 	@Listen("onSelect=#filterbox")
-	//@NotifyChange("notetreeList")
 	// Zul page example: onSelect="searchBar.value=self.selectedItem.value.name; searchBar.close();"
 	public void changeNote(Event fe) {
 		
@@ -116,8 +119,10 @@ public class PremiumMainCtrl extends SelectorComposer<Window> {
 		
 		NoteNode selectedNode = (NoteNode) item.getValue();
 		currentNodeId = selectedNode.getId();
-		noteInfo.setValue(selectedNode.getName());
+		notePath.setValue(selectedNode.getPath());
 		editor.setValue(selectedNode.getText());
+		
+		EventQueues.lookup("myqueue2", EventQueues.SESSION, true).publish(new Event("onSelectSearchItem", null, currentNodeId));
 	}
 	
 	
@@ -157,11 +162,7 @@ public class PremiumMainCtrl extends SelectorComposer<Window> {
 	@Listen("onClick=#btnsave")
 	public void updateContent() {
 		String text = editor.getValue();
-		
-		// update cache
-		SessionCacheManager.put(currentNodeId, text);
 		noteService.updateTopicText(currentNodeId, text);
-		
 		QUtils.showClientInfo("Save successfully!", editor);
 	}
 
@@ -177,18 +178,10 @@ public class PremiumMainCtrl extends SelectorComposer<Window> {
 
 		NoteTreeList item = (NoteTreeList) fe.getTarget();
 		currentNodeId = item.getCurrentItem().getId();
-		noteInfo.setValue(item.getCurrentItem().getName());
 		
-		// search in cache first
-		String content = SessionCacheManager.get(currentNodeId);
-		if(content == null)
-		{
-			NoteNode note = noteService.findTopic(currentNodeId);
-			content = note.getText();
-			SessionCacheManager.put(currentNodeId, note.getText());
-		}
-		
-		editor.setValue(content);
+		NoteNode node = noteService.findTopic(currentNodeId);
+		editor.setValue(node.getText());
+		notePath.setValue(node.getPath());
 	}
 	
 	

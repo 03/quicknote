@@ -1,5 +1,7 @@
 package com.wind.quicknote.controller;
 
+import java.util.Collection;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.zkoss.zk.ui.event.Event;
@@ -23,7 +25,7 @@ public class NoteTreeComposer extends GenericForwardComposer<Tree> {
 	private static final long serialVersionUID = 8673381423570688852L;
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public void doAfterCompose(Tree comp) throws Exception {
+	public void doAfterCompose(final Tree comp) throws Exception {
 		super.doAfterCompose(comp);
 		
 		comp.addEventListener("onAfterRender", new EventListener(){
@@ -34,7 +36,7 @@ public class NoteTreeComposer extends GenericForwardComposer<Tree> {
 				
 				Treeitem item = (Treeitem) tree.getTreechildren().getFirstChild();
 				if(item == null) {
-					// no children found, could be the case for new user or user delete all its notes
+					// no children found, could be the case onTopicInitonTopicInitfor new user or user delete all its notes
 					return;
 				}
 				tree.setSelectedItem(item);
@@ -42,9 +44,29 @@ public class NoteTreeComposer extends GenericForwardComposer<Tree> {
 				TopicItem currentNode = ((TopicItemTreeNode) item.getValue()).getData();
 				log.debug("doAfterCompose currentNodeId: "+ currentNode.getId());
 				
-				EventQueues.lookup("myqueue1", EventQueues.APPLICATION, true).publish(new Event("onTopicInit", null, currentNode));
+				EventQueues.lookup("myqueue1", EventQueues.SESSION, true).publish(new Event("onTopicInit", null, currentNode));
+				
+				
 			}
 		});
+		
+		EventQueues.lookup("myqueue2", EventQueues.SESSION, true).subscribe(
+				new EventListener() {
+					public void onEvent(Event evt) {
+						Long id = (Long) evt.getData();
+						log.debug("Event[onSelectSearchItem]? "+ evt.getName());
+
+						Collection<Treeitem> col = comp.getItems();
+						for (Treeitem item : col) {
+							if (((TopicItemTreeNode) item.getValue()).getData()
+									.getId() == id) {
+								comp.setSelectedItem(item);
+								comp.invalidate();
+								break;
+							}
+						}
+					}
+				});
 		
 	}
 	

@@ -41,7 +41,6 @@ public class TopicTreeModel extends DefaultTreeModel<TopicItem> {
     }
     
     public static TopicTreeModel getInstance() {
-    	
     	log.debug("TopicTreeModel inited.");
     	
 		NoteUser user = UserCredentialManager.getIntance().getUser();
@@ -55,7 +54,6 @@ public class TopicTreeModel extends DefaultTreeModel<TopicItem> {
     private static TopicItemTreeNode createTreeNode(NoteNode node) {
 		
 		TopicItem rootTopic = new TopicItem(node);
-
 		if (node.hasChildren()) {
 			
 			List<NoteNode> notes = node.getChildren();
@@ -66,16 +64,15 @@ public class TopicTreeModel extends DefaultTreeModel<TopicItem> {
 				NoteNode child = notes.get(i);
 				array[i] = createTreeNode(child);
 			}
-
 			return new TopicItemTreeNode(rootTopic, array);
 			
 		} else {
-
 			return new TopicItemTreeNode(rootTopic, null, true);
 		}
 
 	}
  
+
 	/**
      * remove the nodes which parent is <code>parent</code> with indexes
      * <code>indexes</code>
@@ -100,7 +97,6 @@ public class TopicTreeModel extends DefaultTreeModel<TopicItem> {
     }
  
     public void remove(DefaultTreeNode<TopicItem> target) throws IndexOutOfBoundsException {
-    	
     	// remove data from database
     	noteService.removeTopic(target.getData().getId());
     	
@@ -117,7 +113,6 @@ public class TopicTreeModel extends DefaultTreeModel<TopicItem> {
     }
     
 	public void insertBefore(DefaultTreeNode<TopicItem> parent, int position) throws IndexOutOfBoundsException {
-    	
     	long pid = parent.getData().getId();
     	// save to database
 		NoteNode note = noteService.addTopic(pid, position - 1, TOPIC_NEW_ITEM, TOPIC_NEWLY_ADDED_CONTENT, QUtils.getRandomIconURL());
@@ -128,7 +123,6 @@ public class TopicTreeModel extends DefaultTreeModel<TopicItem> {
     }
 	
 	public void insertAfter(DefaultTreeNode<TopicItem> parent, int position) throws IndexOutOfBoundsException {
-    	
     	long pid = parent.getData().getId();
     	// save to database
 		NoteNode note = noteService.addTopic(pid, position, TOPIC_NEW_ITEM, TOPIC_NEWLY_ADDED_CONTENT, QUtils.getRandomIconURL());
@@ -171,10 +165,8 @@ public class TopicTreeModel extends DefaultTreeModel<TopicItem> {
 	 * @throws IndexOutOfBoundsException
 	 */
 	public void swapPos(DefaultTreeNode<TopicItem> parent, int pos, int newPos) {
-    	
     	// save to database
-		long pid = parent.getData().getId();
-		noteService.swapTopicPosition(pid, pos, newPos);
+		noteService.swapTopicPosition(parent.getData().getId(), pos, newPos);
 		
 		if (parent instanceof TopicItemTreeNode) {
             swap((TopicItemTreeNode)parent, pos, newPos);
@@ -182,9 +174,7 @@ public class TopicTreeModel extends DefaultTreeModel<TopicItem> {
         
     }
 	
-	
 	public void updateTopicName(TopicItem topicItem, String value) {
-		
 		noteService.updateTopicName(topicItem.getId(), value);
 		topicItem.setName(value);
     }
@@ -227,7 +217,6 @@ public class TopicTreeModel extends DefaultTreeModel<TopicItem> {
      * @param nodeTobeAdded
      */
 	public void moveToNode(TopicItemTreeNode parent, TopicItemTreeNode nodeTobeAdded) {
-		
 		// cancel if on current parent
 		if(nodeTobeAdded.getParent().getData().getId() == parent.getData().getId()) {
 			return;

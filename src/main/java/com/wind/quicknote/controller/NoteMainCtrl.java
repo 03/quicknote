@@ -79,17 +79,27 @@ public class NoteMainCtrl extends SelectorComposer<Window> {
 		//editor.setCustomConfigurationsPath("/js/ckeditorcfg.js");
 		//editor.setToolbar("Full");
 		
-		EventQueues.lookup("myqueue1", EventQueues.APPLICATION, true)
-				.subscribe(new EventListener() {
-					public void onEvent(Event evt) {
-						TopicItem item = (TopicItem) evt.getData();
-						log.info("I've got this!! " + item.getId());
+		EventQueues.lookup("myqueue1", EventQueues.SESSION, true)
+		.subscribe(new EventListener() {
+			
+			public void onEvent(Event evt) {
+				if(!"onTopicInit".equals(evt.getName())) {
+					return;
+				}
+				TopicItem item = (TopicItem) evt.getData();
+				log.info("I've got this!! " + item.getId());
 
-						currentNodeId = item.getId();
-						editor.setValue(item.getText());
-					}
-				});
-		
+				currentNodeId = item.getId();
+				NoteNode node = SessionCacheManager.get(currentNodeId);
+				if(node == null)
+				{
+					node = noteService.findTopic(currentNodeId);
+					SessionCacheManager.put(currentNodeId, node);
+				}
+				editor.setValue(node.getText());
+			}
+		});
+
 		searchBar.setModel(new SimpleListModel(QUtils.getSampleData()));
 		
 	}
@@ -115,10 +125,11 @@ public class NoteMainCtrl extends SelectorComposer<Window> {
 	
 	@Listen("onClick=#btnsave")
 	public void updateContent() {
+		
 		String text = editor.getValue();
 		
 		// update cache
-		SessionCacheManager.put(currentNodeId, text);
+		SessionCacheManager.get(currentNodeId).setText(text);
 		noteService.updateTopicText(currentNodeId, text);
 		
 		QUtils.showClientInfo("Save successfully!", editor);
@@ -138,15 +149,14 @@ public class NoteMainCtrl extends SelectorComposer<Window> {
 		currentNodeId = item.getCurrentItem().getId();
 		
 		// search in cache first
-		String content = SessionCacheManager.get(currentNodeId);
-		if(content == null)
+		NoteNode node = SessionCacheManager.get(currentNodeId);
+		if(node == null)
 		{
-			NoteNode note = noteService.findTopic(currentNodeId);
-			content = note.getText();
-			SessionCacheManager.put(currentNodeId, note.getText());
+			node = noteService.findTopic(currentNodeId);
+			SessionCacheManager.put(currentNodeId, node);
 		}
 		
-		editor.setValue(content);
+		editor.setValue(node.getText());
 	}
 	
 	

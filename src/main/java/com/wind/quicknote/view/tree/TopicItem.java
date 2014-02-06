@@ -6,18 +6,12 @@ public class TopicItem {
 
 	private long id;
 	private String name;
-	private String text;
     private String icon;
 
-    // convenient model, DTO is a better choice
-    private NoteNode note;
- 
+    // DTO would be a better choice
     public TopicItem(NoteNode note) {
-		super();
-		this.note = note;
 		this.id = note.getId();
 		this.name = note.getName();
-		this.text = note.getText();
 		this.icon = note.getIcon();
 	}
 
@@ -37,14 +31,6 @@ public class TopicItem {
 		this.name = name;
 	}
 
-	public String getText() {
-		return text;
-	}
-
-	public void setText(String text) {
-		this.text = text;
-	}
-
 	public String getIcon() {
 		return icon;
 	}
@@ -53,9 +39,4 @@ public class TopicItem {
 		this.icon = icon;
 	}
 	
-	public boolean isLeaf() {
-		return !note.hasChildren();
-	}
-
-
 }

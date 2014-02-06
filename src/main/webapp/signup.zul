@@ -1,7 +1,7 @@
 <?link rel="shortcut icon" href="http://www.google.com.au/favicon.ico" ?>
 <zk>
     <window id="signupWin" height="380px" width="500px" title="Sign Up" border="normal" closable="true" apply="org.zkoss.bind.BindComposer"
-        viewModel="@id('vm') @init('com.wind.quicknote.controller.SignupViewModel')"
+        viewModel="@id('vm') @init('com.wind.quicknote.controller.SignupVM')"
         validationMessages="@id('vmsgs')"
         form="@id('fx') @load(vm.noteUser) @save(vm.noteUser, before='submit') @validator('com.wind.quicknote.controller.SignupValidator', retypedPassword=vm.retypedPassword)">
         <style src="/css/customized_style.css" />
