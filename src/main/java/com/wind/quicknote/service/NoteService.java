@@ -2,12 +2,9 @@ package com.wind.quicknote.service;
 
 import java.util.List;
 
-import javax.jws.WebService;
-
 import com.wind.quicknote.model.NoteNode;
 import com.wind.quicknote.model.NoteUser;
 
-@WebService
 public interface NoteService {
 	
 	void init();

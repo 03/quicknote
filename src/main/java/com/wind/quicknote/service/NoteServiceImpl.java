@@ -3,13 +3,10 @@ package com.wind.quicknote.service;
 import java.util.Date;
 import java.util.List;
 
-import javax.jws.WebService;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.wind.quicknote.dao.NoteNodeDAO;
@@ -18,8 +15,6 @@ import com.wind.quicknote.model.NoteNode;
 import com.wind.quicknote.model.NoteUser;
 
 @Transactional
-@Service("noteService")
-@WebService(endpointInterface = "com.wind.quicknote.service.NoteService")
 public class NoteServiceImpl implements NoteService {
 	
 	private static Logger log = LoggerFactory.getLogger(NoteServiceImpl.class);
