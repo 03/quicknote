@@ -19,7 +19,7 @@ public class NoteServiceWSTest {
 
 	@Autowired
 	//@Qualifier("noteClientWS")
-	 @Qualifier("noteServiceWS")
+	@Qualifier("noteServiceWS")
 	private NoteServiceWS client;
 
 	@Test
