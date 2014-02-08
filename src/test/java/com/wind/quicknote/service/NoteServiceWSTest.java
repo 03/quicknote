@@ -1,6 +1,9 @@
 package com.wind.quicknote.service;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import java.util.List;
 
 import org.apache.cxf.frontend.ClientProxyFactoryBean;
 import org.junit.Test;
@@ -10,6 +13,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.wind.quicknote.model.NoteNodeDto;
 import com.wind.quicknote.model.NoteUserDto;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -33,6 +37,13 @@ public class NoteServiceWSTest {
 	public void testFindUserByName() {
 		NoteUserDto entity = client.findUserByName("zk");
 		assertNotNull(entity);
+	}
+	
+	@Test
+	public void testFindAllTopicsByUser() {
+		List<NoteNodeDto> dtos = client.findAllTopicsByUser(1L);
+		assertNotNull(dtos);
+		assertTrue(dtos.size() > 0);
 	}
 
 	public static void main(String[] args) {

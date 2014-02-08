@@ -1,7 +1,10 @@
 package com.wind.quicknote.service;
 
+import java.util.List;
+
 import javax.jws.WebService;
 
+import com.wind.quicknote.model.NoteNodeDto;
 import com.wind.quicknote.model.NoteUserDto;
 
 /**
@@ -15,8 +18,7 @@ import com.wind.quicknote.model.NoteUserDto;
 public interface NoteServiceWS {
 	
 	String echo(String message);
-
-	//NoteUser findUserModelByName(String name);
 	NoteUserDto findUserByName(String name);
+	List<NoteNodeDto> findAllTopicsByUser(long userId);
 	
 }

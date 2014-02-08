@@ -1,5 +1,8 @@
 package com.wind.quicknote.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.jws.WebService;
 
 import org.slf4j.Logger;
@@ -10,7 +13,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.wind.quicknote.dao.NoteNodeDAO;
 import com.wind.quicknote.dao.NoteUserDAO;
+import com.wind.quicknote.model.NoteNode;
+import com.wind.quicknote.model.NoteNodeDto;
 import com.wind.quicknote.model.NoteUser;
 import com.wind.quicknote.model.NoteUserDto;
 
@@ -24,6 +30,10 @@ public class NoteServiceWSImpl implements NoteServiceWS {
 	@Autowired
 	@Qualifier("noteUserDAO")
 	private NoteUserDAO userDAO;
+	
+	@Autowired
+	@Qualifier("noteNodeDAO")
+	private NoteNodeDAO nodeDAO;
 	
 	/*@Override
 	public NoteUser findUserModelByName(String name) {
@@ -48,6 +58,21 @@ public class NoteServiceWSImpl implements NoteServiceWS {
 		}
 		
 		return dto;
+	}
+
+	@Override
+	public List<NoteNodeDto> findAllTopicsByUser(long userId) {
+		
+		List<NoteNodeDto> dtos = new ArrayList<NoteNodeDto>();
+		List<NoteNode> nodes = nodeDAO.findMatchedTopicsByUser(userId, null);
+		
+		for(NoteNode node : nodes) {
+			NoteNodeDto dto = new NoteNodeDto();
+			BeanUtils.copyProperties(node, dto, new String[] {"role"});
+			dtos.add(dto);
+		}
+		
+		return dtos;
 	}
 	
 }
