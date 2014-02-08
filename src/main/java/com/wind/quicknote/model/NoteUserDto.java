@@ -20,7 +20,7 @@ public class NoteUserDto implements Serializable {
 	private String email;
 	private String desc;
 	private String icon;
-	private String status;
+	private UserStatus status;
 	private Date created;
 	private Date updated;
 	
@@ -100,11 +100,11 @@ public class NoteUserDto implements Serializable {
 		this.icon = icon;
 	}
 
-	public String getStatus() {
+	public UserStatus getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(UserStatus status) {
 		this.status = status;
 	}
 

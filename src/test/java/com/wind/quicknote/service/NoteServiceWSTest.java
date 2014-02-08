@@ -21,9 +21,12 @@ import com.wind.quicknote.model.NoteUserDto;
 		"/dataAccessContext.xml", "/wsContext.xml" })
 public class NoteServiceWSTest {
 
+	private static final String WS_ADDR = "http://localhost:8000/qnote/services/ws";
+	//private static final String WS_ADDR = "http://qnote-app-beta.herokuapp.com/services/ws";
+	
 	@Autowired
-	//@Qualifier("noteClientWS")
-	@Qualifier("noteServiceWS")
+	//@Qualifier("noteClientWS") // web service test
+	@Qualifier("noteServiceWS") // local test
 	private NoteServiceWS client;
 
 	@Test
@@ -52,11 +55,14 @@ public class NoteServiceWSTest {
 		if (args != null && args.length > 0 && !"".equals(args[0])) {
 			factory.setAddress(args[0]);
 		} else {
-			factory.setAddress("http://localhost:8000/qnote/services/ws");
+			factory.setAddress(WS_ADDR);
 		}
 		NoteServiceWS client = factory.create(NoteServiceWS.class);
 		NoteUserDto dto = client.findUserByName("zk");
 		System.out.println("Desc: " + dto.getDesc());
+		
+		//List<NoteNodeDto> dtos = client.findAllTopicsByUser(1L);
+		//System.out.println("Nodes size: " + dtos.size());
 
 		System.exit(0);
 	}

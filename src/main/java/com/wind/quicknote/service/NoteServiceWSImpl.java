@@ -53,8 +53,11 @@ public class NoteServiceWSImpl implements NoteServiceWS {
 		NoteUser model = userDAO.findByName(name);
 		if(model != null) {
 			// copy fields, see: http://stackoverflow.com/questions/5079458/copy-specific-fields-by-using-beanutils-copyproperties
-			BeanUtils.copyProperties(model, dto, new String[] {"role"});
+			/*BeanUtils.copyProperties(model, dto, new String[] {"role", "status"});
 			dto.setRole(model.getRole());
+			dto.setStatus(model.getStatus());*/
+			
+			BeanUtils.copyProperties(model, dto);
 		}
 		
 		return dto;
@@ -67,12 +70,21 @@ public class NoteServiceWSImpl implements NoteServiceWS {
 		List<NoteNode> nodes = nodeDAO.findMatchedTopicsByUser(userId, null);
 		
 		for(NoteNode node : nodes) {
-			NoteNodeDto dto = new NoteNodeDto();
-			BeanUtils.copyProperties(node, dto, new String[] {"role"});
+			NoteNodeDto dto = prepareParentDto(node.getParent());
 			dtos.add(dto);
 		}
 		
 		return dtos;
+	}
+	
+	private NoteNodeDto prepareParentDto(NoteNode node) {
+		NoteNodeDto dto = new NoteNodeDto();
+		if(node == null)
+			return dto;
+		
+		BeanUtils.copyProperties(node, dto, new String[] {"parent"});
+		dto.setParent(prepareParentDto(node.getParent()));
+		return dto;
 	}
 	
 }
