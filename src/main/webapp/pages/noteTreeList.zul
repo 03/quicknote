@@ -4,7 +4,7 @@
 			<row>
 				<hbox>
 					<hbox visible="false">
-						<button id="btnshow" tooltip="MyHelp" style="cursor:help"
+						<button id="btnshow" style="cursor:help"
 							image="/assets/images/m1.gif" hoverImage="/assets/images/m2.gif"
 							width="45px" />
 					</hbox>
@@ -36,12 +36,6 @@
 		</center>
 	</borderlayout>
 
-	<popup id="MyHelp" width="300px">
-		<html>Click to show current Node ... need help? Go to </html>
-		<toolbarbutton label="ZK Forum" target="zksandbox"
-			href="http://www.zkoss.org/forum" />
-	</popup>
-	
 	<separator height="2px"/>
 
 	<grid height="170px">

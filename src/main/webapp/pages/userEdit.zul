@@ -1,6 +1,5 @@
-<?link rel="shortcut icon" href="http://www.google.com.au/favicon.ico" ?>
 <zk>
-	<window id="userWin" height="420px" width="530px" title="User Edit"
+	<window id="userWin" height="420px" width="530px" title="User Profile"
 		border="normal" closable="true" apply="org.zkoss.bind.BindComposer"
 		viewModel="@id('vm') @init('com.wind.quicknote.controller.UserEditVM')"
 		validationMessages="@id('vmsgs')"
