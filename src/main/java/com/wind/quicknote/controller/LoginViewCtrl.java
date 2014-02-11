@@ -13,6 +13,7 @@ import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
 import com.wind.quicknote.model.UserRole;
+import com.wind.quicknote.system.CookieUtil;
 import com.wind.quicknote.system.UserCredentialManager;
 
 
@@ -44,6 +45,11 @@ public class LoginViewCtrl extends SelectorComposer<Window> {
 			Executions.getCurrent().sendRedirect(URL_HOME_PAGE);
 		}
 		nameTxb.setFocus(true);
+		
+		String userName = CookieUtil.getLastUserIfExists();
+		if(userName != null) {
+			nameTxb.setValue(userName);
+		}
 
 	}
 	

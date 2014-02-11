@@ -42,6 +42,11 @@ public class UserCredentialManager {
 		if (tempUser != null && tempUser.getPassword().equals(password)) {
 			user = tempUser;
 			addUserToWebApp();
+			
+			// add to cookie
+			CookieUtil.setCookie("lastUserName", name);
+			// CookieUtil.setCookie("lastUserPass", password);
+			
 		} else {
 			user = null;
 		}

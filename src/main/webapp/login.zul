@@ -11,8 +11,8 @@
                 <column/>
             </columns>
             <rows>
-                <row><label sclass="text" value="Username"/> <textbox id="nameTxb" value="zk" c:onFocus="this.select()" /></row>
-                <row><label sclass="text" value="Password"/><textbox id="passwordTxb" type="password" value="zk" c:onFocus="this.select()"/></row>
+                <row><label sclass="text" value="Username"/> <textbox id="nameTxb" c:onFocus="this.select()" /></row>
+                <row><label sclass="text" value="Password"/><textbox id="passwordTxb" type="password" c:onFocus="this.select()"/></row>
                 <row>
                 	<cell colspan="2">
                 		<vlayout>
