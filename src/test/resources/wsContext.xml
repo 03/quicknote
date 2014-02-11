@@ -6,10 +6,11 @@
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
 
-	<jaxws:endpoint id="noteServiceEndpoint" implementor="#noteServiceWS"
-		address="/ws" />
-
 	<jaxws:client id="noteClientWS"
-		serviceClass="com.wind.quicknote.service.NoteServiceWS" address="http://localhost:8000/qnote/services/ws" />
+		serviceClass="com.wind.quicknote.service.NoteServiceWS" address="http://localhost:8000/qnote/services/ws" >
+	    <jaxws:handlers>
+	        <bean class="com.wind.quicknote.system.SoapSecurityClientHandler"></bean>
+	    </jaxws:handlers>
+	</jaxws:client>
 
 </beans>

@@ -47,3 +47,8 @@ v0.47, 23/01/2014
 - API updated
 - Search filter added
 
+v0.48, 11/02/2014
+- WS security handler init
+- Code cleanup
+
+

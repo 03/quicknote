@@ -1,4 +1,4 @@
-package com.wind.quicknote.service;
+package com.wind.quicknote.system;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -17,25 +17,19 @@ public class HerokuJDBCTest {
 	
 	public static void main(String[] argv) {
 		
-
 		System.out.println("-------- PostgreSQL JDBC Connection Testing ------------");
 
 		try {
-
 			Class.forName("org.postgresql.Driver");
-
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 			return;
-
 		}
 
 		System.out.println("PostgreSQL JDBC Driver Registered!");
-
+		
 		Connection connection = null;
-
 		try {
-			
 			// Fetch Connection Way-1
 			/*String url = "jdbc:postgresql://ec2-54-235-152-226.compute-1.amazonaws.com:5432/d5be8rfblcscgv";
 			Properties props = new Properties();
@@ -50,9 +44,6 @@ public class HerokuJDBCTest {
 			/*connection = DriverManager.getConnection(
 					"jdbc:postgresql://ec2-54-235-152-226.compute-1.amazonaws.com:5432/d5be8rfblcscgv", "lqvnjqgoybunrx",
 					"0hl9SRZ5K4ZgqRdtk21Eb4mmMq");*/
-			/*connection = DriverManager.getConnection(
-					"jdbc:postgresql://ec2-54-235-152-226.compute-1.amazonaws.com:5432/d5be8rfblcscgv?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory", "lqvnjqgoybunrx",
-					"0hl9SRZ5K4ZgqRdtk21Eb4mmMq");*/
 			
 			connection = DriverManager.getConnection(
 					"jdbc:postgresql://ec2-54-197-237-120.compute-1.amazonaws.com:5432/d1nq4hvfcvj4g9?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory", "fwhamjopujjwoi",
@@ -63,11 +54,8 @@ public class HerokuJDBCTest {
 					"didev123");*/
 
 		} catch (SQLException e) {
-
 			System.out.println("Connection Failed! Check output console");
 			e.printStackTrace();
-			return;
-
 		}
 
 		if (connection != null) {

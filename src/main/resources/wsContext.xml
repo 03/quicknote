@@ -7,6 +7,22 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
 
 	<jaxws:endpoint id="noteServiceEndpoint" implementor="#noteServiceWS"
-		address="/ws" />
+		address="/ws">
+		
+	    <jaxws:inInterceptors>
+			<ref bean="inLog" />
+		</jaxws:inInterceptors>
 
+		<jaxws:outInterceptors>
+			<ref bean="outLog" />
+		</jaxws:outInterceptors>
+
+		<jaxws:handlers>
+			<bean class="com.wind.quicknote.system.SoapSecurityHandler" />
+		</jaxws:handlers>
+	</jaxws:endpoint>
+
+	<bean id="inLog" class="org.apache.cxf.interceptor.LoggingInInterceptor" />
+	<bean id="outLog" class="org.apache.cxf.interceptor.LoggingOutInterceptor" />
+	
 </beans>
