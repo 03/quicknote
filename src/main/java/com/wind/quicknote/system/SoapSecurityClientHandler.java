@@ -16,8 +16,6 @@ import javax.xml.ws.handler.soap.SOAPMessageContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.sun.xml.internal.ws.wsdl.parser.SOAPConstants;
-
 public class SoapSecurityClientHandler implements SOAPHandler<SOAPMessageContext> {
 	
 	private static Logger log = LoggerFactory.getLogger(SoapSecurityClientHandler.class);
@@ -50,7 +48,7 @@ public class SoapSecurityClientHandler implements SOAPHandler<SOAPMessageContext
 					soapHeader = soapEnv.addHeader();
 				}
 
-				QName qname = new QName(SOAPConstants.URI_SOAP_TRANSPORT_HTTP, "macAddress");
+				QName qname = new QName("http://schemas.xmlsoap.org/soap/http", "macAddress");
 				SOAPHeaderElement soapHeaderElement = soapHeader.addHeaderElement(qname);
 
 				// actor/role/...

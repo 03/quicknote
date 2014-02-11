@@ -75,7 +75,7 @@ public class SoapSecurityHandler implements SOAPHandler<SOAPMessageContext> {
 				}
 
 				// Filtered by Actor
-				//Iterator<?> it = soapHeader.extractHeaderElements(SOAPConstants.URI_SOAP_ACTOR_NEXT);
+				// Iterator<?> it = soapHeader.extractHeaderElements(SOAPConstants.URI_SOAP_ACTOR_NEXT);
 				
 				Iterator<?> it = soapHeader.examineAllHeaderElements();
 				if (it == null || !it.hasNext()) {
