@@ -5,7 +5,6 @@ import java.net.NetworkInterface;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
-import javax.xml.soap.SOAPConstants;
 import javax.xml.soap.SOAPEnvelope;
 import javax.xml.soap.SOAPHeader;
 import javax.xml.soap.SOAPHeaderElement;
@@ -16,6 +15,8 @@ import javax.xml.ws.handler.soap.SOAPMessageContext;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.sun.xml.internal.ws.wsdl.parser.SOAPConstants;
 
 public class SoapSecurityClientHandler implements SOAPHandler<SOAPMessageContext> {
 	
@@ -49,10 +50,14 @@ public class SoapSecurityClientHandler implements SOAPHandler<SOAPMessageContext
 					soapHeader = soapEnv.addHeader();
 				}
 
-				QName qname = new QName("http://localhost", "macAddress");
+				QName qname = new QName(SOAPConstants.URI_SOAP_TRANSPORT_HTTP, "macAddress");
 				SOAPHeaderElement soapHeaderElement = soapHeader.addHeaderElement(qname);
 
-				soapHeaderElement.setActor(SOAPConstants.URI_SOAP_ACTOR_NEXT);
+				// actor/role/...
+				/*soapHeaderElement.setActor(SOAPConstants.URI_SOAP_ACTOR_NEXT);
+				soapHeaderElement.setRole(SOAPConstants.URI_SOAP_1_2_ROLE_NEXT);
+				soapHeaderElement.setRelay(true);*/
+				
 				soapHeaderElement.addTextNode(getMACAddress());
 				soapMsg.saveChanges();
 

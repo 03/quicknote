@@ -14,7 +14,7 @@ public class QUtils {
 
 	// Constants
 	public static final String TOPIC_NEW_ITEM = "[New Item]";
-	public static final String TOPIC_NEWLY_ADDED_CONTENT = "(edit content here)";
+	public static final String TOPIC_NEW_CONTENT = "";
 	
 	public static final String DIALOG_WARNING = "Warning";
 	private static final String alphabet = "abcdefghijklmnopqrstuvwxyz";

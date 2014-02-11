@@ -17,6 +17,7 @@
 		<aspectj.version>1.7.2</aspectj.version>
 		<apache.cxf.version>2.7.8</apache.cxf.version>
 	</properties>
+	<!-- https://devcenter.heroku.com/articles/local-maven-dependencies -->
 	<repositories>
 		<repository>
 			<id>ZK CE</id>

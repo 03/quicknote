@@ -8,7 +8,6 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 import javax.xml.soap.Node;
 import javax.xml.soap.SOAPBody;
-import javax.xml.soap.SOAPConstants;
 import javax.xml.soap.SOAPEnvelope;
 import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPFault;
@@ -75,8 +74,10 @@ public class SoapSecurityHandler implements SOAPHandler<SOAPMessageContext> {
 					generateSoapError(soapMsg, "No SOAP header.");
 				}
 
-				// Get
-				Iterator<?> it = soapHeader.extractHeaderElements(SOAPConstants.URI_SOAP_ACTOR_NEXT);
+				// Filtered by Actor
+				//Iterator<?> it = soapHeader.extractHeaderElements(SOAPConstants.URI_SOAP_ACTOR_NEXT);
+				
+				Iterator<?> it = soapHeader.examineAllHeaderElements();
 				if (it == null || !it.hasNext()) {
 					generateSoapError(soapMsg, "No header block.");
 				}
