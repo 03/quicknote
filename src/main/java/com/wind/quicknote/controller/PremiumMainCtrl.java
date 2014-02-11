@@ -159,8 +159,8 @@ public class PremiumMainCtrl extends SelectorComposer<Window> {
 		
 	}
 	
-	@Listen("onClick=#btnsave")
-	public void updateContent() {
+	@Listen("onSave=#editor")
+	public void updateEditorContent() {
 		String text = editor.getValue();
 		noteService.updateTopicText(currentNodeId, text);
 		QUtils.showClientInfo("Save successfully!", editor);
@@ -180,7 +180,9 @@ public class PremiumMainCtrl extends SelectorComposer<Window> {
 		currentNodeId = item.getCurrentItem().getId();
 		
 		NoteNode node = noteService.findTopic(currentNodeId);
-		editor.setValue(node.getText());
+		
+		String text = node.getText();
+		editor.setValue(text);
 		notePath.setValue(node.getPath());
 	}
 	

@@ -56,6 +56,7 @@ public class SoapSecurityClientHandler implements SOAPHandler<SOAPMessageContext
 				soapHeaderElement.addTextNode(getMACAddress());
 				soapMsg.saveChanges();
 
+				// tracking
 				soapMsg.writeTo(System.out);
 				
 			} catch (Exception e) {

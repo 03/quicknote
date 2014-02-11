@@ -37,6 +37,7 @@ import org.zkoss.zul.Treerow;
 import org.zkoss.zul.Vlayout;
 import org.zkoss.zul.Window;
 
+import com.wind.quicknote.helper.QUtils;
 import com.wind.quicknote.view.tree.TopicItem;
 import com.wind.quicknote.view.tree.TopicItemTreeNode;
 import com.wind.quicknote.view.tree.TopicTreeModel;
@@ -537,7 +538,12 @@ public class NoteTreeList extends Div implements IdSpace {
 		 * Rename methods
 		 */
 		private void startRename(final Label label, final Textbox tbox) {
-			tbox.setValue(label.getValue());
+			String labelValue = label.getValue();
+			if (QUtils.TOPIC_NEW_ITEM.equals(labelValue)) {
+				tbox.setValue("");
+			} else {
+				tbox.setValue(labelValue);
+			}
 			label.setVisible(false);
 			tbox.setVisible(true);
 			tbox.setFocus(true);
@@ -546,6 +552,11 @@ public class NoteTreeList extends Div implements IdSpace {
 		private void endRename(final Label label, final Textbox tbox) {
 			String previousValue = label.getValue();
 			String currentValue = tbox.getValue();
+			
+			if ("".equals(currentValue)) {
+				currentValue = QUtils.TOPIC_NEW_ITEM;
+			}
+			
 			if(!previousValue.equals(currentValue)) {
 				label.setValue(currentValue);
 				

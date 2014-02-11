@@ -24,8 +24,6 @@ public class TopicTreeModel extends DefaultTreeModel<TopicItem> {
 	
 	private static Logger log = LoggerFactory.getLogger(TopicTreeModel.class);
 	
-	public static final String TOPIC_NEW_ITEM = "[New Item]";
-	public static final String TOPIC_NEWLY_ADDED_CONTENT = "newly added content...";
     /**
 	 * 
 	 */
@@ -115,7 +113,7 @@ public class TopicTreeModel extends DefaultTreeModel<TopicItem> {
 	public void insertBefore(DefaultTreeNode<TopicItem> parent, int position) throws IndexOutOfBoundsException {
     	long pid = parent.getData().getId();
     	// save to database
-		NoteNode note = noteService.addTopic(pid, position - 1, TOPIC_NEW_ITEM, TOPIC_NEWLY_ADDED_CONTENT, QUtils.getRandomIconURL());
+		NoteNode note = noteService.addTopic(pid, position - 1, QUtils.TOPIC_NEW_ITEM, QUtils.TOPIC_NEWLY_ADDED_CONTENT, QUtils.getRandomIconURL());
 		
 		if (parent instanceof TopicItemTreeNode) {
 			parent.getChildren().add(position, new TopicItemTreeNode(new TopicItem(note), null, true));
@@ -125,7 +123,7 @@ public class TopicTreeModel extends DefaultTreeModel<TopicItem> {
 	public void insertAfter(DefaultTreeNode<TopicItem> parent, int position) throws IndexOutOfBoundsException {
     	long pid = parent.getData().getId();
     	// save to database
-		NoteNode note = noteService.addTopic(pid, position, TOPIC_NEW_ITEM, TOPIC_NEWLY_ADDED_CONTENT, QUtils.getRandomIconURL());
+		NoteNode note = noteService.addTopic(pid, position, QUtils.TOPIC_NEW_ITEM, QUtils.TOPIC_NEWLY_ADDED_CONTENT, QUtils.getRandomIconURL());
 		
 		if (parent instanceof TopicItemTreeNode) {
 			parent.getChildren().add(position + 1, new TopicItemTreeNode(new TopicItem(note), null, true));
@@ -206,7 +204,7 @@ public class TopicTreeModel extends DefaultTreeModel<TopicItem> {
      */
 	public void addToNode(TopicItemTreeNode node) {
     	// save to database
-    	NoteNode note_added = noteService.addTopicAtLast(node.getData().getId(), TOPIC_NEW_ITEM, TOPIC_NEWLY_ADDED_CONTENT, QUtils.getRandomIconURL());
+    	NoteNode note_added = noteService.addTopicAtLast(node.getData().getId(), QUtils.TOPIC_NEW_ITEM, QUtils.TOPIC_NEWLY_ADDED_CONTENT, QUtils.getRandomIconURL());
         node.getChildren().add(new TopicItemTreeNode(new TopicItem(note_added), null, true));
     }
     
@@ -229,7 +227,7 @@ public class TopicTreeModel extends DefaultTreeModel<TopicItem> {
     
     public void addToRoot() {
     	// save to database
-    	NoteNode note_added = noteService.addTopicAtLast(getRoot().getData().getId(), TOPIC_NEW_ITEM, TOPIC_NEWLY_ADDED_CONTENT, QUtils.getRandomIconURL());
+    	NoteNode note_added = noteService.addTopicAtLast(getRoot().getData().getId(), QUtils.TOPIC_NEW_ITEM, QUtils.TOPIC_NEWLY_ADDED_CONTENT, QUtils.getRandomIconURL());
     	
     	getRoot().add(new TopicItemTreeNode(new TopicItem(note_added), null, true));
     }

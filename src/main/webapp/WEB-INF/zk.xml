@@ -31,9 +31,5 @@
 	<client-config>
 		<processing-prompt-delay>1</processing-prompt-delay>
 	</client-config>
-	
-	<language-config>
-        <addon-uri>/WEB-INF/ckez.xml</addon-uri>
-    </language-config>
 
 </zk>

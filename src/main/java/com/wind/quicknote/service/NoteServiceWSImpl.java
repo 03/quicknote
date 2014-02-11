@@ -82,7 +82,8 @@ public class NoteServiceWSImpl implements NoteServiceWS {
 		if(node == null)
 			return dto;
 		
-		BeanUtils.copyProperties(node, dto, new String[] {"parent"});
+		// ignore children at this stage
+		BeanUtils.copyProperties(node, dto, new String[] {"parent", "children"});
 		dto.setParent(prepareParentDto(node.getParent()));
 		return dto;
 	}

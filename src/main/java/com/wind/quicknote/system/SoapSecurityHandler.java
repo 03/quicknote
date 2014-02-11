@@ -1,5 +1,6 @@
 package com.wind.quicknote.system;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Set;
@@ -23,6 +24,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * http://blog.csdn.net/unei66/article/details/12291051
+ * http://www.mkyong.com/webservices/jax-ws/jax-ws-soap-handler-in-server-side/
  */
 public class SoapSecurityHandler implements SOAPHandler<SOAPMessageContext> {
 	
@@ -67,26 +69,31 @@ public class SoapSecurityHandler implements SOAPHandler<SOAPMessageContext> {
 				SOAPEnvelope soapEnv = soapMsg.getSOAPPart().getEnvelope();
 				SOAPHeader soapHeader = soapEnv.getHeader();
 
-				// if no header, add one and throw exception
+				// if no header, add one
 				if (soapHeader == null) {
 					soapHeader = soapEnv.addHeader();
-					generateSoapError(soapMsg, "SOAP header is missing!");
+					generateSoapError(soapMsg, "No SOAP header.");
 				}
 
 				// Get
 				Iterator<?> it = soapHeader.extractHeaderElements(SOAPConstants.URI_SOAP_ACTOR_NEXT);
 				if (it == null || !it.hasNext()) {
-					generateSoapError(soapMsg, "No header block exists!");
+					generateSoapError(soapMsg, "No header block.");
 				}
 
-				Node a = (Node) it.next();
-				log.debug("Node (MAC): " + a.getValue());
+				Node macNode = (Node) it.next();
+				log.debug("Node (MAC Address): " + macNode.getValue());
 
 				// do some other check here
 				// ...
 				
+				// tracking
+				soapMsg.writeTo(System.out);
+				
 			} catch (SOAPException e) {
 				e.printStackTrace();
+			} catch (IOException e) {
+				System.err.println(e);
 			}
 		}
 

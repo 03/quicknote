@@ -117,13 +117,16 @@
 	            </west>
 	            <center border="none" autoscroll="true" vflex="true" margins="1,1,1,1" style="padding:3px;">
 	            	<div>
-		            	<button id="btnsave" tooltiptext="Save" 
-		            		image="/assets/images/save.png" width="50px" />
+	            		<label value="Path: "  class="content-select"/>
 	            		<label id="notePath" class="content-select"/>
-		            	<separator height="3px"/>
-		            	<ckeditor id="editor" height="306px"
-		            		filebrowserImageBrowseUrl="/assets/images">
-		            	</ckeditor>
+		            	<separator height="10px"/>
+		            	<zk xmlns:n="http://www.zkoss.org/2005/zk/native">
+						    <n:form>
+						        <ckeditor id="editor" height="306px"
+						        	filebrowserImageBrowseUrl="/assets/images">
+						        </ckeditor>
+						    </n:form>
+						</zk>
 	            	</div>
 	            </center>
 	        </borderlayout>
