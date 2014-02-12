@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:jaxrs="http://cxf.apache.org/jaxrs" xmlns:jaxws="http://cxf.apache.org/jaxws" 
 	xsi:schemaLocation="
-http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd
+	http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd
+">
 
 	<jaxws:endpoint id="noteServiceEndpoint" implementor="#noteServiceWS"
 		address="/ws">
-		
-	    <jaxws:inInterceptors>
+
+		<jaxws:inInterceptors>
 			<ref bean="inLog" />
 		</jaxws:inInterceptors>
 
@@ -22,7 +25,18 @@ http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
 		</jaxws:handlers>
 	</jaxws:endpoint>
 
+	<bean id="jsonProvider" class="org.codehaus.jackson.jaxrs.JacksonJsonProvider" />
+	
+	<jaxrs:server id="noteServiceRest" address="/rest">
+		<jaxrs:serviceBeans>
+			<ref bean="noteServiceRS" />
+		</jaxrs:serviceBeans>
+		<jaxrs:providers>
+			<ref bean='jsonProvider' />
+		</jaxrs:providers>
+	</jaxrs:server>
+
 	<bean id="inLog" class="org.apache.cxf.interceptor.LoggingInInterceptor" />
 	<bean id="outLog" class="org.apache.cxf.interceptor.LoggingOutInterceptor" />
-	
+
 </beans>

@@ -205,7 +205,13 @@ public class NoteNode /* extends DefaultRevisionEntity */ {
 	public String getPath() {
 		
 		String path = getParentName(this);
-		return path.substring(4, path.length());
+		int len = path.length();
+		if (len > 4) {
+			return path.substring(4, path.length());
+		} else {
+			return path;
+		}
+		
 	}
 	
 	private String getParentName(NoteNode note) {

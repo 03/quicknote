@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.wind.quicknote.model.NoteNode;
+import com.wind.quicknote.model.NoteNodeDto;
 import com.wind.quicknote.model.NoteUser;
 import com.wind.quicknote.service.NoteService;
 
@@ -56,7 +56,7 @@ public class NoteController {
 	@RequestMapping(value = "/node/{name}", method = RequestMethod.GET)
 	public String getNode(@PathVariable String name, ModelMap model) {
 
-		NoteNode entity = new NoteNode();
+		NoteNodeDto entity = new NoteNodeDto();
 		entity.setName(name);
 		entity.setCreated(new Date());
 		
@@ -72,9 +72,9 @@ public class NoteController {
 	 * 
 	 */
 	@RequestMapping(value = "/nodeAsJson/{name}", method = RequestMethod.GET)
-	public @ResponseBody NoteNode getNoteAsJson(@PathVariable String name) {
+	public @ResponseBody NoteNodeDto getNoteAsJson(@PathVariable String name) {
 
-		NoteNode entity = new NoteNode();
+		NoteNodeDto entity = new NoteNodeDto();
 		entity.setName(name);
 		
 		return entity;
