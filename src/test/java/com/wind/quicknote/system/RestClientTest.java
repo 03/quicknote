@@ -3,8 +3,6 @@ package com.wind.quicknote.system;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.Type;
-import java.util.Date;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.soap.SOAPException;
@@ -23,12 +21,6 @@ import org.zkoss.json.JSONObject;
 import org.zkoss.json.parser.JSONParser;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
 import com.wind.quicknote.model.NoteUserDto;
 
 public class RestClientTest {
@@ -108,48 +100,8 @@ public class RestClientTest {
 	}
 
 	public static void main(String[] args) throws JAXBException, SOAPException {
-
 		testGet();
 		testPost();
-		//tryGSonCustomizeDeserializer();
-	}
-
-	/**
-	 * https://sites.google.com/site/gson/gson-user-guide
-	 */
-	private static void tryGSonCustomizeDeserializer() {
-
-		NoteUserDto dto = new NoteUserDto();
-		dto.setLoginName("Bruce1");
-		dto.setEmail("kk@kkk.com");
-		dto.setPassword("kkk");
-
-		// Gson gson = new Gson();
-		GsonBuilder gb = new GsonBuilder();
-		gb.setPrettyPrinting();
-		gb.registerTypeAdapter(NoteUserDto.class,
-				new JsonDeserializer<NoteUserDto>() {
-					public NoteUserDto deserialize(JsonElement json,
-							Type typeOfT, JsonDeserializationContext context)
-							throws JsonParseException {
-						JsonObject obj = json.getAsJsonObject();
-						NoteUserDto model = new NoteUserDto();
-						model.setCreated(new Date(obj.get("created").getAsLong()));
-						System.out.println("Created: " + model.getCreated());
-						return model;
-					}
-				});
-		
-		// Gson gson = new GsonBuilder()
-		// .setDateFormat(DateFormat.FULL, DateFormat.FULL).create();
-		Gson gson = gb.create();
-
-		String jsonStr = gson.toJson(dto);
-		System.out.println("jsonStr: " + jsonStr);
-		jsonStr = "{\"id\":528,\"loginName\":\"Bruce1\",\"firstName\":null,\"lastName\":null,\"role\":null,\"password\":\"kkk\",\"email\":\"kk@kkk.com\",\"desc\":null,\"icon\":null,\"status\":null,\"created\":1392182995318,\"updated\":null}";
-
-		NoteUserDto dtoR = gson.fromJson(jsonStr, NoteUserDto.class);
-		System.out.println(dtoR.getEmail());
 	}
 
 }

@@ -1,4 +1,4 @@
-package com.wind.quicknote.system;
+package com.wind.quicknote.helper;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
