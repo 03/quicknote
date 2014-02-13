@@ -35,7 +35,6 @@ public class RestClientTest {
 
 	public static void testGet() {
 
-		System.out.println("---------------starts-------");
 		String WS_ADDR = "http://localhost:8000/qnote/services/rest/json/note/echo/mymsg";
 
 		try {
@@ -61,11 +60,9 @@ public class RestClientTest {
 			System.out.println(e);
 		}
 
-		System.out.println("---------------ends-------");
 	}
 
 	public static void testPost() {
-		System.out.println("---------------starts-------");
 
 		String WS_ADDR = "http://localhost:8000/qnote/services/rest/json/note/adduser";
 
@@ -74,7 +71,7 @@ public class RestClientTest {
 
 			// Post
 			HttpPost p = new HttpPost(WS_ADDR);
-			// p.addHeader("content-type", "application/x-www-form-urlencoded");
+			p.addHeader("content-type", "application/x-www-form-urlencoded");
 
 			NoteUserDto dto = new NoteUserDto();
 			dto.setLoginName("BruceLee2");
@@ -108,12 +105,11 @@ public class RestClientTest {
 			System.out.println(e);
 		}
 
-		System.out.println("---------------ends-------");
 	}
 
 	public static void main(String[] args) throws JAXBException, SOAPException {
 
-		// testGet();
+		testGet();
 		testPost();
 		//tryGSonCustomizeDeserializer();
 	}
