@@ -21,8 +21,8 @@ public class NoteUserDto implements Serializable {
 	private String desc;
 	private String icon;
 	private UserStatus status;
-	private Date created;
-	private Date updated;
+	transient private Date created;
+	transient private Date updated;
 	
 	public NoteUserDto() {
 		

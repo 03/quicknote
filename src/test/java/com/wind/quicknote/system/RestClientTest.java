@@ -3,6 +3,8 @@ package com.wind.quicknote.system;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Type;
+import java.util.Date;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.soap.SOAPException;
@@ -21,6 +23,12 @@ import org.zkoss.json.JSONObject;
 import org.zkoss.json.parser.JSONParser;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import com.wind.quicknote.model.NoteUserDto;
 
 public class RestClientTest {
@@ -69,14 +77,15 @@ public class RestClientTest {
 			// p.addHeader("content-type", "application/x-www-form-urlencoded");
 
 			NoteUserDto dto = new NoteUserDto();
-			dto.setLoginName("Bruce1");
+			dto.setLoginName("BruceLee2");
 			dto.setEmail("kk@kkk.com");
 			dto.setPassword("kkk");
 
 			Gson gson = new Gson();
 			String jsonStr = gson.toJson(dto);
 
-			p.setEntity(new StringEntity(jsonStr, ContentType.create("application/json")));
+			p.setEntity(new StringEntity(jsonStr, ContentType
+					.create("application/json")));
 			HttpResponse r = c.execute(p);
 
 			BufferedReader rd = new BufferedReader(new InputStreamReader(r
@@ -87,8 +96,9 @@ public class RestClientTest {
 				JSONParser j = new JSONParser();
 				JSONObject o = (JSONObject) j.parse(line);
 				System.out.println(o);
-				// dto = gson.fromJson(line, NoteUserDto.class);
-				// System.out.println("new user id: " + dto.getId());
+				dto = gson.fromJson(line, NoteUserDto.class);
+				System.out.println("new user id: " + dto.getId());
+				System.out.println("new user created: " + dto.getCreated());
 				break;
 			}
 
@@ -105,6 +115,45 @@ public class RestClientTest {
 
 		// testGet();
 		testPost();
+		//tryGSonCustomizeDeserializer();
+	}
+
+	/**
+	 * https://sites.google.com/site/gson/gson-user-guide
+	 */
+	private static void tryGSonCustomizeDeserializer() {
+
+		NoteUserDto dto = new NoteUserDto();
+		dto.setLoginName("Bruce1");
+		dto.setEmail("kk@kkk.com");
+		dto.setPassword("kkk");
+
+		// Gson gson = new Gson();
+		GsonBuilder gb = new GsonBuilder();
+		gb.setPrettyPrinting();
+		gb.registerTypeAdapter(NoteUserDto.class,
+				new JsonDeserializer<NoteUserDto>() {
+					public NoteUserDto deserialize(JsonElement json,
+							Type typeOfT, JsonDeserializationContext context)
+							throws JsonParseException {
+						JsonObject obj = json.getAsJsonObject();
+						NoteUserDto model = new NoteUserDto();
+						model.setCreated(new Date(obj.get("created").getAsLong()));
+						System.out.println("Created: " + model.getCreated());
+						return model;
+					}
+				});
+		
+		// Gson gson = new GsonBuilder()
+		// .setDateFormat(DateFormat.FULL, DateFormat.FULL).create();
+		Gson gson = gb.create();
+
+		String jsonStr = gson.toJson(dto);
+		System.out.println("jsonStr: " + jsonStr);
+		jsonStr = "{\"id\":528,\"loginName\":\"Bruce1\",\"firstName\":null,\"lastName\":null,\"role\":null,\"password\":\"kkk\",\"email\":\"kk@kkk.com\",\"desc\":null,\"icon\":null,\"status\":null,\"created\":1392182995318,\"updated\":null}";
+
+		NoteUserDto dtoR = gson.fromJson(jsonStr, NoteUserDto.class);
+		System.out.println(dtoR.getEmail());
 	}
 
 }
