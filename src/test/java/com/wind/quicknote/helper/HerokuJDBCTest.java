@@ -59,7 +59,7 @@ public class HerokuJDBCTest {
 		}
 
 		if (connection != null) {
-			System.out.println("Cong! start using your database now!");
+			System.out.println("Cong! Start using your database now!");
 		} else {
 			System.out.println("Failed to make connection!");
 		}

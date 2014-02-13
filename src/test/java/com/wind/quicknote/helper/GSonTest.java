@@ -28,16 +28,16 @@ import com.wind.quicknote.model.NoteUserDto;
  */
 public class GSonTest {
 
-	private static final String EMAIL = "kk@kkk.com";
+	private static final String EMAIL = "windew@bbs.xmu.edu.cn";
 
 	@Test
 	public void testGSonCustomizeDeserializer() {
 		
 		
 		NoteUserDto dto = new NoteUserDto();
-		dto.setLoginName("Bruce1");
+		dto.setLoginName("windew");
 		dto.setEmail(EMAIL);
-		dto.setPassword("kkk");
+		dto.setPassword("dreamer");
 		
 		GsonBuilder gb = new GsonBuilder();
 		gb.setPrettyPrinting();
@@ -64,7 +64,7 @@ public class GSonTest {
 		String jsonStr = gson.toJson(dto);
 		System.out.println("jsonStr: " + jsonStr);
 		
-		jsonStr = "{\"id\":528,\"loginName\":\"Bruce1\",\"firstName\":null,\"lastName\":null,\"role\":null,\"password\":\"kkk\",\"email\":\"kk@kkk.com\",\"desc\":null,\"icon\":null,\"status\":null,\"created\":1392182995318,\"updated\":null}";
+		jsonStr = "{\"id\":528,\"loginName\":\"Bruce1\",\"firstName\":null,\"lastName\":null,\"role\":null,\"password\":\"dreamer\",\"email\":\"windew@bbs.xmu.edu.cn\",\"desc\":null,\"icon\":null,\"status\":null,\"created\":1392182995318,\"updated\":null}";
 		NoteUserDto dtoR = gson.fromJson(jsonStr, NoteUserDto.class);
 		assertEquals(EMAIL , dtoR.getEmail());
 		assertNull(dtoR.getUpdated());
