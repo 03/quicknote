@@ -33,7 +33,6 @@ public class GSonTest {
 	@Test
 	public void testGSonCustomizeDeserializer() {
 		
-		
 		NoteUserDto dto = new NoteUserDto();
 		dto.setLoginName("windew");
 		dto.setEmail(EMAIL);

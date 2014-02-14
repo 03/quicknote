@@ -1,8 +1,14 @@
 package com.wind.quicknote.helper;
 
+import static org.junit.Assert.assertNotNull;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
+
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 /**
  * deploy java app to heroku
@@ -15,53 +21,147 @@ import java.sql.SQLException;
  */
 public class HerokuJDBCTest {
 	
-	public static void main(String[] argv) {
-		
-		System.out.println("-------- PostgreSQL JDBC Connection Testing ------------");
+	private static final String ORG_POSTGRESQL_DRIVER = "org.postgresql.Driver";
+	private static final String FAILED_TO_MAKE_CONNECTION = "Failed to make connection!";
+	private static final String CONNECTION_ESTABLISHED = "Cong! Start using your database now!";
+	private static final String CONNECTION_FAILED = "Connection Failed! Check output console";
 
+	@BeforeClass
+	public static void beforeClass() {
+		
 		try {
-			Class.forName("org.postgresql.Driver");
+			Class.forName(ORG_POSTGRESQL_DRIVER);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 			return;
 		}
 
 		System.out.println("PostgreSQL JDBC Driver Registered!");
-		
+	}
+	
+	@Test
+	public void testConnWithProps() {
+
 		Connection connection = null;
 		try {
-			// Fetch Connection Way-1
-			/*String url = "jdbc:postgresql://ec2-54-235-152-226.compute-1.amazonaws.com:5432/d5be8rfblcscgv";
+			String url = "jdbc:postgresql://ec2-54-197-237-120.compute-1.amazonaws.com:5432/d1nq4hvfcvj4g9";
 			Properties props = new Properties();
-			props.setProperty("user","lqvnjqgoybunrx");
-			props.setProperty("password","0hl9SRZ5K4ZgqRdtk21Eb4mmMq");
-			props.setProperty("ssl","true");
-			props.setProperty("sslfactory","org.postgresql.ssl.NonValidatingFactory");
-			connection = DriverManager.getConnection(url, props);*/
-			
-			// Fetch Connection Way-2
-			//ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory
-			/*connection = DriverManager.getConnection(
-					"jdbc:postgresql://ec2-54-235-152-226.compute-1.amazonaws.com:5432/d5be8rfblcscgv", "lqvnjqgoybunrx",
-					"0hl9SRZ5K4ZgqRdtk21Eb4mmMq");*/
-			
+			props.setProperty("user", "fwhamjopujjwoi");
+			props.setProperty("password", "58nIPmzYFXzGChEZAb0l9lOLyr");
+			props.setProperty("ssl", "true");
+			props.setProperty("sslfactory",
+					"org.postgresql.ssl.NonValidatingFactory");
+			connection = DriverManager.getConnection(url, props);
+
+		} catch (SQLException e) {
+			System.out.println(CONNECTION_FAILED);
+			e.printStackTrace();
+		}
+
+		assertNotNull(connection);
+		if (connection != null) {
+			System.out.println(CONNECTION_ESTABLISHED);
+
+			try {
+				connection.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			connection = null;
+
+		} else {
+			System.out.println(FAILED_TO_MAKE_CONNECTION);
+		}
+
+	}
+	
+	@Test
+	public void testConnWithSSLEnabled() {
+
+		Connection connection = null;
+		try {
 			connection = DriverManager.getConnection(
 					"jdbc:postgresql://ec2-54-197-237-120.compute-1.amazonaws.com:5432/d1nq4hvfcvj4g9?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory", "fwhamjopujjwoi",
 					"58nIPmzYFXzGChEZAb0l9lOLyr");
 			
-			/*connection = DriverManager.getConnection(
+		} catch (SQLException e) {
+			System.out.println(CONNECTION_FAILED);
+			e.printStackTrace();
+		}
+
+		assertNotNull(connection);
+		if (connection != null) {
+			System.out.println(CONNECTION_ESTABLISHED);
+			try {
+				connection.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			connection = null;
+
+		} else {
+			System.out.println(FAILED_TO_MAKE_CONNECTION);
+		}
+
+	}
+	
+	@Test
+	public void testLocalConn() {
+
+		Connection connection = null;
+		try {
+			
+			connection = DriverManager.getConnection(
 					"jdbc:postgresql://127.0.0.1:5432/quicknote", "didev",
-					"didev123");*/
+					"didev123");
 
 		} catch (SQLException e) {
-			System.out.println("Connection Failed! Check output console");
+			System.out.println(CONNECTION_FAILED);
+			e.printStackTrace();
+		}
+
+		assertNotNull(connection);
+		if (connection != null) {
+			System.out.println(CONNECTION_ESTABLISHED);
+
+			try {
+				connection.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			connection = null;
+
+		} else {
+			System.out.println(FAILED_TO_MAKE_CONNECTION);
+		}
+
+	}
+	
+	
+	public static void main(String[] argv) {
+		
+		try {
+			Class.forName(ORG_POSTGRESQL_DRIVER);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			return;
+		}
+
+		Connection connection = null;
+		try {
+			connection = DriverManager.getConnection(
+					"jdbc:postgresql://ec2-54-197-237-120.compute-1.amazonaws.com:5432/d1nq4hvfcvj4g9?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory", "fwhamjopujjwoi",
+					"58nIPmzYFXzGChEZAb0l9lOLyr");
+			
+		} catch (SQLException e) {
+			System.out.println(CONNECTION_FAILED);
 			e.printStackTrace();
 		}
 
 		if (connection != null) {
-			System.out.println("Cong! Start using your database now!");
+			System.out.println(CONNECTION_ESTABLISHED);
 		} else {
-			System.out.println("Failed to make connection!");
+			System.out.println(FAILED_TO_MAKE_CONNECTION);
 		}
 	}
 
