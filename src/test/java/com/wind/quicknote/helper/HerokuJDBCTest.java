@@ -22,9 +22,8 @@ import org.junit.Test;
 public class HerokuJDBCTest {
 	
 	private static final String ORG_POSTGRESQL_DRIVER = "org.postgresql.Driver";
-	private static final String FAILED_TO_MAKE_CONNECTION = "Failed to make connection!";
-	private static final String CONNECTION_ESTABLISHED = "Cong! Start using your database now!";
-	private static final String CONNECTION_FAILED = "Connection Failed! Check output console";
+	private static final String CONNECTION_ESTABLISHED = "Connection established!";
+	private static final String CONNECTION_FAILED = "Failed to make connection!";
 
 	@BeforeClass
 	public static void beforeClass() {
@@ -35,7 +34,6 @@ public class HerokuJDBCTest {
 			e.printStackTrace();
 			return;
 		}
-
 		System.out.println("PostgreSQL JDBC Driver Registered!");
 	}
 	
@@ -54,23 +52,14 @@ public class HerokuJDBCTest {
 			connection = DriverManager.getConnection(url, props);
 
 		} catch (SQLException e) {
-			System.out.println(CONNECTION_FAILED);
 			e.printStackTrace();
 		}
 
 		assertNotNull(connection);
-		if (connection != null) {
-			System.out.println(CONNECTION_ESTABLISHED);
-
-			try {
-				connection.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			connection = null;
-
-		} else {
-			System.out.println(FAILED_TO_MAKE_CONNECTION);
+		try {
+			connection.close();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 	}
@@ -85,22 +74,14 @@ public class HerokuJDBCTest {
 					"58nIPmzYFXzGChEZAb0l9lOLyr");
 			
 		} catch (SQLException e) {
-			System.out.println(CONNECTION_FAILED);
 			e.printStackTrace();
 		}
 
 		assertNotNull(connection);
-		if (connection != null) {
-			System.out.println(CONNECTION_ESTABLISHED);
-			try {
-				connection.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			connection = null;
-
-		} else {
-			System.out.println(FAILED_TO_MAKE_CONNECTION);
+		try {
+			connection.close();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 	}
@@ -116,25 +97,16 @@ public class HerokuJDBCTest {
 					"didev123");
 
 		} catch (SQLException e) {
-			System.out.println(CONNECTION_FAILED);
 			e.printStackTrace();
 		}
 
 		assertNotNull(connection);
-		if (connection != null) {
-			System.out.println(CONNECTION_ESTABLISHED);
-
-			try {
-				connection.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			connection = null;
-
-		} else {
-			System.out.println(FAILED_TO_MAKE_CONNECTION);
+		try {
+			connection.close();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-
+		
 	}
 	
 	
@@ -154,14 +126,13 @@ public class HerokuJDBCTest {
 					"58nIPmzYFXzGChEZAb0l9lOLyr");
 			
 		} catch (SQLException e) {
-			System.out.println(CONNECTION_FAILED);
 			e.printStackTrace();
 		}
 
 		if (connection != null) {
 			System.out.println(CONNECTION_ESTABLISHED);
 		} else {
-			System.out.println(FAILED_TO_MAKE_CONNECTION);
+			System.out.println(CONNECTION_FAILED);
 		}
 	}
 
