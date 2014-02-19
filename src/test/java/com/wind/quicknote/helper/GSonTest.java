@@ -29,14 +29,30 @@ import com.wind.quicknote.model.NoteUserDto;
 public class GSonTest {
 
 	private static final String EMAIL = "windew@bbs.xmu.edu.cn";
-
+	
 	@Test
-	public void testGSonCustomizeDeserializer() {
+	public void testGSonSerializer() {
 		
 		NoteUserDto dto = new NoteUserDto();
 		dto.setLoginName("windew");
 		dto.setEmail(EMAIL);
 		dto.setPassword("dreamer");
+		
+		Gson gson = new Gson();
+		String jsonStr = gson.toJson(dto);
+		assertNotNull(jsonStr);
+		assertEquals("{\"id\":0,\"loginName\":\"windew\",\"password\":\"dreamer\",\"email\":\"windew@bbs.xmu.edu.cn\"}", jsonStr);
+		
+		// Pretty Printing
+		gson = new GsonBuilder().setPrettyPrinting().create();
+		jsonStr = gson.toJson(dto);
+		System.out.println("Pretty Printing: \n" + jsonStr);
+		assertEquals("{\n  \"id\": 0,\n  \"loginName\": \"windew\",\n  \"password\": \"dreamer\",\n  \"email\": \"windew@bbs.xmu.edu.cn\"\n}", jsonStr);
+		
+	}
+
+	@Test
+	public void testGSonCustomizeDeserializer() {
 		
 		GsonBuilder gb = new GsonBuilder();
 		gb.setPrettyPrinting();
@@ -56,14 +72,10 @@ public class GSonTest {
 					}
 				});
 		
-		// Gson gson = new Gson();
 		// Gson gson = new GsonBuilder().setDateFormat(DateFormat.FULL, DateFormat.FULL).create();
 		Gson gson = gb.create();
 
-		String jsonStr = gson.toJson(dto);
-		System.out.println("jsonStr: " + jsonStr);
-		
-		jsonStr = "{\"id\":528,\"loginName\":\"Bruce1\",\"firstName\":null,\"lastName\":null,\"role\":null,\"password\":\"dreamer\",\"email\":\"windew@bbs.xmu.edu.cn\",\"desc\":null,\"icon\":null,\"status\":null,\"created\":1392182995318,\"updated\":null}";
+		String jsonStr = "{\"id\":528,\"loginName\":\"Bruce1\",\"firstName\":null,\"lastName\":null,\"role\":null,\"password\":\"dreamer\",\"email\":\"windew@bbs.xmu.edu.cn\",\"desc\":null,\"icon\":null,\"status\":null,\"created\":1392182995318,\"updated\":null}";
 		NoteUserDto dtoR = gson.fromJson(jsonStr, NoteUserDto.class);
 		assertEquals(EMAIL , dtoR.getEmail());
 		assertNull(dtoR.getUpdated());
