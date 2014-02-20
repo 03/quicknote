@@ -24,10 +24,12 @@ import com.google.gson.Gson;
 import com.wind.quicknote.model.NoteUserDto;
 
 public class RestClientTest {
+	
+	private static final String URL_PREFIX = "http://localhost:8000/qnote/services/rest";
 
 	public static void testGet() {
 
-		String WS_ADDR = "http://localhost:8000/qnote/services/rest/json/note/echo/mymsg";
+		String WS_ADDR = URL_PREFIX + "/json/note/echo/mymsg";
 
 		try {
 			HttpClient c = new DefaultHttpClient();
@@ -40,8 +42,8 @@ public class RestClientTest {
 			g.setParams(params);
 			HttpResponse r = c.execute(g);
 
-			BufferedReader rd = new BufferedReader(new InputStreamReader(r
-					.getEntity().getContent()));
+			BufferedReader rd = new BufferedReader(
+					new InputStreamReader(r.getEntity().getContent()));
 			String line = "";
 			while ((line = rd.readLine()) != null) {
 				System.out.println("Line: " + line);
@@ -56,7 +58,7 @@ public class RestClientTest {
 
 	public static void testPost() {
 
-		String WS_ADDR = "http://localhost:8000/qnote/services/rest/json/note/adduser";
+		String WS_ADDR = URL_PREFIX + "/json/note/adduser";
 
 		try {
 			HttpClient c = new DefaultHttpClient();
@@ -73,12 +75,11 @@ public class RestClientTest {
 			Gson gson = new Gson();
 			String jsonStr = gson.toJson(dto);
 
-			p.setEntity(new StringEntity(jsonStr, ContentType
-					.create("application/json")));
+			p.setEntity(new StringEntity(jsonStr, ContentType.create("application/json")));
 			HttpResponse r = c.execute(p);
 
-			BufferedReader rd = new BufferedReader(new InputStreamReader(r
-					.getEntity().getContent()));
+			BufferedReader rd = new BufferedReader(
+					new InputStreamReader(r.getEntity().getContent()));
 			String line = "";
 			while ((line = rd.readLine()) != null) {
 				// Parse our JSON response
