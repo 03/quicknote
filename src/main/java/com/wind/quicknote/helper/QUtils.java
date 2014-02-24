@@ -4,11 +4,16 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.util.Clients;
 
 import com.wind.quicknote.model.UserRole;
 import com.wind.quicknote.model.UserStatus;
+import com.wind.quicknote.system.UserCredentialManager;
 
 public class QUtils {
 
@@ -71,6 +76,38 @@ public class QUtils {
 	
 	public static void showClientError(String message, Component component) {
 		Clients.showNotification(message,"error",component,"at_pointer",2000);
+	}
+	
+	public static final String URL_HOME_PAGE = "/pages/note.zul";
+	public static final String URL_HOME_PAGE_ADMIN = "/pages/admin.zul";
+	public static final String URL_HOME_PAGE_PREMIUM = "/pages/premium.zul";
+	
+	public static boolean login(String name, String password) {
+		UserCredentialManager mgmt = UserCredentialManager.getIntance();
+		mgmt.login(name, password);
+		if (mgmt.isAuthenticated()) {
+			// put it in session
+			HttpSession hSess = (HttpSession) ((HttpServletRequest) Executions.getCurrent().getNativeRequest()).getSession();
+			String userName = mgmt.getUser().getLoginName();
+			hSess.setAttribute("user", userName);
+			
+			// redirect by role
+			UserRole role = mgmt.getUser().getRole();
+			if (UserRole.Admin.equals(role)) {
+				Executions.getCurrent().sendRedirect(URL_HOME_PAGE_ADMIN);
+			} else if (UserRole.Premium.equals(role)) {
+				Executions.getCurrent().sendRedirect(URL_HOME_PAGE_PREMIUM);
+			} else if (UserRole.Standard.equals(role)) {
+				// TODO: temporary login standard user to premium page
+				Executions.getCurrent().sendRedirect(URL_HOME_PAGE_PREMIUM);
+			} else {
+				Executions.getCurrent().sendRedirect(URL_HOME_PAGE);
+			}
+
+			return true;
+		}
+		
+		return false;
 	}
 	
 }

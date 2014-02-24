@@ -34,16 +34,36 @@ public class NoteNodeDAOImpl extends GenericDao<NoteNode> implements NoteNodeDAO
 
 	public List<NoteNode> findMatchedTopicsByUser(long userId, String keyword) {
         
-        Map<String, Object> sqlParams = new HashMap<String, Object> ();
+		/*Map<String, Object> sqlParams = new HashMap<String, Object> ();
         if(keyword != null) {
+          	sqlParams.put("userId", userId);
         	sqlParams.put("keyword", "%"+keyword+"%");
         	return search("from NoteNode t where t.text like :keyword and t.parent is not null order by t.id", sqlParams);
         } else {
         	return search("from NoteNode t where t.parent is not null order by t.id");
+        }*/
+        
+        NoteNode root = findRootByUser(userId);
+        List<NoteNode> result = new ArrayList<NoteNode>();
+        
+        if(root != null) {
+        	findMatchChildren(result, root, keyword);
         }
-		
+        return result;
 	}
 	
+	private void findMatchChildren(List<NoteNode> result, NoteNode root,
+			String keyword) {
+		if (root.hasChildren()) {
+			for (NoteNode node : root.getChildren()) {
+				findMatchChildren(result, node, keyword);
+				if (keyword == null || node.getText().indexOf(keyword) != -1) {
+					result.add(node);
+				}
+			}
+		}
+	}
+
 	@Override
 	public List<NoteNode> findChildren(long id) {
 		

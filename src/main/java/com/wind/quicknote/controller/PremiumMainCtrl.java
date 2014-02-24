@@ -66,10 +66,16 @@ public class PremiumMainCtrl extends SelectorComposer<Window> {
 		
 		UserCredentialManager mgmt = UserCredentialManager.getIntance();
 		NoteUser user = mgmt.getUser();
-		if(user!=null) {
-			String name = user.getFirstName() + " " + user.getLastName();
-			String role = user.getRole().name();
-			loginUsrName.setValue(name + " (" + role + ")");
+		StringBuilder sb = new StringBuilder();
+		if (user != null) {
+			if (user.getFirstName() != null) {
+				sb.append(user.getFirstName() + " ");
+			}
+			if (user.getLastName() != null) {
+				sb.append(user.getLastName() + " ");
+			}
+			sb.append("(" + user.getRole().name() + ")");
+			loginUsrName.setValue(sb.toString());
 		} else {
 			loginUsrName.setValue("Guest");
 		}
