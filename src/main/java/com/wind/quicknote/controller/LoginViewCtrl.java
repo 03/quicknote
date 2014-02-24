@@ -80,6 +80,9 @@ public class LoginViewCtrl extends SelectorComposer<Window> {
 				Executions.getCurrent().sendRedirect(URL_HOME_PAGE_ADMIN);
 			} else if (UserRole.Premium.equals(role)) {
 				Executions.getCurrent().sendRedirect(URL_HOME_PAGE_PREMIUM);
+			} else if (UserRole.Standard.equals(role)) {
+				// TODO: temporary login standard user to premium page
+				Executions.getCurrent().sendRedirect(URL_HOME_PAGE_PREMIUM);
 			} else {
 				Executions.getCurrent().sendRedirect(URL_HOME_PAGE);
 			}

@@ -51,6 +51,7 @@ public class NoteUserDAOImpl extends GenericDao<NoteUser> implements NoteUserDAO
 		user.setPassword(password);
 		user.setCreated(new Date());
 		user.setRootnote(node);
+		user.setRole(UserRole.Standard);
 		
 		save(user);
 		return user;
