@@ -18,14 +18,14 @@ import com.wind.quicknote.system.UserCredentialManager;
 public class QUtils {
 
 	// Constants
-	public static final String TOPIC_NEW_ITEM = "[New Item]";
+	public static final String TOPIC_NEW_ITEM = "[New]";
 	public static final String TOPIC_NEW_CONTENT = "";
 	
 	public static final String DIALOG_WARNING = "Warning";
 	private static final String alphabet = "abcdefghijklmnopqrstuvwxyz";
-	private static String[] samples = {"Ada","Basic","C","C++","CSS","Cobol","Forth","Fortran",
-        "Go","Groovy","Haskell","HTML","Java","JavaScript","Lisp","Python","Ruby",
-        "Scala","Scheme"};
+	private static String[] samples = { "Ada", "Basic", "C", "C++", "Cobol",
+			"Fortran", "Groovy", "Java", "JavaScript", "Lisp", "Python",
+			"Ruby", "Scala" };
 
 	public static String getRandomIconURL() {
 		Random randomGenerator = new Random();
