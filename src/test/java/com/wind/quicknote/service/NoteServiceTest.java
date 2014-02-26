@@ -60,7 +60,7 @@ public class NoteServiceTest {
 		assertTrue(items.size() > 0);
 		
 		items = service.findMatchedTopicsByUser(2L, "there");
-		assertTrue(items.size() == 0);
+		assertTrue(items.size() == 2);
 	}
 
 	@Test
