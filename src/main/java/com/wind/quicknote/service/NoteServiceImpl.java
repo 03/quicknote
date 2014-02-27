@@ -120,7 +120,7 @@ public class NoteServiceImpl implements NoteService {
 	
 	@Override
 	public NoteUser addUserByEmail(String loginName, String email, String password) {
-		return userDAO.createUser(loginName, email, password);
+		return userDAO.createStandardUser(loginName, email, password);
 	}
 	
 	@Override

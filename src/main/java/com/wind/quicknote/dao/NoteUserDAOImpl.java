@@ -35,8 +35,16 @@ public class NoteUserDAOImpl extends GenericDao<NoteUser> implements NoteUserDAO
 	}
 
 	@Override
-	public NoteUser createUser(String username, String email, String password) {
-		
+	public NoteUser createStandardUser(String username, String email, String password) {
+		return createUser(UserRole.Standard, username, email, password);
+	}
+
+	@Override
+	public NoteUser createPremiumUser(String username, String email, String password) {
+		return createUser(UserRole.Premium, username, email, password);
+	}
+
+	private NoteUser createUser(UserRole role, String username, String email, String password) {
 		// Create root note
 		NoteNode node = new NoteNode();
 		node.setText("Root(invisible) of user["+username+"]");
@@ -51,12 +59,13 @@ public class NoteUserDAOImpl extends GenericDao<NoteUser> implements NoteUserDAO
 		user.setPassword(password);
 		user.setCreated(new Date());
 		user.setRootnote(node);
-		user.setRole(UserRole.Standard);
+		user.setRole(role);
 		
 		save(user);
+		
 		return user;
 	}
-
+	
 	@Override
 	public List<NoteUser> findAll() {
 		return findAll(NoteUser.class);
@@ -64,6 +73,7 @@ public class NoteUserDAOImpl extends GenericDao<NoteUser> implements NoteUserDAO
 
 	@Override
 	public NoteUser createUser(NoteUser user) {
+		
 		// Create root note
 		NoteNode node = new NoteNode();
 		node.setText("Root(invisible) of user[" + user.getLoginName() + "]");

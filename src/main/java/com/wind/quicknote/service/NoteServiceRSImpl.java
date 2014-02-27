@@ -73,9 +73,9 @@ public class NoteServiceRSImpl implements NoteServiceRS {
 
 	@POST
 	@Path("/adduser/")
-	public NoteUserDto addUser(NoteUserDto user) {
+	public NoteUserDto addStandardUser(NoteUserDto user) {
 		
-		NoteUser model = userDAO.createUser(user.getLoginName(), user.getEmail(), user.getPassword());
+		NoteUser model = userDAO.createStandardUser(user.getLoginName(), user.getEmail(), user.getPassword());
 		if(model != null) {
 			BeanUtils.copyProperties(model, user);
 		}

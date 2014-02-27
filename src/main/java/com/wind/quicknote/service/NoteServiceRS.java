@@ -14,6 +14,6 @@ public interface NoteServiceRS {
 	String echo(String message);
 	String silentEcho();
 	NoteUserDto findUserByName(String name);
-	NoteUserDto addUser(NoteUserDto user);
+	NoteUserDto addStandardUser(NoteUserDto user);
 	
 }
