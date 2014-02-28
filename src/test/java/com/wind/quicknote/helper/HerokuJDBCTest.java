@@ -109,7 +109,6 @@ public class HerokuJDBCTest {
 		
 	}
 	
-	
 	public static void main(String[] argv) {
 		
 		try {
