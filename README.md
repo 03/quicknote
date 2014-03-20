@@ -50,5 +50,6 @@ v0.47, 23/01/2014
 v0.48, 11/02/2014
 - WS security handler init
 - Restful ws added
+- Clean up
 
 
