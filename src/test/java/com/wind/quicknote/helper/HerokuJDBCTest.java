@@ -11,7 +11,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
- * deploy java app to heroku
+ * How to deploy java app to heroku
  * 
  * http://books.zkoss.org/wiki/ZK%20Installation%20Guide/Setting%20up%20Servers/Heroku
  * https://devcenter.heroku.com/articles/heroku-postgresql#connecting-in-java
