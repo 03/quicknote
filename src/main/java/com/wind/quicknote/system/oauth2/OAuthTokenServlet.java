@@ -40,7 +40,7 @@ public class OAuthTokenServlet extends HttpServlet {
 			if (type.contains(OAuthSite.FACEBOOK.getSiteName())) {
 				
 				site = OAuthSite.FACEBOOK.getSiteName();
-				resourceBody = OAuthClientFacebook.accessResource(OAuthClientGoogle.getAccessToken(code));
+				resourceBody = OAuthClientFacebook.accessResource(OAuthClientFacebook.getAccessToken(code));
 				/* {
 				    "id": "7654321",
 				    "first_name": "W",
