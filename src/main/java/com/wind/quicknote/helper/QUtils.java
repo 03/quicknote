@@ -110,4 +110,42 @@ public class QUtils {
 		return false;
 	}
 	
+	/**
+	 * OAuth Login
+	 * @param name
+	 * @return
+	 */
+	public static boolean loginOAuth(String site, String userString) {
+		
+		UserCredentialManager mgmt = UserCredentialManager.getIntance();
+		mgmt.loginOAuth(site, userString);
+		
+		if (mgmt.isAuthenticated()) {
+			// put it in session
+			HttpSession hSess = (HttpSession) ((HttpServletRequest) Executions.getCurrent().getNativeRequest()).getSession();
+			String userName = mgmt.getUser().getLoginName();
+			hSess.setAttribute("user", userName);
+			
+			// remove oauthuser from session
+			hSess.removeAttribute("oauthuser");
+			
+			// redirect by role
+			UserRole role = mgmt.getUser().getRole();
+			if (UserRole.Admin.equals(role)) {
+				Executions.getCurrent().sendRedirect(URL_HOME_PAGE_ADMIN);
+			} else if (UserRole.Premium.equals(role)) {
+				Executions.getCurrent().sendRedirect(URL_HOME_PAGE_PREMIUM);
+			} else if (UserRole.Standard.equals(role)) {
+				// TODO: temporary login standard user to premium page
+				Executions.getCurrent().sendRedirect(URL_HOME_PAGE_PREMIUM);
+			} else {
+				Executions.getCurrent().sendRedirect(URL_HOME_PAGE);
+			}
+
+			return true;
+		}
+		
+		return false;
+	}
+	
 }

@@ -52,4 +52,6 @@ v0.48, 11/02/2014
 - Restful ws added
 - Clean up
 
+v0.50, 08/06/2014
+- OAuth 2.0 supported (Facebook, Google)
 

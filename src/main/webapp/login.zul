@@ -1,6 +1,6 @@
 <?link rel="shortcut icon" href="http://www.google.com.au/favicon.ico" ?>
 <vlayout xmlns:c="client">
-    <window id="loginWin" title="Welcome" width="300px" minimizable="false" 
+    <window id="loginWin" title="Welcome" width="330px" minimizable="false" 
     	border='normal' apply="com.wind.quicknote.controller.LoginViewCtrl">
         <style src="/css/customized_style.css" />
         <script type="text/javascript" src="/js/customized_effect.js" />
@@ -11,8 +11,17 @@
                 <column/>
             </columns>
             <rows>
-                <row><label sclass="text" value="Username"/> <textbox id="nameTxb" c:onFocus="this.select()" /></row>
-                <row><label sclass="text" value="Password"/><textbox id="passwordTxb" type="password" c:onFocus="this.select()"/></row>
+                <row>
+                	<label sclass="text" value="Username"
+                		tooltiptext="Username or Email" />
+                	<textbox id="nameTxb" c:onFocus="this.select()"
+                		width="100%" />
+                </row>
+                <row>
+                	<label sclass="text" value="Password" />
+                	<textbox id="passwordTxb" type="password"
+                		c:onFocus="this.select()" width="100%" />
+                </row>
                 <row>
                 	<cell colspan="2">
                 		<vlayout>
@@ -23,16 +32,22 @@
                 </row>
                 <row>
                 	<label sclass="text" value="Not having an account yet?"/>
-                	<button id="signupBtn" label="Sign Up Now" sclass="ctlBtn">
-                		<attribute name="onClick">
-							{
-								final Window win = (Window) Executions.createComponents("/signup.zul",
-										null, null);
-								win.setMaximizable(true);
-								win.doModal();
-							}
-						</attribute>
-                	</button>
+                	<vbox>
+	                	<button id="signupBtn" label="Sign Up Now" sclass="ctlBtn">
+	                		<attribute name="onClick">
+								{
+									final Window win = (Window) Executions.createComponents("/signup.zul",
+											null, null);
+									win.setMaximizable(true);
+									win.doModal();
+								}
+							</attribute>
+	                	</button>
+	                	<hbox>
+	                		<button id="signupFB" tooltiptext="Sign In with Facebook" image="/assets/images/facebook_16.png" />
+	                		<button id="signupGG" tooltiptext="Sign In with Google" image="/assets/images/gmail_16.png"/>
+	                	</hbox>
+                	</vbox>
                 </row>
             </rows>
         </grid>

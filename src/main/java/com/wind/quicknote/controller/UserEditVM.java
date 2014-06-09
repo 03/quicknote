@@ -1,5 +1,6 @@
 package com.wind.quicknote.controller;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.zkoss.bind.annotation.BindingParam;
@@ -25,7 +26,7 @@ public class UserEditVM {
     public void submit(@BindingParam("cmp")  Window component) {
 		
 		log.debug("----------- Proceeding to update user -----------");
-		if(newPassword != null && !noteUser.getPassword().equals(newPassword))
+		if(!StringUtils.isBlank(newPassword) && !newPassword.equals(noteUser.getPassword()))
 			noteUser.setPassword(newPassword);
 		
 		noteService.updateUser(noteUser);

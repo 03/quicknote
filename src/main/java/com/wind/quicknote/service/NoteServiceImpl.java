@@ -125,7 +125,6 @@ public class NoteServiceImpl implements NoteService {
 	
 	@Override
 	public NoteUser addUser(NoteUser user) {
-		user.setCreated(new Date());
 		return userDAO.createUser(user);
 	}
 

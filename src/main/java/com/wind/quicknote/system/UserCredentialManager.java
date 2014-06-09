@@ -3,12 +3,15 @@ package com.wind.quicknote.system;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+import org.json.JSONObject;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Session;
 
 import com.wind.quicknote.helper.SpringBeanUtil;
 import com.wind.quicknote.model.NoteUser;
 import com.wind.quicknote.service.NoteService;
+import com.wind.quicknote.system.oauth2.OAuthSite;
 
 /**
  * 
@@ -34,28 +37,64 @@ public class UserCredentialManager {
 			return userModel;
 		}
 		
-		
 	}
 
 	public synchronized void login(String name, String password) {
 		NoteUser tempUser = noteService.findUserByName(name);
-		if (tempUser != null && tempUser.getPassword().equals(password)) {
+
+		if (tempUser != null && !StringUtils.isBlank(password)
+				&& password.equals(tempUser.getPassword())) {
 			user = tempUser;
-			addUserToWebApp();
-			
-			// add to cookie
-			CookieUtil.setCookie("lastUserName", name);
-			// CookieUtil.setCookie("lastUserPass", password);
-			
+			putUserOnline();
 		} else {
 			user = null;
 		}
+
+	}
+	
+	public synchronized void loginOAuth(String site, String userString) {
+
+		JSONObject userInfo = new JSONObject(userString);
 		
+		String loginName = "";
+		NoteUser tempUser = null;
+		
+		if (OAuthSite.FACEBOOK.getSiteName().equalsIgnoreCase(site)) {
+			loginName = userInfo.getString("email");
+			tempUser = noteService.findUserByName(loginName);
+			if (tempUser == null) {
+				// Gson gson = new Gson();
+				// NoteUserDto dtoR = gson.fromJson(resourceBody, NoteUserDto.class);
+				NoteUser noteUser = new NoteUser();
+				noteUser.setLoginName(loginName);
+				noteUser.setFirstName(userInfo.getString("first_name"));
+				noteUser.setLastName(userInfo.getString("last_name"));
+				noteUser.setEmail(loginName);
+				tempUser = noteService.addUser(noteUser);
+			}
+
+		} else if (OAuthSite.GOOGLE.getSiteName().equalsIgnoreCase(site)) {
+			loginName = userInfo.getString("email");
+			tempUser = noteService.findUserByName(loginName);
+			if (tempUser == null) {
+				NoteUser noteUser = new NoteUser();
+				noteUser.setLoginName(loginName);
+				noteUser.setFirstName(userInfo.getString("given_name"));
+				noteUser.setLastName(userInfo.getString("family_name"));
+				noteUser.setEmail(loginName);
+				tempUser = noteService.addUser(noteUser);
+			}
+
+		}
+
+		user = tempUser;
+		putUserOnline();
+
 	}
 	
 
 	@SuppressWarnings("unchecked")
-	public void addUserToWebApp() {
+	public void putUserOnline() {
 
 		List<NoteUser> userList = (List<NoteUser>) Executions.getCurrent().getDesktop().getWebApp().getAttribute("ONLINE_USER_LIST");
 		if(userList == null) {
@@ -68,9 +107,9 @@ public class UserCredentialManager {
 		
 	}
 	
-	public void removeUserFromWebApp() {
+	@SuppressWarnings("unchecked")
+	public void putUserOffline() {
 		
-		@SuppressWarnings("unchecked")
 		List<NoteUser> userList = (List<NoteUser>) Executions.getCurrent().getDesktop().getWebApp().getAttribute("ONLINE_USER_LIST");
 		if(userList == null) {
 			userList = new ArrayList<NoteUser>();
@@ -82,11 +121,12 @@ public class UserCredentialManager {
 	}
 
 	public synchronized void logOff() {
-		removeUserFromWebApp();
+		putUserOffline();
+		
+		// add to cookie on logOff
+		CookieUtil.setCookie("lastUserName", user.getLoginName());
 		this.user = null;
 	}
-
-	
 
 	public synchronized NoteUser getUser() {
 		return user;
