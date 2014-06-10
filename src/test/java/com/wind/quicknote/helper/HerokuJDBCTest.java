@@ -23,13 +23,12 @@ import org.junit.Test;
  */
 public class HerokuJDBCTest {
 
+	private static final String ORG_POSTGRESQL_DRIVER = "org.postgresql.Driver";
 	private static final String _DB_URL = "jdbc:postgresql://ec2-54-197-237-120.compute-1.amazonaws.com:5432/d1nq4hvfcvj4g9";
 	private static final String _DB_USER = "fwhamjopujjwoi";
-	private static final String _DB_PASSWD = "[your secret goes here]";
-
-	private static final String ORG_POSTGRESQL_DRIVER = "org.postgresql.Driver";
-	private static final String CONNECTION_ESTABLISHED = "Connection established!";
-	private static final String CONNECTION_FAILED = "Failed to make connection!";
+	private static final String _DB_PASS = "58nIPmzYFXzGChEZAb0l9lOLyr";
+	
+	private static HerokuJDBCTest _self = new HerokuJDBCTest();
 
 	@BeforeClass
 	public static void beforeClass() {
@@ -40,7 +39,6 @@ public class HerokuJDBCTest {
 			e.printStackTrace();
 			return;
 		}
-		System.out.println("PostgreSQL JDBC Driver Registered!");
 	}
 
 	@Test
@@ -51,7 +49,7 @@ public class HerokuJDBCTest {
 			String url = _DB_URL;
 			Properties props = new Properties();
 			props.setProperty("user", _DB_USER);
-			props.setProperty("password", _DB_PASSWD);
+			props.setProperty("password", _DB_PASS);
 			props.setProperty("ssl", "true");
 			props.setProperty("sslfactory",
 					"org.postgresql.ssl.NonValidatingFactory");
@@ -78,7 +76,7 @@ public class HerokuJDBCTest {
 			connection = DriverManager
 					.getConnection(
 							_DB_URL + "?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory",
-							_DB_USER, _DB_PASSWD);
+							_DB_USER, _DB_PASS);
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -116,31 +114,11 @@ public class HerokuJDBCTest {
 
 	}
 
-	public static void main(String[] argv) {
+	public static void main(String[] argv) throws ClassNotFoundException {
 
-		try {
-			Class.forName(ORG_POSTGRESQL_DRIVER);
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-			return;
-		}
-
-		Connection connection = null;
-		try {
-			connection = DriverManager
-					.getConnection(
-							"jdbc:postgresql://ec2-54-197-237-120.compute-1.amazonaws.com:5432/d1nq4hvfcvj4g9?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory",
-							_DB_USER, _DB_PASSWD);
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		if (connection != null) {
-			System.out.println(CONNECTION_ESTABLISHED);
-		} else {
-			System.out.println(CONNECTION_FAILED);
-		}
+		Class.forName(ORG_POSTGRESQL_DRIVER);
+		_self.testConnWithSSLEnabled();
+		
 	}
 
 }
