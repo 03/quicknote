@@ -8,14 +8,14 @@
 	<url>http://maven.apache.org</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<zk.version>7.0.0</zk.version>
+		<zk.version>7.0.2</zk.version>
 		<zkel.version>1.1.0</zkel.version>
 		<commons-lang.version>2.4</commons-lang.version>
 		<servlet.version>2.4</servlet.version>
-		<spring.version>3.2.5.RELEASE</spring.version>
+		<spring.version>3.2.10.RELEASE</spring.version>
 		<hibernate.version>4.2.8.Final</hibernate.version>
 		<aspectj.version>1.7.2</aspectj.version>
-		<apache.cxf.version>2.7.8</apache.cxf.version>
+		<apache.cxf.version>2.7.12</apache.cxf.version>
 	</properties>
 	<!-- https://devcenter.heroku.com/articles/local-maven-dependencies -->
 	<repositories>
